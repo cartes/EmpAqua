@@ -27,8 +27,8 @@
 
     <!-- Scripts -->
     <!-- <script src="{{ asset('js/app.js') }}"></script> -->
-    <script src="{{ asset('js/jquery.min.js') }}"></script>
-    <script src="{{ asset('js/jquery.offcanvas.min.js') }}"></script>
+    <script src="{{ asset('js/jquery.min.js') }}?v={{ @filemtime(public_path('js/jquery.min.js')) }}"></script>
+    <script src="{{ asset('js/jquery.offcanvas.min.js') }}?v={{ @filemtime(public_path('js/jquery.offcanvas.min.js')) }}"></script>
     @stack('datatables')
 
     <script defer src="https://cdnjs.cloudflare.com/ajax/libs/velocity/2.0.6/velocity.min.js"></script>
@@ -38,7 +38,7 @@
     <link href="https://fonts.googleapis.com/css?family=Nunito&display=swap" rel="stylesheet">
 
     <!-- Styles -->
-    <link href="{{ asset('/css/app.css') }}" rel="stylesheet">
+    <link href="{{ asset('/css/app.css') }}?v={{ @filemtime(public_path('css/app.css')) }}" rel="stylesheet">
 
     <!-- Google tag (gtag.js) -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-S6F0ZG7XWY"></script>
@@ -51,6 +51,8 @@
     </script>
     <!-- debug --->
 
+    {{-- Los slots de GPT (defineSlot/enableServices) deben definirse en el head, antes de los display() del body --}}
+    @stack('scripts')
     @stack('styles')
 
     @if(config('app.intersticial'))

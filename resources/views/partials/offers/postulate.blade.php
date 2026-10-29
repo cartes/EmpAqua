@@ -181,15 +181,13 @@
                 </aside>
                 <div id="container-offer-display" class="col-12 col-lg-8 px-0">
                     <div class="container py-md-4">
-                        <div class="row header-offer">
+                        <div class="offer-header">
                             @if (session()->get('id'))
-                                <div class="col-12 position-relative">
-                                    <a id="post-add-fav" class="d-none d-sm-block" href="#" data-favorite="{{$favorite ? "true" : "false"}}">
-                                        <i class="{{$favorite ? 'fas' : 'far'}} fa-bookmark"></i>
-                                    </a>
-                                </div>
+                                <a id="post-add-fav" class="offer-header__fav" href="#" data-favorite="{{$favorite ? "true" : "false"}}" title="Guardar en favoritos">
+                                    <i class="{{$favorite ? 'fas' : 'far'}} fa-bookmark"></i>
+                                </a>
                             @endif
-                            <div class="col-4 d-none d-sm-block">
+                            <div class="offer-header__logo d-none d-sm-flex">
                                 @if ($offer->businessMeta)
                                     @if(!$offer->confidential)
                                         <img class="w-100 h-auto" src="{{ $offer->businessMeta->pathAttachment() }}"
@@ -200,50 +198,41 @@
                                              width="170" alt="Loogo Empleos Aqua"
                                         />
                                     @endif
-                                    <small class="mt-1 d-block text-white">{{ $offer->publication }}</small>
+                                    <small class="mt-2 d-block text-muted">{{ $offer->publication }}</small>
                                 @endif
                             </div>
-                            <div class="col-12 col-sm-8">
+                            <div class="offer-header__main">
                                 @if(!is_null($offer))
                                     <h2 class="container-offer-title font-weight-bold"><strong>{{ $offer->title }}</strong></h2>
                                 @endif
 
                                 @if (is_object($offer->businessMeta))
-
-                                    <p id="container-business-name" class="m-0 p-0">
+                                    <p id="container-business-name" class="offer-header__company">
                                         @if ($offer->confidential)
                                             <strong>Confidencial</strong>
-                                            <small
-                                                    class="container-offer-title-created-at">{{ $offer->created_at->format('d \\d\\e F \\d\\e Y') }}</small>
                                         @else
-                                            <strong>{{$offer->businessMeta->business_name}}</strong><small
-                                                    class="container-offer-title-created-at">{{ $offer->created_at->format('d \\d\\e F \\d\\e Y') }}</small>
+                                            <strong>{{$offer->businessMeta->business_name}}</strong>
                                         @endif
-
+                                        <small class="container-offer-title-created-at">{{ $offer->created_at->format('d \\d\\e F \\d\\e Y') }}</small>
                                     </p>
                                 @endif
 
                                 @isset($offer->category)
-                                    <h3 class="category-title">{{ $offer->category->title }}</h3>
+                                    <span class="offer-header__category">{{ $offer->category->title }}</span>
                                 @endisset
+
                                 @if(session()->get('role') != 'business')
-                                    <div class="row position-relative">
+                                    <div class="offer-header__actions">
                                         @if ($postuled && !$favorite)
-                                            <div class="col-8 text-end">
-                                                <p>Ya postulaste a esta oferta</p>
-                                            </div>
+                                            <span class="offer-header__applied"><i class="fas fa-check-circle"></i> Ya postulaste a esta oferta</span>
                                         @elseif(session()->get('id'))
-                                            <div class="col-8">
-                                                <a data-toggle="modal" data-target="#postuleModal" href="#" class="w-100 btn btn-primary">Postula
-                                                    Acá</a>
-                                            </div>
+                                            <a data-toggle="modal" data-target="#postuleModal" href="#" class="btn btn-primary">Postula
+                                                Acá</a>
                                         @else
-                                            <div class="ms-auto col-8">
-                                                <a class="btn btn-primary" href="#" data-toggle="modal" data-target="#loginUserModal">Inicie
-                                                    sesión para postular</a>
-                                            </div>
+                                            <a class="btn btn-primary" href="#" data-toggle="modal" data-target="#loginUserModal">Inicie
+                                                sesión para postular</a>
                                         @endif
-                                        <div class="col-4 justify-content-start" id="social-container">
+                                        <div id="social-container">
                                             <ul class="social-share">
                                                 <li class="position-relative">
                                                     <a class="btn btn-share">
@@ -267,31 +256,28 @@
                                     </a>
                                 @endif
                             </div>
-
                         </div>
 
-                        <div class="row points-offer d-flex justify-content-between">
-                            <div class="col-12 d-block d-sm-none">
-                                <h4>Puntos principales</h4>
-                            </div>
+                        <div class="offer-points">
+                            <h4 class="offer-points__heading d-block d-sm-none">Puntos principales</h4>
                             {{-- Comuna --}}
                             @if($offer->businessMeta->comune != '')
-                                <div class="col-12 col-sm-auto small">
+                                <div class="offer-points__item">
                                     <i class="fas fa-map-marker-alt"></i><span>{{$offer->businessMeta->comune}}</span>
                                 </div>
                             @endif
                             {{-- Horario --}}
-                            <div class="col-12 col-sm-auto small">
+                            <div class="offer-points__item">
                                 <i class="far fa-building"></i><span>{{$offer->position}}</span>
                             </div>
-                            <div class="col-12 col-sm-auto small">
+                            <div class="offer-points__item">
                                 <i class="fas fa-dollar-sign"></i><span>{{$offer->salary}}</span>
                             </div>
-                            <div class="col-12 col-sm-auto small">
+                            <div class="offer-points__item">
                                 <i class="fas fa-file-contract"></i><span>{{$offer->experience}}</span>
                             </div>
                             @if($offer->vacancy > 0)
-                            <div class="col-12 col-sm-auto small">
+                            <div class="offer-points__item">
                                 <i class="fas fa-user"></i><span>Vacantes: {{ $offer->vacancy }}</span>
                             </div>
                             @endif
@@ -301,18 +287,22 @@
                             <div class="col-12 d-block d-sm-none">
                                 <h4>Detalles  de la oferta</h4>
                             </div>
+                            @if (filled(trim(strip_tags(html_entity_decode((string) $offer->description)))))
                             <div class="col-12 mt-2">
                                 <h3 class="mb-3">Funciones del Cargo</h3>
 
                                 <div id="container-offer-description">{!! preg_replace("/[\w-]+@([\w-]+\.)+[\w-]+/", "[Email Bloqueado]", \App\Helpers\Helper::cleanHtml($offer->description)); !!}</div>
                             </div>
+                            @endif
+                            @if (filled(trim((string) $offer->requirements)))
                             <div class="col-12">
                                 <h3 class="mb-3">Requerimientos del cargo</h3>
 
                                 <div id="container-offer-requirements">{{ $offer->requirements }}</div>
                             </div>
+                            @endif
 
-                            @if ( $offer->benefits )
+                            @if ( collect($offer->benefits)->isNotEmpty() )
                                 <div class="col-12">
                                     <h3 class="mb-3">Beneficios</h3>
 
@@ -421,6 +411,62 @@
             });
         });
     </script>
+@endpush
+@push('scripts')
+    <script>
+        jQuery(document).ready(function () {
+            var panel = document.getElementById('container-offer-display');
+            if (!panel) return;
+            var update = function () {
+                var top = Math.min(130, window.innerHeight - panel.offsetHeight - 16);
+                panel.style.top = top + 'px';
+            };
+            update();
+            window.addEventListener('resize', update);
+            if (window.ResizeObserver) { new ResizeObserver(update).observe(panel); }
+        });
+    </script>
+@endpush
+@push("styles")
+    <style>
+        #container-offer-display .container { max-width: 100%; }
+        /* Detalle: scrollea con la página y se fija al llegar a su final (el top se calcula en JS según su alto) */
+        @media (min-width: 992px) {
+            #container-offer-display { position: sticky; top: 130px; align-self: flex-start; }
+        }
+        .offer-header { position: relative; display: flex; gap: 1.5rem; align-items: flex-start; background: #fff; border-radius: 15px; padding: 1.5rem; box-shadow: 0 2px 8px rgba(0,0,0,.06); }
+        .offer-header__fav { position: absolute; top: .9rem; right: 1.1rem; color: #6B6B6B; font-size: 1.5rem; line-height: 1; }
+        .offer-header__logo { flex: 0 0 150px; flex-direction: column; align-items: center; text-align: center; padding-right: 1.5rem; border-right: 1px solid #eef1f4; }
+        .offer-header__main { flex: 1 1 auto; min-width: 0; padding-right: 2rem; }
+        .offer-header__main .container-offer-title { margin: 0 0 .5rem; font-size: 1.4rem; line-height: 1.3; }
+        .offer-header__company { margin: 0 0 .75rem; color: #374151; }
+        .offer-header__company small { display: block; color: #6b7280; margin-top: .15rem; }
+        .offer-header__category { display: inline-block; background: #e8f1fb; color: #1f4690; font-size: .85rem; font-weight: 700; padding: .25rem .8rem; border-radius: 1rem; margin: 0 0 1rem; }
+        .offer-header__actions { display: flex; align-items: center; gap: 1rem; flex-wrap: wrap; }
+        #container-offer-display .offer-header__actions .btn.btn-primary { width: auto; min-width: 190px; height: auto; padding: .45rem 1.5rem; background-color: #F08F01 !important; color: #fff !important; border: 2px solid #fff; border-radius: 20px; box-shadow: 0 4px 4px rgba(0,0,0,.25); }
+        .offer-header__applied { display: inline-flex; align-items: center; gap: .5rem; background: #e8f6ee; color: #1e7e46; font-weight: 600; padding: .45rem 1rem; border-radius: 1.5rem; }
+        .offer-header__applied i { color: #1e7e46; }
+        .offer-header #social-container { position: relative; flex: 0 0 auto; }
+        .offer-points { display: grid; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); gap: .75rem; margin: 1rem 0; padding: 1rem; background: #fff; border-radius: 15px; box-shadow: 0 2px 8px rgba(0,0,0,.06); }
+        .offer-points__heading { grid-column: 1 / -1; margin: 0; font-size: .9rem; font-weight: 700; color: #F08F01; }
+        .offer-points__item { display: flex; align-items: center; gap: .6rem; background: #f8fafc; border-radius: .6rem; padding: .6rem .8rem; color: #6B6B6B; font-size: .9rem; }
+        .offer-points__item i { color: #F08F01; font-size: 1.1rem; width: 1.25rem; text-align: center; }
+        /* El tema fuerza background transparente en .container *, así que los "chips" no llevan fondo ni padding lateral: todo parte del mismo borde izquierdo */
+        #container-offer-display .offer-header__main > * { margin-left: 0 !important; padding-left: 0 !important; text-indent: 0; }
+        #container-offer-display .offer-header__main .container-offer-title { margin: 0 0 .5rem !important; padding: 0 !important; line-height: 1.3 !important; }
+        #container-offer-display .offer-header__company { margin: 0 0 .5rem !important; padding: 0 !important; line-height: 1.35 !important; }
+        #container-offer-display .offer-header__company strong,
+        #container-offer-display .offer-header__company small { display: block; margin: 0 !important; padding: 0 !important; line-height: 1.35 !important; }
+        #container-offer-display .offer-header__category { display: block; margin: 0 0 .75rem !important; padding: 0 !important; line-height: 1.35 !important; border-radius: 0; }
+        #container-offer-display .offer-header__actions { margin: 0 !important; padding: 0 !important; }
+        #container-offer-display .offer-header__applied { padding: 0 !important; line-height: 1.35 !important; border-radius: 0; }
+        @media (max-width: 575.98px) {
+            .offer-header { flex-direction: column; gap: 0; padding: 1.1rem; }
+            .offer-header__main { width: 100%; padding-right: 1.75rem; }
+            .offer-header__actions { flex-direction: column; align-items: flex-start; gap: .75rem; }
+            .offer-header__actions .btn.btn-primary { width: 100%; }
+        }
+    </style>
 @endpush
 @push("styles")
     <style>

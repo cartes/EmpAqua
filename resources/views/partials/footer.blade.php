@@ -6,12 +6,12 @@
                     <div class="row">
                         <div class="col-12 logos-footer logo-empleos">
                             <a href="{{route('/')}}">
-                                <img class="w-100" src="/images/empleos-aqua-footer-logo.png" alt="Logo EmplesAqua Footer" />
+                                <img class="w-100" src="/images/empleos-aqua-footer-logo.png" alt="Logo EmplesAqua Footer" width="209" height="47" loading="lazy" decoding="async" />
                             </a>
                         </div>
                         <div class="col-12 logos-footer logo-b2b">
                             <a href="{{route('/')}}">
-                                <img class="w-100" src="/images/b2b-footer-logo.png" alt="Logo B2B Footer" />
+                                <img class="w-100" src="/images/b2b-footer-logo.png" alt="Logo B2B Footer" width="164" height="73" loading="lazy" decoding="async" />
                             </a>
                         </div>
                     </div>

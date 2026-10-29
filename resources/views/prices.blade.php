@@ -26,7 +26,7 @@
         <div class="mb-3">
             <div class="row justify-content-center">
                 <div class="col-md-4 d-flex">
-                    <img class="mx-auto text-center w-75" src="{{asset('/images/1x/logo-empleos.png')}}">
+                    <img class="mx-auto text-center w-75" src="{{asset('/images/1x/logo-empleos.png')}}" alt="EmpleosAqua" width="758" height="172" decoding="async">
                 </div>
             </div>
         </div>

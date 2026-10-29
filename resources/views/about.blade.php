@@ -27,7 +27,7 @@
         <div class="container">
             <div class="row">
                 <div class="col-md-8 offset-2 text-center">
-                    <img class="w-25 my-5 text-center" src="{{asset('/images/1x/logo-empleos-aqua.png')}}" />
+                    <img class="w-25 my-5 text-center" src="{{asset('/images/1x/logo-empleos-aqua.png')}}" alt="EmpleosAqua" width="758" height="172" decoding="async" />
                     <h3 class="my-5 text-center">Quienes somos</h3>
                     <p>
                         “EmpleosAqua” es una iniciativa de B2B Group Media SPA, casa editorial de la revista AQUA y del

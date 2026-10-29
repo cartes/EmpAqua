@@ -28,8 +28,8 @@
     <!-- Scripts -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
-    <!-- <script src="{{ asset('js/jquery.min.js') }}"></script> -->
-    <script src="{{ asset('js/jquery.offcanvas.min.js') }}"></script>
+    <!-- <script src="{{ asset('js/jquery.min.js') }}?v={{ @filemtime(public_path('js/jquery.min.js')) }}"></script> -->
+    <script src="{{ asset('js/jquery.offcanvas.min.js') }}?v={{ @filemtime(public_path('js/jquery.offcanvas.min.js')) }}"></script>
 
     <script defer src="https://cdnjs.cloudflare.com/ajax/libs/velocity/2.0.6/velocity.min.js"></script>
 
@@ -77,7 +77,7 @@
     </script>
 
     <!-- Styles -->
-    <link href="{{ asset('css/app.css') }}" rel="stylesheet">
+    <link href="{{ asset('css/app.css') }}?v={{ @filemtime(public_path('css/app.css')) }}" rel="stylesheet">
 
 
     @stack('styles')

@@ -115,7 +115,7 @@
                     <div class="container skyscrapper container-right inferior position-absolute" style="left: -18%">
                         <!-- /18588809/EASKHDI -->
                         <div id='div-gpt-ad-1620411032581-0'
-                             stylestyle='min-width: 120px; min-height: 600px;'>
+                             style='min-width: 120px; min-height: 600px;'>
                             <script>
                                 googletag.cmd.push(function () {
                                     googletag.display('div-gpt-ad-1620411032581-0');
@@ -270,19 +270,19 @@
 
                         <div class="row estadisticas my-sm-5">
                             <div class="col-12 col-sm-4 text-center">
-                                <img class="icon" src="/images/icon-visitas.png">
+                                <img class="icon" src="/images/icon-visitas.png" alt="Visitas" width="51" height="51" loading="lazy" decoding="async">
                                 <h4>RECIBIMOS MÁS DE </h4>
                                 <h4 class="cifra">3.000.000</h4>
                                 <h4>VISITAS AL AÑO</h4>
                             </div>
                             <div class="col-12 col-sm-4 text-center">
-                                <img class="icon" src="/images/icon-ofertas.png">
+                                <img class="icon" src="/images/icon-ofertas.png" alt="Ofertas" width="51" height="51" loading="lazy" decoding="async">
                                 <h4>PUBLICAMOS</h4>
                                 <h4 class="cifra">MÁS DE 500</h4>
                                 <h4>OFERTAS MENSUALMENTE</h4>
                             </div>
                             <div class="col-12 col-sm-4 text-center">
-                                <img class="icon" src="/images/icon-postulante.png">
+                                <img class="icon" src="/images/icon-postulante.png" alt="Postulantes" width="52" height="51" loading="lazy" decoding="async">
                                 <h4>REGISTRAMOS MÁS DE</h4>
                                 <h4 class="cifra">22.000</h4>
                                 <h4>POSTULANTES</h4>
@@ -352,6 +352,10 @@
         .skyscrapper.superior {
             z-index: 3000;
         }
+        /* Los skyscrapers publicitarios no deben ensanchar la página (scroll horizontal) */
+        html, body { overflow-x: clip; }
+        .skyscrapper { width: 120px; max-width: 120px; padding: 0; }
+        .skyscrapper > div, .skyscrapper iframe { max-width: 120px; overflow: hidden; }
         .post-add-fav i {
             font-size: 24px;
         }

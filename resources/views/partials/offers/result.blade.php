@@ -94,61 +94,15 @@
                         @php ($array = ['slug' => $offer->slug, 'search' => $search, 'featured' => false])
                     @endif
 
-                    <div class="card mb-4{{ $offer->featured ? ' back-orange' : '' }}">
-                        <div class="card-body row">
-                            <div class="col-11">
-                                <h5 class="card-title py-0">
+                    <div class="card offer-card mb-3{{ $offer->featured ? ' back-orange offer-card--featured' : '' }}">
+                        <div class="card-body">
+                            <div class="offer-card__header">
+                                <h5 class="offer-card__title card-title py-0 m-0">
                                     <a href="{{ route("offer.show", $offer->slug) }}">{{ $offer->title }}@if($offer->handicapped)  &nbsp;<i class="fas fa-wheelchair"></i>  @endif</a>
                                 </h5>
-                            </div>
-                            <div class="col-12 col-sm-7 border-bottom mb-3 pb-3">
-                                @if ($offer->businessMeta)
-                                    @if(!$offer->confidential)
-                                        <h6><strong>{{$offer->businessMeta->business_name}}</strong>
-                                            - {{ $offer->publication }}</h6>
-                                    @else
-                                        <h6><strong>Confidencial</strong> - {{ $offer->publication }}</h6>
-                                    @endif
-
-                                @endif
-                                @if ($offer->businessMeta)
-                                    <div class="d-block d-sm-none">
-                                        <div class="row">
-                                            <div class="col-6">
-                                                <h6><i class="fas fa-map-marker-alt"></i> &nbsp;<span
-                                                            class="text-capitalize">{{ $offer->businessMeta->comune }}</span>
-                                                </h6>
-                                            </div>
-                                            <div class="col-6">
-                                                <i class="far fa-building"></i> &nbsp;<span
-                                                        class="text-capitalize">{{ $offer->position }}</span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="d-none d-sm-block">
-                                        {{\Illuminate\Support\Str::limit(strip_tags(html_entity_decode($offer->description)), 150)}}
-                                    </div>
-                                @endif
-                            </div>
-                            <div class="col-5 d-block d-sm-block position-relative">
-                                @if ($offer->businessMeta)
-                                    <div class="d-none d-sm-block">
-                                        <div class="row">
-                                            <div class="col-6 col-sm-12">
-                                                <h6><i class="fas fa-map-marker-alt"></i> &nbsp;<span
-                                                            class="text-capitalize">{{ $offer->businessMeta->comune }}</span>
-                                                </h6>
-                                            </div>
-                                            <div class="col-6 col-sm-12">
-                                                <i class="far fa-building"></i> &nbsp;<span
-                                                        class="text-capitalize">{{ $offer->position }}</span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                @endif
-                                <div class="position-absolute badge-destacado d-block d-md-block">
+                                <div class="offer-card__actions">
                                     @if ($offer->featured)
-                                        <span class="badge">Destacada</span>
+                                        <span class="badge offer-card__badge">Destacada</span>
                                     @endif
                                     @if (session()->get('id'))
                                         @isset($offer->candidates)
@@ -160,11 +114,11 @@
                                                 @endif
                                             @endforeach
                                             @if ($textStatus == 'favorite')
-                                            <a class="post-add-fav d-block d-sm-inline-block" href="#" data-favorite="true" data-slug="{{$offer->slug}}">
+                                            <a class="post-add-fav offer-card__fav" href="#" data-favorite="true" data-slug="{{$offer->slug}}" title="Quitar de favoritos">
                                                 <i class="fas fa-bookmark"></i>
                                             </a>
                                             @else
-                                            <a class="post-add-fav d-block d-sm-inline-block" href="#" data-favorite="false" data-slug="{{$offer->slug}}">
+                                            <a class="post-add-fav offer-card__fav" href="#" data-favorite="false" data-slug="{{$offer->slug}}" title="Guardar en favoritos">
                                                 <i class="far fa-bookmark"></i>
                                             </a>
                                             @endif
@@ -172,11 +126,28 @@
                                     @endif
                                 </div>
                             </div>
-                            <p class="card-text">
-                            <p class="p-0 m-0 d-block d-sm-none">
-                                {{\Illuminate\Support\Str::limit(strip_tags(html_entity_decode($offer->description)), 150)}}
-                            </p>
-                            </p>
+
+                            @if ($offer->businessMeta)
+                                <div class="offer-card__company">
+                                    @if(!$offer->confidential)
+                                        <strong>{{$offer->businessMeta->business_name}}</strong>
+                                    @else
+                                        <strong>Confidencial</strong>
+                                    @endif
+                                    <span class="offer-card__date">- {{ $offer->publication }}</span>
+                                </div>
+
+                                <div class="offer-card__meta">
+                                    <span class="offer-card__chip"><i class="fas fa-map-marker-alt"></i>
+                                        <span class="text-capitalize">{{ $offer->businessMeta->comune }}</span></span>
+                                    <span class="offer-card__chip"><i class="far fa-building"></i>
+                                        <span class="text-capitalize">{{ $offer->position }}</span></span>
+                                </div>
+
+                                <p class="offer-card__desc">
+                                    {{\Illuminate\Support\Str::limit(strip_tags(html_entity_decode($offer->description)), 150)}}
+                                </p>
+                            @endif
                         </div>
                     </div>
 
@@ -247,6 +218,32 @@
             })
         </script>
     @endif
+@endpush
+
+@push("styles")
+    <style>
+        .offer-card { border: 1px solid #e5e7eb; border-left: 4px solid #cfd6df; border-radius: .5rem; transition: box-shadow .15s, transform .15s, border-color .15s; }
+        .offer-card:hover { box-shadow: 0 .4rem 1rem rgba(0,0,0,.08); transform: translateY(-1px); border-left-color: #D88F32; }
+        .offer-card--featured { border-left-color: #D88F32; }
+        .offer-card .card-body { padding: 1rem 1.25rem; }
+        .offer-card__header { display: flex; justify-content: space-between; align-items: flex-start; gap: .75rem; }
+        .offer-card__title { font-size: 1.15rem; font-weight: 700; line-height: 1.3; }
+        .offer-card__title a { text-decoration: none; }
+        .offer-card__title a:hover { text-decoration: underline; }
+        .offer-card__actions { display: flex; align-items: center; gap: .6rem; flex-shrink: 0; }
+        .offer-card__badge { background: #D88F32; color: #fff; font-weight: 600; padding: .35em .65em; border-radius: 1rem; }
+        .offer-card__fav { font-size: 1.25rem; line-height: 1; }
+        .offer-card__company { margin-top: .35rem; color: #4b5563; font-size: .95rem; }
+        .offer-card__date { color: #6b7280; font-size: .85rem; }
+        .offer-card__meta { display: flex; flex-wrap: wrap; gap: .5rem; margin: .75rem 0; }
+        .offer-card__chip { display: inline-flex; align-items: center; gap: .4rem; background: #f3f4f6; color: #374151; border-radius: 1rem; padding: .25rem .7rem; font-size: .85rem; }
+        .offer-card--featured .offer-card__chip { background: rgba(255,255,255,.6); }
+        .offer-card__desc { margin: 0; color: #4b5563; font-size: .92rem; line-height: 1.5; }
+        @media (max-width: 575.98px) {
+            .offer-card .card-body { padding: .9rem 1rem; }
+            .offer-card__title { font-size: 1.05rem; }
+        }
+    </style>
 @endpush
 
 @push("styles")
