@@ -6,28 +6,27 @@ use Illuminate\Foundation\Http\FormRequest;
 
 class OfferEditRequest extends FormRequest
 {
-    /**
-     * Determine if the user is authorized to make this request.
-     *
-     * @return bool
-     */
-    public function authorize()
+    public function authorize(): bool
     {
         return true;
     }
 
-    /**
-     * Get the validation rules that apply to the request.
-     *
-     * @return array
-     */
-    public function rules()
+    public function rules(): array
     {
-
         return [
-            'title' => 'required',
-            'description' => 'required|min:10|max:3500',
-            'area' => 'required',
+            'title' => ['required'],
+            'category_id' => ['required'],
+            'position' => ['required'],
+            'salary_opt' => ['required', 'numeric'],
+            'handicapped' => ['required', 'in:0,1'],
+            'description' => ['required', 'min:10', 'max:3500'],
+            'area' => ['required'],
+            'experience' => ['required', 'integer'],
+            'requirements' => ['required'],
+            'vacancy' => ['required', 'integer'],
+            'benefit' => ['nullable', 'string', 'max:255'],
+            'benefits' => ['nullable', 'array'],
+            'benefits.*' => ['nullable', 'string', 'max:255'],
         ];
     }
 }

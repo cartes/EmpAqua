@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\Message;
 use App\Models\User;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 
 class MessageController extends Controller
@@ -11,57 +13,62 @@ class MessageController extends Controller
     /**
      * Mostrar modal con mensaje de la empresa
      */
-    public function show(Request $request)
+    public function show(Request $request): JsonResponse
     {
-        $user = User::whereId($request->input('user'))
-            ->select(['name', 'surname'])
-            ->first();
+        $user = User::whereKey($request->input('user'))->first(['name', 'surname']);
 
         $messages = Message::where([
-            "offer_id" => $request->input('offer'),
-            "user_id" => $request->input('user')
+            'offer_id' => $request->input('offer'),
+            'user_id' => $request->input('user'),
         ])->with('children')->get();
 
-        $response = [
-            "user" => $user,
-            "messages" => $messages,
-            "reader" => session()->get("id"),
-        ];
-
-        return response()->json($response, 200);
+        return response()->json([
+            'user' => $user,
+            'messages' => $messages,
+            'reader' => session('id'),
+        ]);
     }
 
     /**
      * Enviar el mensaje al usuario
      */
-    public function send(Request $request)
+    public function send(Request $request): RedirectResponse
     {
-        $request->merge(['status' => Message::SENDED]);
-        $request->merge(['sender_id' => session()->get('id')]);
+        $data = $request->validate([
+            'subject' => ['nullable', 'string', 'max:255'],
+            'offer_id' => ['required', 'exists:aquabe_offers,id'],
+            'user_id' => ['required', 'exists:aquabe_users,id'],
+            'content' => ['required', 'string'],
+        ]);
 
-        Message::create($request->input());
+        Message::create($data + [
+            'status' => Message::SENDED,
+            'sender_id' => session('id'),
+        ]);
 
         return back()->with('message', ['success', 'Mensaje enviado al usuario']);
     }
 
     /**
-     * Usuario puede leer el mensaje
+     * Respuesta del usuario al mensaje
      */
-
-    /**
-     * Respueta del usuario al mensaje
-     */
-    public function reply(Request $request)
+    public function reply(Request $request): RedirectResponse
     {
-        $message_to_reply = $request->message_id;
-        Message::where('id', $message_to_reply)->update(['status' => Message::READED]);
+        $data = $request->validate([
+            'subject' => ['nullable', 'string', 'max:255'],
+            'offer_id' => ['required', 'exists:aquabe_offers,id'],
+            'user_id' => ['required', 'exists:aquabe_users,id'],
+            'message_id' => ['required', 'exists:aquabe_messages,id'],
+            'content' => ['required', 'string'],
+        ]);
 
-        $request->merge(['sender_id' => session()->get('id')]);
-        $request->merge(['status' => Message::REPLYED]);
+        Message::whereKey($data['message_id'])->update(['status' => Message::READED]);
 
-        Message::create($request->input());
+        Message::create($data + [
+            'status' => Message::REPLYED,
+            'sender_id' => session('id'),
+        ]);
 
         return back()->with('message', ['success', 'Mensaje respondido']);
-
     }
 }

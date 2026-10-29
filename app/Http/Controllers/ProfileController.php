@@ -8,664 +8,360 @@ use App\Http\Requests\EducationRequest;
 use App\Http\Requests\ExperienceRequest;
 use App\Http\Requests\PersonalDataRequest;
 use App\Http\Requests\ReferencesRequest;
-use App\Http\Requests\ResumeRequest;
-use App\Models\Reference;
 use App\Models\User;
-use App\Models\UserEducation;
-use App\Models\UserExperience;
-use App\Models\UserLanguage;
 use App\Models\UserMeta;
-use App\Models\UserSkills;
-use DB;
+use Illuminate\Contracts\View\View;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 
+/**
+ * Perfil del candidato. Todos los registros se acceden a través del usuario en sesión,
+ * de modo que nadie puede leer ni modificar datos de otro candidato.
+ */
 class ProfileController extends Controller
 {
+    private const EXPERIENCE_FIELDS = [
+        'business_name', 'business_activity', 'business_position', 'experience_level', 'business_country',
+        'month_from', 'year_from', 'month_to', 'year_to', 'area', 'sub_area', 'description', 'dependents',
+    ];
 
-    public function index()
+    private const REFERENCE_FIELDS = [
+        'referencer_firstname', 'referencer_surname', 'referencer_email', 'referencer_phone',
+        'referencer_business', 'referencer_relation', 'referencer_type',
+    ];
+
+    public function index(): View
     {
-        $id = session()->get('id');
-        $fileExists = false;
-        $user = User::where('id', $id)
-            ->first()
-            ->load('userMeta', 'userLanguage', 'userSkills', 'userReferences');
+        $user = $this->user()->load('userMeta', 'userLanguage', 'userSkills', 'userReferences');
 
-        if (!is_null($user->userMeta) && !is_null($user->userMeta->path)) {
-            $fileExists = file_exists(storage_path('app/public/resume/' . $user->userMeta->path));
-            // **Nota: Ya NO sets session()->flash aquí.**
-        }
+        $path = $user->userMeta?->path;
+        $fileExists = ! is_null($path) && file_exists(storage_path('app/public/resume/' . $path));
 
-        $experiences = UserExperience::whereIdUser($id)->orderBy('year_to', 'DESC')->orderBy('month_to', 'DESC')->get();
-        $education = UserEducation::whereIdUser($id)->orderBy('year_to')->get();
-
-        return view('user.profile')->with([
+        return view('user.profile', [
             'user' => $user,
-            'experiences' => $experiences,
-            'education' => $education,
+            'experiences' => $this->experiences($user),
+            'education' => $user->userEducation()->reorder('year_to')->get(),
             'fileExists' => $fileExists,
         ]);
     }
 
-
-    public function update(PersonalDataRequest $request)
+    public function view(): View
     {
-        $id = session()->get('id');
+        $user = $this->user()->load('userMeta', 'userLanguage', 'userSkills', 'userEducation', 'userReferences');
 
-        $user = User::where('id', $id)->first();
-        $hasEducation = $this->hasExistingEducation($user);
+        return view('user.view', [
+            'user' => $user,
+            'experiences' => $this->experiences($user),
+        ]);
+    }
 
-        $date = str_replace('/', '-', $request->get('birthday'));
+    public function update(PersonalDataRequest $request): RedirectResponse
+    {
+        $user = $this->user();
 
-        if ($request->hasFile('resume')) {
-            $path = Helper::uploadFile('resume', 'resume');
-            $file = $request->file('resume');
-
-            UserMeta::updateOrCreate(['id_user' => $id], [
-                'path' => $path,
-                'filename' => $file->getClientOriginalName(),
-            ]);
-        }
+        $data = [
+            'name' => $request->name,
+            'surname' => $request->surname,
+            'birthday' => str_replace('/', '-', (string) $request->birthday),
+            'gender' => $request->gender,
+            'nacionality' => $request->nacionality,
+            'marital_status' => $request->marital_status,
+        ];
 
         if ($request->hasFile('picture')) {
-            $path = Helper::uploadFile('picture', 'profile');
-
-            User::where('id', $id)
-                ->update([
-                    'name' => $request->get('name'),
-                    'surname' => $request->get('surname'),
-                    'birthday' => $date,
-                    'gender' => $request->get('gender'),
-                    'nacionality' => $request->get('nacionality'),
-                    'marital_status' => $request->get('marital_status'),
-                    'path' => basename($path),
-                    'picture' => $request->file('picture')->getClientOriginalName(),
-                ]);
-
-        } else {
-            User::where('id', $id)
-                ->update([
-                    'name' => $request->get('name'),
-                    'surname' => $request->get('surname'),
-                    'birthday' => $date,
-                    'gender' => $request->get('gender'),
-                    'nacionality' => $request->get('nacionality'),
-                    'marital_status' => $request->get('marital_status'),
-                ]);
+            $data['path'] = Helper::uploadFile('picture', 'profile');
+            $data['picture'] = $request->file('picture')->getClientOriginalName();
         }
 
-        UserMeta::updateOrCreate(['id_user' => $id], [
+        $user->forceFill($data)->save();
+
+        $meta = [
             'pretentions' => $request->pretentions,
             'objectives' => $request->objectives,
             'city' => $request->city,
             'address' => $request->address,
             'phone' => $request->phone,
             'comune' => $request->comune,
-        ]);
-
-        if ($hasEducation) {
-            return back()->with('message', ['success', 'Datos actualizados']);
-        } else {
-            return back()->with('message', ['error', 'Debes agregar tu información académica']);
-        }
-    }
-
-    public function salary(Request $request)
-    {
-        $id = session()->get('id');
-
-        try {
-            UserMeta::updateOrCreate(
-                ['id_user' => $id],
-                ['pretentions' => $request->get('pretentions')]
-            );
-            $success = true;
-
-        } catch (\Exception $exc) {
-            $success = $exc->getMessage();
-        }
-
-        if ($success) {
-            return back()->with('message', ['success', 'Renta actualizada']);
-        }
-
-    }
-
-    public function contact(ContactRequest $request)
-    {
-        $id = session()->get('id');
-
-        try {
-            User::where('id', $id)
-                ->update([
-                    'email' => $request->get('email')
-                ]);
-            UserMeta::updateOrCreate(
-                ['id_user' => $id],
-                [
-                    'phone' => $request->get('phone'),
-                    'address' => $request->get('address'),
-                    'comune' => $request->get('comune'),
-                    'city' => $request->get('city'),
-                    'state' => $request->get('state'),
-                    'country' => $request->get('country'),
-                ]
-            );
-
-            $success = true;
-
-
-        } catch (\Exception $exc) {
-            $success = $exc->getMessage();
-        }
-
-        if ($success) {
-            return back()->with('message', ['success', 'Datos de contacto actualizados']);
-        }
-
-    }
-
-    public function getExperience($id)
-    {
-        try {
-            // Buscar la experiencia laboral por su ID
-            $experience = UserExperience::findOrFail($id);
-
-            // Devolver los datos en formato JSON
-            return response()->json($experience);
-        } catch (\Exception $exc) {
-            return response()->json(['error' => $exc->getMessage()], 500);
-        }
-    }
-
-
-    public function experience(ExperienceRequest $request)
-    {
-        $id = session()->get('id');
-
-        $experience = new UserExperience;
-        try {
-            $experience->id_user = $id;
-            $experience->business_name = $request->business_name;
-            $experience->business_activity = $request->business_activity;
-            $experience->business_position = $request->business_position;
-            $experience->experience_level = $request->experience_level;
-            $experience->business_country = $request->business_country;
-            $experience->month_from = $request->month_from;
-            $experience->year_from = $request->year_from;
-            $experience->month_to = $request->month_to;
-            $experience->year_to = $request->year_to;
-            $experience->area = $request->area;
-            $experience->sub_area = $request->sub_area;
-            $experience->description = $request->description;
-            $experience->dependents = $request->dependents;
-
-            $experience->save();
-
-            $success = true;
-            return back()->with('message', ['success', 'Experiencia Laboral Actualizada']);
-
-        } catch (\Exception $exc) {
-            return back()->with('message', ['error', $exc->getMessage()]);
-        }
-    }
-
-    public function updateExperience(ExperienceRequest $request)
-    {
-        $id = session()->get('id');
-
-        $user = User::where('id', $id)->first();
-        $hasEducation = $this->hasExistingEducation($user);
-
-        try {
-            // Obtener el id_experience desde el request
-            $id = $request->input('id_experience');
-
-            // Buscar la experiencia laboral existente por su ID
-            $experience = UserExperience::findOrFail($id);
-
-            // Actualizar los campos con los datos del formulario
-            $experience->business_name = $request->business_name;
-            $experience->business_activity = $request->business_activity;
-            $experience->business_position = $request->business_position;
-            $experience->experience_level = $request->experience_level;
-            $experience->business_country = $request->business_country;
-            $experience->month_from = $request->month_from;
-            $experience->year_from = $request->year_from;
-            $experience->month_to = $request->month_to;
-            $experience->year_to = $request->year_to;
-            $experience->area = $request->area;
-            $experience->sub_area = $request->sub_area;
-            $experience->description = $request->description;
-            $experience->dependents = $request->dependents;
-
-            // Guardar los cambios en la base de datos
-            $experience->save();
-
-            // Redirigir con un mensaje de éxito
-
-            if ($hasEducation) {
-                return back()->with('message', ['success', 'Experiencia Laboral Actualizada']);
-            } else {
-                return back()->with('message', ['error', 'Debes agregar tu información académica']);
-            }
-
-        } catch (\Exception $exc) {
-            // En caso de error, redirigir con un mensaje de error
-            return back()->with('message', ['error', $exc->getMessage()]);
-        }
-    }
-
-    public function editEducation($id)
-    {
-        $education = UserEducation::find($id);
-
-        if ($education) {
-            return response()->json($education);
-        } else {
-            return response()->json(['error' => 'Registro no encontrado'], 404);
-        }
-    }
-
-    public function education(EducationRequest $request)
-    {
-        $id = session()->get('id');
-        $education = new UserEducation;
-
-        try {
-            $education->id_user = $id;
-            $education->country = $request->input('country');
-            $education->studies = $request->input('studies');
-            $education->condition = $request->input('condition');
-            $education->title = $request->input('title');
-            $education->area = $request->input('area');
-            $education->month_from = $request->input('month_from');
-            $education->year_from = $request->input('year_from');
-            $education->month_to = $request->input('month_to');
-            $education->year_to = $request->input('year_to_st');
-            $education->to_present = $request->input('to_present');
-            $education->institution = $request->input('institution');
-
-            $education->save();
-
-            $success = true;
-        } catch (\Exception $exc) {
-            return back()->with('message', ['error', $exc->getMessage()]);
-        }
-
-        if ($success) {
-            return back()->with('message', ['success', 'Información académica guardada con éxito']);
-        }
-
-    }
-
-    public function updateEducation(Request $request)
-    {
-        $request->validate([
-            'id_education' => 'required|exists:aquabe_users_education,id_education',
-            'studies' => 'required|string|max:255',
-            'title' => 'required|string|max:255',
-            'institution' => 'required|string|max:255',
-            'condition' => 'required|integer',
-            'year_to' => 'required_unless:condition,3|integer|min:1900|max:' . date('Y'),
-        ]);
-
-        try {
-            $education = UserEducation::find($request->id_education);
-
-            $education->studies = $request->studies;
-            $education->title = $request->title;
-            $education->institution = $request->institution;
-            $education->condition = $request->condition;
-            $education->year_to = $request->year_to;
-
-            $education->save();
-
-            return redirect()->back()->with('message', ['success', 'Educación actualizada con éxito']);
-        } catch (\Exception $e) {
-            return redirect()->back()->with('message', ['error', 'Error al actualizar la educación']);
-        }
-    }
-
-    public function objectives(Request $request)
-    {
-        $id = session()->get('id');
-
-        $user = User::where('id', $id)->first();
-        $hasEducation = $this->hasExistingEducation($user);
-
-        try {
-            UserMeta::updateOrCreate(
-                ['id_user' => $id],
-                ['objectives' => $request->get('objectives')]
-            );
-            $success = true;
-
-        } catch (\Exception $exc) {
-            $success = $exc->getMessage();
-        }
-
-        if ($success) {
-            if ($hasEducation) {
-                return back()->with('message', ['success', 'Objetivos laborales Actualizada']);
-            } else {
-                return back()->with('message', ['error', 'Debes agregar tu información académica']);
-            }
-        }
-    }
-
-    public function languages(Request $request)
-    {
-        $id = session()->get('id');
-
-        $user = User::where('id', $id)->first();
-        $hasEducation = $this->hasExistingEducation($user);
-        $lang = new UserLanguage;
-
-        try {
-            $lang->id_user = $id;
-            $lang->language = $request->language;
-            $lang->level_written = $request->level_written;
-            $lang->level_spoken = $request->level_spoken;
-
-            $lang->save();
-
-            $success = true;
-        } catch (\Exception $exc) {
-            $success = $exc->getMessage();
-        }
-
-        if ($success) {
-            if ($hasEducation) {
-                return back()->with('message', ['success', 'Idiomas Actualizados']);
-            } else {
-                return back()->with('message', ['error', 'Debes agregar tu información académica']);
-            }
-        }
-
-    }
-
-    public function skills(Request $request)
-    {
-        $id = session()->get('id');
-
-        $user = User::where('id', $id)->first();
-        $hasEducation = $this->hasExistingEducation($user);
-
-        $skills = new UserSkills;
-
-        try {
-            $skills->id_user = $id;
-            $skills->skill = $request->skill;
-            $skills->save();
-
-            $success = true;
-        } catch (\Exception $exc) {
-            $success = $exc->getMessage();
-        }
-
-        if ($success) {
-            if ($hasEducation) {
-                return back()->with('message', ['success', 'Habilidades Actualizada']);
-            } else {
-                return back()->with('message', ['error', 'Debes agregar tu información académica']);
-            }
-        } else {
-            return back()->with('message', ['error', $success]);
-        }
-
-    }
-
-    public function references(ReferencesRequest $request)
-    {
-        $id = session()->get('id');
-
-        $user = User::where('id', $id)->first();
-        $hasEducation = $this->hasExistingEducation($user);
-
-        $request->merge(['id_user' => session()->get('id')]);
-
-        Reference::create($request->input());
-
-        if ($hasEducation) {
-            return back()->with('message', ['success', 'Referencia agregada']);
-        } else {
-            return back()->with('message', ['error', 'Debes agregar tu información académica']);
-        }
-    }
-
-    public function editReference($id)
-    {
-        $reference = Reference::findOrFail($id);
-        return response()->json($reference);
-    }
-
-    public function updateReference(Request $request)
-    {
-        $request->validate([
-            'id_references' => 'required|exists:aquabe_users_references,id_references',
-            'referencer_firstname' => 'required|string|max:255',
-            'referencer_surname' => 'required|string|max:255',
-            'referencer_email' => 'required|email|max:255',
-            'referencer_phone' => 'required|string|max:20',
-            'referencer_business' => 'required|string|max:255',
-            'referencer_relation' => 'required|string|max:255',
-            'referencer_type' => 'required|string|max:255',
-        ]);
-
-        try {
-            $reference = Reference::find($request->id_references);
-
-            $reference->referencer_firstname = $request->referencer_firstname;
-            $reference->referencer_surname = $request->referencer_surname;
-            $reference->referencer_email = $request->referencer_email;
-            $reference->referencer_phone = $request->referencer_phone;
-            $reference->referencer_business = $request->referencer_business;
-            $reference->referencer_relation = $request->referencer_relation;
-            $reference->referencer_type = $request->referencer_type;
-
-            $reference->save();
-
-            return redirect()->back()->with('message', ['success', 'Referencia actualizada con éxito']);
-        } catch (\Exception $e) {
-            return redirect()->back()->with('message', ['error', 'Error al actualizar la referencia']);
-        }
-    }
-
-    public function resume(Request $request)
-    {
-        $id = session()->get('id');
-        $userMeta = UserMeta::where('id_user', $id)->first();
-
-
-        $rules = [];
-        if (empty($userMeta) || empty($userMeta->path)) {
-            $rules['resume'] = 'required|file|mimes:pdf,doc,docx|max:5120';
-        } else {
-            $rules['resume'] = 'nullable|file|mimes:pdf,doc,docx|max:5120';
-        }
-        $rules['extra_doc'] = 'nullable|file|mimes:pdf,doc,docx|max:5120';
-        $rules['support_doc'] = 'nullable|file|mimes:pdf,doc,docx|max:5120';
-
-        $request->validate($rules);
-
-        $updateData = [];
+        ];
 
         if ($request->hasFile('resume')) {
-            $filePath = Helper::uploadFile('resume', 'resume');
-            $fileName = $request->file('resume')->getClientOriginalName();
-            $updateData['path'] = $filePath;
-            $updateData['filename'] = $fileName;
-        }
-        if ($request->hasFile('extra_doc')) {
-            $extraPath = Helper::uploadFile('extra_doc', 'resume');
-            $extraName = $request->file('extra_doc')->getClientOriginalName();
-            $updateData['extra_path'] = $extraPath;
-            $updateData['extra_filename'] = $extraName;
-        }
-        if ($request->hasFile('support_doc')) {
-            $supportPath = Helper::uploadFile('support_doc', 'resume');
-            $supportName = $request->file('support_doc')->getClientOriginalName();
-            $updateData['support_doc_path'] = $supportPath;
-            $updateData['support_doc_name'] = $supportName;
+            $meta['path'] = Helper::uploadFile('resume', 'resume');
+            $meta['filename'] = $request->file('resume')->getClientOriginalName();
         }
 
-        if ($userMeta) {
-            $userMeta->update($updateData);
-            $userMeta->refresh();
-        } else {
-            $userMeta = UserMeta::create(array_merge($updateData, ['id_user' => $id]));
+        $this->saveMeta($user, $meta);
+
+        return $this->respond($user, 'Datos actualizados');
+    }
+
+    public function salary(Request $request): RedirectResponse
+    {
+        $this->saveMeta($this->user(), ['pretentions' => $request->pretentions]);
+
+        return back()->with('message', ['success', 'Renta actualizada']);
+    }
+
+    public function contact(ContactRequest $request): RedirectResponse
+    {
+        $user = $this->user();
+
+        $user->update(['email' => $request->email]);
+        $this->saveMeta($user, $request->only(['phone', 'address', 'comune', 'city', 'state', 'country']));
+
+        return back()->with('message', ['success', 'Datos de contacto actualizados']);
+    }
+
+    public function objectives(Request $request): RedirectResponse
+    {
+        $user = $this->user();
+        $this->saveMeta($user, ['objectives' => $request->objectives]);
+
+        return $this->respond($user, 'Objetivos laborales Actualizada');
+    }
+
+    /*
+    |--------------------------------------------------------------------------
+    | Experiencia laboral
+    |--------------------------------------------------------------------------
+    */
+
+    public function getExperience(int $id): JsonResponse
+    {
+        return response()->json($this->user()->userExperience()->findOrFail($id));
+    }
+
+    public function experience(ExperienceRequest $request): RedirectResponse
+    {
+        $this->user()->userExperience()->create($request->only(self::EXPERIENCE_FIELDS));
+
+        return back()->with('message', ['success', 'Experiencia Laboral Actualizada']);
+    }
+
+    public function updateExperience(ExperienceRequest $request): RedirectResponse
+    {
+        $user = $this->user();
+
+        $user->userExperience()
+            ->findOrFail($request->input('id_experience'))
+            ->update($request->only(self::EXPERIENCE_FIELDS));
+
+        return $this->respond($user, 'Experiencia Laboral Actualizada');
+    }
+
+    public function eraseExp(Request $request): JsonResponse
+    {
+        return response()->json($this->user()->userExperience()->whereKey($request->id)->delete());
+    }
+
+    /*
+    |--------------------------------------------------------------------------
+    | Educación
+    |--------------------------------------------------------------------------
+    */
+
+    public function editEducation(int $id): JsonResponse
+    {
+        $education = $this->user()->userEducation()->find($id);
+
+        return $education
+            ? response()->json($education)
+            : response()->json(['error' => 'Registro no encontrado'], 404);
+    }
+
+    public function education(EducationRequest $request): RedirectResponse
+    {
+        $this->user()->userEducation()->create([
+            ...$request->only(['country', 'studies', 'condition', 'title', 'area', 'month_from', 'year_from', 'month_to', 'to_present', 'institution']),
+            'year_to' => $request->input('year_to_st') ?? '',
+        ]);
+
+        return back()->with('message', ['success', 'Información académica guardada con éxito']);
+    }
+
+    public function updateEducation(Request $request): RedirectResponse
+    {
+        $data = $request->validate([
+            'id_education' => ['required', 'exists:aquabe_users_education,id_education'],
+            'studies' => ['required', 'string', 'max:255'],
+            'title' => ['required', 'string', 'max:255'],
+            'institution' => ['required', 'string', 'max:255'],
+            'condition' => ['required', 'integer'],
+            'year_to' => ['required_unless:condition,3', 'integer', 'min:1900', 'max:' . date('Y')],
+        ]);
+
+        $this->user()->userEducation()
+            ->findOrFail($data['id_education'])
+            ->update(collect($data)->except('id_education')->all());
+
+        return back()->with('message', ['success', 'Educación actualizada con éxito']);
+    }
+
+    public function eraseEducation(Request $request): JsonResponse
+    {
+        return response()->json($this->user()->userEducation()->whereKey($request->id)->delete());
+    }
+
+    /*
+    |--------------------------------------------------------------------------
+    | Idiomas, habilidades y referencias
+    |--------------------------------------------------------------------------
+    */
+
+    public function languages(Request $request): RedirectResponse
+    {
+        $user = $this->user();
+        $user->userLanguage()->create($request->only(['language', 'level_written', 'level_spoken']));
+
+        return $this->respond($user, 'Idiomas Actualizados');
+    }
+
+    public function skills(Request $request): RedirectResponse
+    {
+        $user = $this->user();
+        $user->userSkills()->create($request->only(['skill']));
+
+        return $this->respond($user, 'Habilidades Actualizada');
+    }
+
+    public function eraseSkill(Request $request): JsonResponse
+    {
+        return response()->json($this->user()->userSkills()->whereKey($request->id)->delete());
+    }
+
+    public function references(ReferencesRequest $request): RedirectResponse
+    {
+        $user = $this->user();
+        $user->userReferences()->create($request->only(self::REFERENCE_FIELDS));
+
+        return $this->respond($user, 'Referencia agregada');
+    }
+
+    public function editReference(int $id): JsonResponse
+    {
+        return response()->json($this->user()->userReferences()->findOrFail($id));
+    }
+
+    public function updateReference(Request $request): RedirectResponse
+    {
+        $data = $request->validate([
+            'id_references' => ['required', 'exists:aquabe_users_references,id_references'],
+            'referencer_firstname' => ['required', 'string', 'max:255'],
+            'referencer_surname' => ['required', 'string', 'max:255'],
+            'referencer_email' => ['required', 'email', 'max:255'],
+            'referencer_phone' => ['required', 'string', 'max:20'],
+            'referencer_business' => ['required', 'string', 'max:255'],
+            'referencer_relation' => ['required', 'string', 'max:255'],
+            'referencer_type' => ['required', 'string', 'max:255'],
+        ]);
+
+        $this->user()->userReferences()
+            ->findOrFail($data['id_references'])
+            ->update(collect($data)->except('id_references')->all());
+
+        return back()->with('message', ['success', 'Referencia actualizada con éxito']);
+    }
+
+    public function eraseReference(Request $request): JsonResponse
+    {
+        return response()->json($this->user()->userReferences()->whereKey($request->id)->delete());
+    }
+
+    /*
+    |--------------------------------------------------------------------------
+    | Archivos
+    |--------------------------------------------------------------------------
+    */
+
+    public function resume(Request $request): RedirectResponse
+    {
+        $user = $this->user();
+        $meta = $user->userMeta;
+        $document = ['file', 'mimes:pdf,doc,docx', 'max:5120'];
+
+        $request->validate([
+            'resume' => [empty($meta?->path) ? 'required' : 'nullable', ...$document],
+            'extra_doc' => ['nullable', ...$document],
+            'support_doc' => ['nullable', ...$document],
+        ]);
+
+        $data = [];
+
+        foreach ([
+            'resume' => ['path', 'filename'],
+            'extra_doc' => ['extra_path', 'extra_filename'],
+            'support_doc' => ['support_doc_path', 'support_doc_name'],
+        ] as $input => [$pathColumn, $nameColumn]) {
+            if ($request->hasFile($input)) {
+                $data[$pathColumn] = Helper::uploadFile($input, 'resume');
+                $data[$nameColumn] = $request->file($input)->getClientOriginalName();
+            }
         }
+
+        $this->saveMeta($user, $data);
 
         return back()->with('message', ['success', 'Archivo(s) subido(s) correctamente']);
     }
 
-
-    // la proxima vez que me veas eliminamé, pq ya no me usan
-    // public function resume(ResumeRequest $request)
-    // {
-    //     $id = session()->get('id');
-    //     
-    //     $user = User::where('id', $id)->first();
-    //     $hasEducation = $this->hasExistingEducation($user);
-    //     $hasCV = $this->hasCV($user);
-
-    //     $file = Helper::uploadFile('resume', 'resume');
-//         $reference = $request->files;
-// 
-//         $userMeta = UserMeta::where('id_user', '=', $id)->update([
-//             'path' => $file->hashName(),
-//             'filename' => $file->getClientOriginalName(),
-//         ]);
-
-    //dd($userMeta);
-
-    //         if ($hasEducation && $hasCV) {
-//             return back()->with('message', ['success', 'Curriculum Subido']);
-//         } elseif(!$hasEducation) {
-//             return back()->with('message', ['error', 'Debes subir Información Académica']);
-//         } else {
-//             return back()->with('message', ['error', 'Debes subir tu curriculum']);
-//         }
-//     }
-
-    public function view()
+    public function eraseFile(Request $request): JsonResponse
     {
-        $id = session()->get('id');
-        $user = User::where('id', $id)
-            ->first()
-            ->load('userMeta', 'userLanguage', 'userSkills', 'userEducation', 'userReferences');
+        $columns = [
+            'resume' => ['path', 'filename'],
+            'extra' => ['extra_path', 'extra_filename'],
+            'support_doc' => ['support_doc_path', 'support_doc_name'],
+        ][$request->input('file_type')] ?? null;
 
-        $experiences = UserExperience::whereIdUser($id)->orderBy('year_to', 'DESC')->orderBy('month_to', 'DESC')->get();
-
-        return view("user.view")->with([
-            "user" => $user,
-            "experiences" => $experiences,
-        ]);
-
-    }
-
-    /**
-     * Api
-     */
-
-    public function eraseExp(Request $request)
-    {
-        $id = session()->get('id');
-        $id_experience = $request->get('id');
-
-        $experience = UserExperience::where([
-            'id_experience' => $id_experience,
-            'id_user' => $id
-        ])->delete();
-
-        return response()->json($experience);
-    }
-
-    public function eraseEducation(Request $request)
-    {
-        $id = session()->get('id');
-        $id_education = $request->get('id');
-
-        $education = UserEducation::where([
-            'id_education' => $id_education,
-            'id_user' => $id
-        ])->delete();
-    }
-
-
-    public function eraseReference(Request $request)
-    {
-        $id = session()->get('id');
-        $id_references = $request->get('id');
-
-        $education = Reference::where([
-            'id_references' => $id_references,
-            'id_user' => $id
-        ])->delete();
-    }
-
-    public function eraseSkill(Request $request)
-    {
-        $id = session()->get('id');
-        $id_skills = $request->get('id');
-
-        $education = UserSkills::where([
-            'id_skills' => $id_skills,
-            'id_user' => $id
-        ])->delete();
-    }
-
-    public function eraseFile(Request $request)
-    {
-        $id = $request->input('id');
-        $fileType = $request->input('file_type'); // resume | extra | support_doc
-        $userMeta = UserMeta::find($id);
-
-        if ($userMeta) {
-            // Determina el campo correcto según el tipo
-            switch ($fileType) {
-                case 'resume':
-                    $pathField = 'path';
-                    $nameField = 'filename';
-                    break;
-                case 'extra':
-                    $pathField = 'extra_path';
-                    $nameField = 'extra_filename';
-                    break;
-                case 'support_doc':
-                    $pathField = 'support_doc_path';
-                    $nameField = 'support_doc_name';
-                    break;
-                default:
-                    return response()->json(['error' => 'Tipo de archivo inválido'], 400);
-            }
-
-            // Borra el archivo físico
-            if (!empty($userMeta->$pathField)) {
-                \Storage::disk('public')->delete($userMeta->$pathField);
-            }
-            // Borra datos en base
-            $userMeta->$pathField = null;
-            $userMeta->$nameField = null;
-            $userMeta->save();
-
-            return response()->json(['success' => true]);
+        if (! $columns) {
+            return response()->json(['error' => 'Tipo de archivo inválido'], 400);
         }
 
-        return response()->json(['error' => 'Registro no encontrado'], 404);
+        $meta = $this->user()->userMeta;
+
+        if (! $meta || $meta->getKey() != $request->input('id')) {
+            return response()->json(['error' => 'Registro no encontrado'], 404);
+        }
+
+        [$pathColumn, $nameColumn] = $columns;
+
+        if (! empty($meta->{$pathColumn})) {
+            Storage::disk('public')->delete($meta->{$pathColumn});
+        }
+
+        $meta->forceFill([$pathColumn => null, $nameColumn => null])->save();
+
+        return response()->json(['success' => true]);
     }
 
+    /*
+    |--------------------------------------------------------------------------
+    | Helpers
+    |--------------------------------------------------------------------------
+    */
 
-
-    protected function hasCV(User $user)
+    private function user(): User
     {
-        return $user->userMeta && !is_null($user->userMeta->filename);
+        return User::findOrFail(session('id'));
     }
 
-    protected function hasExistingEducation(User $user)
+    private function experiences(User $user)
     {
-        return $user->userEducation()->exists();
+        return $user->userExperience()->orderByDesc('year_to')->orderByDesc('month_to')->get();
     }
 
+    private function saveMeta(User $user, array $data): void
+    {
+        UserMeta::updateOrCreate(['id_user' => $user->id], $data);
+    }
+
+    /** Mensaje de éxito, o aviso si el candidato aún no registra información académica. */
+    private function respond(User $user, string $success): RedirectResponse
+    {
+        return back()->with(
+            'message',
+            $user->userEducation()->exists()
+                ? ['success', $success]
+                : ['error', 'Debes agregar tu información académica']
+        );
+    }
 }

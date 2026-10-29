@@ -1,159 +1,139 @@
 <?php
+
+use App\Http\Controllers\AccountController;
+use App\Http\Controllers\BusinessController;
+use App\Http\Controllers\ContactController;
+use App\Http\Controllers\HomeController;
+use App\Http\Controllers\MessageController;
+use App\Http\Controllers\NewsletterController;
+use App\Http\Controllers\OfferController;
+use App\Http\Controllers\PostController;
+use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\RoleController;
+use App\Http\Controllers\SearchController;
+use App\Http\Controllers\UserController;
+use Illuminate\Support\Facades\Route;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
 |--------------------------------------------------------------------------
-|
-| Here is where you can register web routes for your application. These
-| routes are loaded by the RouteServiceProvider within a group which
-| contains the "web" middleware group. Now create something great!
-|
 */
 
-use App\Http\Controllers\OfferController as OfferController;
-use App\Http\Controllers\UserController as UserController;
-use App\Http\Controllers\ProfileController;
-use App\Http\Controllers\NewsletterController;
-use App\Http\Controllers\BusinessController; 
+Route::get('/', HomeController::class)->name('/');
+Route::get('/home', HomeController::class)->name('home');
 
-Route::get('/', "Controller@index")->name('/');
-Route::get('/home', 'Controller@index')->name('home');
+Route::view('/register', 'user.register')->name('register');
+Route::view('/terms', 'terminos')->name('terms');
+Route::view('/faq', 'faq')->name('faq');
+Route::view('/prices', 'prices')->name('prices');
+Route::view('/about', 'about')->name('about');
 
+Route::view('/resetPasswordForm', 'user.resetPas')->name('resetPasswordForm');
+Route::view('/resetPasswordBusinessForm', 'business.resetPas')->name('resetPasswordBusinessForm');
 
-Route::get('/register', function () {
-    return view('user.register');
-})->name('register');
-Route::get('/terms', function () {
-    return view('terminos');
-})->name('terms');
-Route::get('/faq', function () {
-    return view('faq');
-})->name('faq');
-
-Route::get('/resetPasswordForm', function () {
-    return view('user.resetPas');
-})->name('resetPasswordForm');
-Route::get('/resetPasswordBusinessForm', function () {
-    return view('business.resetPas');
-})->name('resetPasswordBusinessForm');
-Route::post('/resetPassword', 'AcoountController@resetPassword')->name('resetPassword');
-Route::post('/resetBusinessPassword', 'AcoountController@resetBusinessPassword')->name('resetBusinessPassword');
-Route::post('/sendNewPassword', 'AcoountController@changePassword')->name('sendNewPasswword');
-Route::post('/sendNewBusinessPassword', 'AcoountController@changeBusinessPassword')->name('sendNewBusinessPasswword');
-Route::get('/password/reset/{token}', 'AcoountController@showForm');
-Route::get('/passwordBusiness/reset/{token}', 'AcoountController@showBusinessForm');
-
-Route::post('/login', 'UserController@login')->middleware('throttle:10,1')->name('login');
-Route::post('/logout', 'UserController@logout')->name('logout');
-Route::post('/store', 'UserController@store')->name('store');
-Route::get('/prices', function () {
-    return view("prices");
-})->name('prices');
-Route::get('/about', function () {
-    return view("about");
-})->name('about');
-
-Route::get('/contacto', "ContactController@getContactPage")->name('contactPage');
-Route::post("/contacto", "ContactController@saveContact")->name('contact');
-
-
-Route::group(["prefix" => "profile"], function () {
-    Route::group(["middleware" => ["redhome"]], function () {
-        Route::get('/', 'ProfileController@index')->name('profile');
-        Route::get('/view', 'ProfileController@view')->name('profile.view');
-        Route::put('profile/update', 'ProfileController@update')->name('profile.update');
-        Route::put('profile/salary', 'ProfileController@salary')->name('profile.salary');
-        Route::put('profile/contact', 'ProfileController@contact')->name('profile.contact');
-        Route::get('/experience/{id}', [ProfileController::class, 'getExperience'])->name('profile.getExperience');
-        Route::put('profile/experience', 'ProfileController@experience')->name('profile.experience');
-        Route::put('profile/experience/update', [ProfileController::class, 'updateExperience'])->name('profile.experience.update');
-        Route::post('profile/education', 'ProfileController@education')->name('profile.education');
-        Route::put('profile/education/update', [ProfileController::class, 'updateEducation'])->name('profile.education.update');
-        Route::get('/profile/education/{id}', [ProfileController::class, 'editEducation'])->name('profile.education.edit');
-        Route::put('profile/objectives', 'ProfileController@objectives')->name('profile.objectives');
-        Route::put('profile/languages', 'ProfileController@languages')->name('profile.languages');
-        Route::post('profile/references', "ProfileController@references")->name("profile.references");
-        Route::put('/profile/references/', [ProfileController::class, 'updateReference'])->name('profile.references.update');
-        Route::get('/profile/references/{id}', [ProfileController::class, 'editReference'])->name('profile.references.edit');
-        Route::put('profile/skills', 'ProfileController@skills')->name('profile.skills');
-        Route::match(['put', 'post'], 'profile/resume', 'ProfileController@resume')->name('profile.resume');
-        Route::post('/api/eraseFile', 'ProfileController@eraseFile')->name('profile.eraseFile');
-    }); //
-    Route::delete('/api/eraseExp', [ProfileController::class, 'eraseExp'])->middleware('redhome');
-    Route::delete('/api/eraseEducation', [ProfileController::class, 'eraseEducation'])->middleware('redhome');
-    Route::delete('/api/eraseReference', [ProfileController::class, 'eraseReference'])->middleware('redhome');
-    Route::delete('/api/eraseSkill', [ProfileController::class, 'eraseSkill'])->middleware('redhome');
-    
+Route::controller(AccountController::class)->group(function () {
+    Route::post('/resetPassword', 'resetPassword')->name('resetPassword');
+    Route::post('/resetBusinessPassword', 'resetBusinessPassword')->name('resetBusinessPassword');
+    Route::post('/sendNewPassword', 'changePassword')->name('sendNewPasswword');
+    Route::post('/sendNewBusinessPassword', 'changeBusinessPassword')->name('sendNewBusinessPasswword');
+    Route::get('/password/reset/{token}', 'showForm');
+    Route::get('/passwordBusiness/reset/{token}', 'showBusinessForm');
 });
 
-Route::prefix('posts')->group(function () {
-    Route::get('create', 'PostController@postCreateForm')->name('post.create')->middleware(['redhome']);
-    Route::put('register', 'PostController@register')->name('post.register')->middleware(['redhome']);
+Route::post('/login', [UserController::class, 'login'])->middleware('throttle:10,1')->name('login');
+Route::post('/logout', [UserController::class, 'logout'])->name('logout');
+Route::post('/store', [UserController::class, 'store'])->name('store');
+
+Route::get('/contacto', [ContactController::class, 'getContactPage'])->name('contactPage');
+Route::post('/contacto', [ContactController::class, 'saveContact'])->name('contact');
+
+Route::prefix('profile')->middleware('redhome')->controller(ProfileController::class)->group(function () {
+    Route::get('/', 'index')->name('profile');
+    Route::get('/view', 'view')->name('profile.view');
+    Route::put('profile/update', 'update')->name('profile.update');
+    Route::put('profile/salary', 'salary')->name('profile.salary');
+    Route::put('profile/contact', 'contact')->name('profile.contact');
+    Route::get('/experience/{id}', 'getExperience')->name('profile.getExperience');
+    Route::put('profile/experience', 'experience')->name('profile.experience');
+    Route::put('profile/experience/update', 'updateExperience')->name('profile.experience.update');
+    Route::post('profile/education', 'education')->name('profile.education');
+    Route::put('profile/education/update', 'updateEducation')->name('profile.education.update');
+    Route::get('/profile/education/{id}', 'editEducation')->name('profile.education.edit');
+    Route::put('profile/objectives', 'objectives')->name('profile.objectives');
+    Route::put('profile/languages', 'languages')->name('profile.languages');
+    Route::post('profile/references', 'references')->name('profile.references');
+    Route::put('/profile/references/', 'updateReference')->name('profile.references.update');
+    Route::get('/profile/references/{id}', 'editReference')->name('profile.references.edit');
+    Route::put('profile/skills', 'skills')->name('profile.skills');
+    Route::match(['put', 'post'], 'profile/resume', 'resume')->name('profile.resume');
+    Route::post('/api/eraseFile', 'eraseFile')->name('profile.eraseFile');
+    Route::delete('/api/eraseExp', 'eraseExp');
+    Route::delete('/api/eraseEducation', 'eraseEducation');
+    Route::delete('/api/eraseReference', 'eraseReference');
+    Route::delete('/api/eraseSkill', 'eraseSkill');
 });
 
-Route::prefix('business')->group(function () {
-    Route::get('/show_admin/{id}/', [BusinessController::class, 'show_superadmin'])->name('business.showadmin');
-    Route::get('index', 'BusinessController@index')->name('business.index');
-    Route::get('/login', 'BusinessController@index');
-    Route::post('/login', 'BusinessController@login')->middleware('throttle:10,1')->name('business.login');
-    Route::post('register', 'BusinessController@register')->name('business.register');
-    Route::get('profile', 'BusinessController@profileIndex')->name('business.profile')->middleware(['redhome']);
-    Route::put('update', 'BusinessController@updateProfile')->name('business.update')->middleware('business');
-    Route::get('edit', 'BusinessController@edit')->name('business.edit')->middleware('business');
-    Route::get('/{id}/file', 'BusinessController@file')->name("business.file");
-    Route::post('/pass_change', 'BusinessController@change_passw')->name('business.passchange')->middleware('business');
-    Route::get('/pass_form', function () {
-        return view('business.migrated');
-    })->name('business.passform');
-    Route::get('/roles', 'BusinessController@list')->name('business.roles')->middleware(['admin']);
-    Route::post('/list_membership', 'BusinessController@list_membership')->name('business.membership')->middleware('admin');
-    Route::get('/getMembers', 'BusinessController@ajax')->name('members.roles')->middleware('admin');
+Route::prefix('posts')->middleware('redhome')->group(function () {
+    Route::get('create', [PostController::class, 'postCreateForm'])->name('post.create');
 });
 
-Route::prefix('offer')->group(function () {
-    Route::get('/{offer}/postulate', 'OfferController@postulate')->name('offer.postulate');
-    Route::get('/index', 'OfferController@index')->name('offer.admin')->middleware(['redhome']);
-    Route::get('/list', 'OfferController@list')->name('offer.list');
-    Route::get( '/featured', [OfferController::class, 'list_featured'])->name('offer.featured');
-    Route::get('/{offer}/edit', 'OfferController@detail')->name('offer.detail')->middleware('business');
-    Route::post('/create', 'OfferController@create')->name('offer.create')->middleware('business');
-    Route::post("/{offer}/store", [OfferController::class, 'store'])->name("offer.store")->middleware('business');
-    Route::post("/{offer}/unpublish", [OfferController::class, 'unpublish'])->name("offer.unpublish")->middleware('business');
-    Route::post("/{offer}/republish", [OfferController::class, 'republishState'])->name("offer.republish")->middleware('business');
-    Route::delete("/{offer}/destroy", "OfferController@destroy")->name("offer.delete")->middleware('business');
-    Route::get("/show/{slug}/{search?}", "OfferController@show")->name("offer.show");
-    Route::get('/{slug}/candidates', 'OfferController@candidates')->name('offer.candidates')->middleware(['redhome']);
-    Route::post('/candidate/update-status', [OfferController::class, 'updateCandidateStatus'])->name('candidate.updateStatus')->middleware('business');
-    Route::get('/{slug}/allCandidates', [OfferController::class, 'all_candidates'])->name('offer.allcandidates')->middleware(['redhome']);
-    Route::post('/allCandidatesData', [OfferController::class, 'all_candidates_data'])->name('offer.all_data')->middleware(['redhome']);
-    # Route::post('/selectCandidate', [OfferController::class, 'all_candidates_data'])->name("offer.select_candidate")->middleware(['redhome']);
-    Route::put('/{slug}/republish', 'OfferController@republish')->name('offer.republish')->middleware('business');
-    Route::get('/{slug}/getajax', 'OfferController@ajax')->name('offer.ajax');
-    Route::post('/featured/', 'OfferController@featured')->name('offer.featured')->middleware('business');
-    Route::post('/favorite/', [OfferController::class, 'favorite'])->name('offer.favorite');
-    Route::post('/addFavoriteCandidate', [OfferController::class, 'addFavoriteCandidate'])->name('offer.addFavorite')->middleware('business');
+Route::prefix('business')->controller(BusinessController::class)->group(function () {
+    Route::get('/show_admin/{id}/', 'show_superadmin')->name('business.showadmin');
+    Route::get('index', 'index')->name('business.index');
+    Route::get('/login', 'index');
+    Route::post('/login', 'login')->middleware('throttle:10,1')->name('business.login');
+    Route::post('register', 'register')->name('business.register');
+    Route::get('profile', 'profileIndex')->name('business.profile')->middleware('redhome');
+    Route::put('update', 'updateProfile')->name('business.update')->middleware('business');
+    Route::get('edit', 'edit')->name('business.edit')->middleware('business');
+    Route::get('/{id}/file', 'file')->name('business.file');
+    Route::post('/pass_change', 'change_passw')->name('business.passchange')->middleware('business');
+    Route::view('/pass_form', 'business.migrated')->name('business.passform');
+    Route::get('/roles', 'list')->name('business.roles')->middleware('admin');
+    Route::post('/list_membership', 'list_membership')->name('business.membership')->middleware('admin');
+    Route::get('/getMembers', 'ajax')->name('members.roles')->middleware('admin');
 });
 
-Route::prefix('role')->group(function () {
-    Route::put('/edit/{id}', 'RoleController@edit')->name('role.edit')->middleware('admin');
+Route::prefix('offer')->controller(OfferController::class)->group(function () {
+    Route::get('/{offer}/postulate', 'postulate')->name('offer.postulate');
+    Route::get('/index', 'index')->name('offer.admin')->middleware('redhome');
+    Route::get('/list', 'list')->name('offer.list');
+    Route::get('/featured', 'list_featured')->name('offer.featured');
+    Route::get('/{offer}/edit', 'detail')->name('offer.detail')->middleware('business');
+    Route::post('/create', 'create')->name('offer.create')->middleware('business');
+    Route::post('/{offer}/store', 'store')->name('offer.store')->middleware('business');
+    Route::post('/{offer}/unpublish', 'unpublish')->name('offer.unpublish')->middleware('business');
+    Route::post('/{offer}/republish', 'republishState')->name('offer.republish')->middleware('business');
+    Route::delete('/{offer}/destroy', 'destroy')->name('offer.delete')->middleware('business');
+    Route::get('/show/{slug}/{search?}', 'show')->name('offer.show');
+    Route::get('/{offer}/candidates', 'candidates')->name('offer.candidates')->middleware('redhome');
+    Route::post('/candidate/update-status', 'updateCandidateStatus')->name('candidate.updateStatus')->middleware('business');
+    Route::get('/{offer}/allCandidates', 'all_candidates')->name('offer.allcandidates')->middleware('redhome');
+    Route::post('/allCandidatesData', 'all_candidates_data')->name('offer.all_data')->middleware('redhome');
+    Route::put('/{offer}/republish', 'republish')->name('offer.republish')->middleware('business');
+    Route::get('/{offer}/getajax', 'ajax')->name('offer.ajax');
+    Route::post('/featured/', 'featured')->name('offer.featured')->middleware('business');
+    Route::post('/favorite/', 'favorite')->name('offer.favorite');
+    Route::post('/addFavoriteCandidate', 'addFavoriteCandidate')->name('offer.addFavorite')->middleware('business');
 });
 
-Route::prefix('user')->group(function () {
-    Route::get('/offers', "UserController@showoffers")->name('user.offers')->middleware(['redhome']);
-    Route::get('/favorites/', [UserController::class, 'favorites'])->name('user.favorites')->middleware('redhome');
-    Route::get('/alerts', 'UserController@alerts')->name("user.alerts")->middleware(['redhome']);
+Route::put('/role/edit/{id}', [RoleController::class, 'edit'])->name('role.edit')->middleware('admin');
+
+Route::prefix('user')->middleware('redhome')->controller(UserController::class)->group(function () {
+    Route::get('/offers', 'showoffers')->name('user.offers');
+    Route::get('/favorites/', 'favorites')->name('user.favorites');
+    Route::get('/alerts', 'alerts')->name('user.alerts');
 });
 
-Route::prefix('userfile')->group(function () {
-    Route::get('/file/{id}/{offer?}', "UserController@file")->name('user.file')->middleware(['redhome']);
+Route::get('/userfile/file/{user}/{offer?}', [UserController::class, 'file'])->name('user.file')->middleware('redhome');
 
+Route::prefix('message')->middleware('redhome')->controller(MessageController::class)->group(function () {
+    Route::post('/show', 'show')->name('message.show');
+    Route::post('/send', 'send')->name('message.send');
+    Route::post('/reply', 'reply')->name('message.reply');
 });
 
-Route::prefix('message')->group(function () {
-    Route::post('/show', "MessageController@show")->name("message.show")->middleware(['redhome']);
-    Route::post('/send', "MessageController@send")->name("message.send")->middleware(['redhome']);
-    Route::post('/reply', "MessageController@reply")->name("message.reply")->middleware(['redhome']);
-});
-Route::post('/search', 'SearchController@result')->name('search');
+Route::post('/search', [SearchController::class, 'result'])->name('search');
 
 Route::get('/newsletter', [NewsletterController::class, 'show']);

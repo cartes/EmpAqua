@@ -336,11 +336,13 @@
 @endsection
 
 @push('meta')
-    <link rel=“canonical” href=“{{ route('offer.show', ['slug' => $offers[0]->slug ])}}” />
+    @if ($offers->isNotEmpty())
+        <link rel="canonical" href="{{ route('offer.show', ['slug' => $offers->first()->slug]) }}" />
+    @endif
 
     <meta property=”og:image” content=”https://www.empleosaqua.cl/images/1x/logo-empleos-aqua.png” />
     <meta property=”og:type” content=”article” />
-    <meta property=”og:title” content=”Empleos Aqua | {{ $offers[0]->title }}” />
+    <meta property="og:title" content="Empleos Aqua{{ $offers->isNotEmpty() ? ' | ' . $offers->first()->title : '' }}" />
 
 @endpush
 

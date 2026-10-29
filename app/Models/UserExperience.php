@@ -57,8 +57,8 @@ class UserExperience extends Model
     protected $table = "aquabe_users_experience";
     protected $primaryKey = "id_experience";
     protected $fillable = [
-        'business_name', 'business_activity', 'business_position', 'experience_level', 'country',
-        'month_from', 'year_from', 'month_to', 'year_to', 'area', 'sub_area', 'description', 'dependents'
+        'business_name', 'business_activity', 'business_position', 'experience_level', 'business_country',
+        'month_from', 'year_from', 'month_to', 'year_to', 'to_present', 'area', 'sub_area', 'description', 'dependents'
     ];
 
     public function user()

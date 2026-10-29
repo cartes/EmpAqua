@@ -2,28 +2,19 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use App\Models\Category;
-use App\Models\Offers;
+use Illuminate\Contracts\View\View;
 
 class NewsletterController extends Controller
 {
-    public function show()
+    public function show(): View
     {
-        $categories = Category::all();
-        
-        $offersByCategory = [];
-        $cats = [];
-        foreach ($categories as $category) {
-            $offers = Offers::where('category_id', $category->id)
-                ->orderByDesc('featured')
-                ->orderByDesc('created_at')
-                ->take(3)
-                ->get();
-                
-            $offersByCategory[$category->title] = $offers;
-        }
+        $offersByCategory = Category::with(['Offers' => function ($query) {
+            $query->orderByDesc('featured')->orderByDesc('created_at');
+        }])->get()->mapWithKeys(fn (Category $category) => [
+            $category->title => $category->Offers->take(3),
+        ]);
 
         return view('newsletter.show', compact('offersByCategory'));
-    }                
+    }
 }

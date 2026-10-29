@@ -112,7 +112,7 @@ class Offers extends Model
         'country',
         'city',
         'state',
-        'commune',
+        'comune',
         'salary',
         'salary_array',
         'category_id',
@@ -282,7 +282,8 @@ class Offers extends Model
     public function getPositionAttribute()
     {
         $position = $this->attributes['position'];
-        
+        $txt = 'A definir';
+
         switch ($position) {
 
             case 0: $txt = 'A definir'; break;

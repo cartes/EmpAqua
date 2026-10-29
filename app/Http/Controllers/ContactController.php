@@ -2,116 +2,52 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use App\Models\Contact;
-use Mail;
-use PHPMailer\PHPMailer\PHPMailer;
-use PHPMailer\PHPMailer\Exception;
-use PHPMailer\PHPMailer\SMTP;
+use App\Services\Mailer;
+use Illuminate\Contracts\View\View;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Request;
 
 class ContactController extends Controller
 {
-    public function getContactPage()
+    public function getContactPage(): View
     {
         return view('contact.contact');
     }
 
-    public function saveContact(Request $request)
+    public function saveContact(Request $request, Mailer $mailer): RedirectResponse
     {
-        $this->validate($request, [
-            'name' => 'required',
-            'email' => 'required|email',
-            'phone' => 'required',
-            'subject' => 'required',
-            'message_user' => 'required'
+        $data = $request->validate([
+            'name' => ['required', 'string', 'max:255'],
+            'email' => ['required', 'email', 'max:255'],
+            'phone' => ['required', 'string', 'max:50'],
+            'subject' => ['required', 'string', 'max:255'],
+            'message_user' => ['required', 'string'],
         ]);
 
-        $contact = new Contact();
+        Contact::create([
+            'name' => $data['name'],
+            'email' => $data['email'],
+            'phone' => $data['phone'],
+            'subject' => $data['subject'],
+            'message' => $data['message_user'],
+        ]);
 
-        $contact->name = $request->name;
-        $contact->email = $request->email;
-        $contact->phone = $request->phone;
-        $contact->subject = $request->subject;
-        $contact->message = $request->message_user;
+        $sent = $mailer->send(
+            config('services.smtp.contact_to'),
+            $data['subject'],
+            view('emails.notice', [
+                'title' => 'Tienes un contacto',
+                'lines' => [
+                    'De' => $data['email'],
+                    'Teléfono' => $data['phone'],
+                    'Asunto' => $data['subject'],
+                    'Mensaje' => $data['message_user'],
+                ],
+            ])->render()
+        );
 
-        $contact->save();
-        try {
-            $mail = new PHPMailer(true);
-            $mail->SMTPDebug = false;
-            $mail->isSMTP();
-            $mail->isHTML(true);
-            $mail->Host = "zmail.editec.cl";
-            $mail->SMTPAuth = true;
-            $mail->Username = "empleosaqua@empleosaqua.cl";
-            $mail->Password = "SkpC!r!w67%R&An)H@)0Ok5^";
-            $mail->Port = 25;
-
-            $mail->SMTPSecure = false;
-            $mail->SMTPAutoTLS = false;
-
-            $to = "empleosaqua@empleosaqua.cl";
-            $subject = $request->get('subject');
-
-            $message = '<td class="esd-stripe" style="background-color: #ffa73b;" esd-custom-block-id="6340" bgcolor="#ffa73b" align="center">';
-            $message .= '<table class="es-content-body" style="background-color: transparent;" width="600" cellspacing="0" cellpadding="0" align="center">';
-            $message .= '<tbody>';
-            $message .= '<tr>';
-            $message .= '<td class="esd-structure" align = "left" >';
-            $message .= '<table width = "100%" cellspacing = "0" cellpadding = "0" >';
-            $message .= '<tbody >';
-            $message .= '<tr >';
-            $message .= '<td class="esd-container-frame" width = "600" valign = "top" align = "center" >';
-            $message .= '<table style = "background-color: #ffffff; border-radius: 4px; border-collapse: separate;" width = "100%" cellspacing = "0" cellpadding = "0" bgcolor = "#ffffff" >';
-            $message .= '<tbody >';
-            $message .= '<tr >';
-            $message .= '<td class="esd-block-text es-p35t es-p5b es-p30r es-p30l" align = "center" >';
-            $message .= '<h1 > Tienes un contacto <br></h1 >';
-            $message .= '<h3 > De:' . $request->get("email") . '<br></h3 >';
-            $message .= '<h3 > Tel&eacute;fono:' . $request->get("phone") . '<br></h3 >';
-            $message .= '<h4 > Asunto:' . $request->get("subject") . '<br></h4 >';
-            $message .= '<h4 > Mensaje:' . $request->get("message_user") . '<br></h4 >';
-            $message .= '</td >';
-            $message .= '</tr >';
-            $message .= '<tr >';
-            $message .= '<td class="esd-block-spacer es-p5t es-p5b es-p20r es-p20l" style = "font-size:0" bgcolor = "#ffffff" align = "center" >';
-            $message .= '<table width = "100%" height = "100%" cellspacing = "0" cellpadding = "0" border = "0" >';
-            $message .= '<tbody >';
-            $message .= '<tr >';
-            $message .= '<td style = "border-bottom: 1px solid #ffffff; background: rgba(0, 0, 0, 0) none repeat scroll 0% 0%; height: 1px; width: 100%; margin: 0px;" ></td >';
-            $message .= '</tr >';
-            $message .= '</tbody >';
-            $message .= '</table >';
-            $message .= '</td >';
-            $message .= ' </tr >';
-            $message .= '</tbody >';
-            $message .= '</table >';
-            $message .= '</td >';
-            $message .= '</tr >';
-            $message .= '</tbody >';
-            $message .= '</table >';
-            $message .= '</td >';
-            $message .= '</tr >';
-            $message .= '</tbody >';
-            $message .= '</table >';
-            $message .= '</td >';
-
-            $header = "From:" . $request->get("email") . "\r\n";
-            $header .= "MIME-Version: 1.0\r\n";
-            $header .= "Content-type: text/html\r\n";
-
-            $mail->addAddress($to);
-            $mail->From = $to;
-            $mail->Subject = $request->get("subject");
-            $mail->Body = $message;
-
-            $mail->send();
-            return back()->with('message', ['success', 'Hemos recibido su tu correo']);
-
-        } catch (phpmailerException $e) {
-            echo $e;
-        }
-        ;
-
+        // El contacto ya quedó guardado en la base de datos aunque el correo falle.
+        return back()->with('message', ['success', $sent ? 'Hemos recibido tu correo' : 'Hemos recibido tu mensaje']);
     }
-
 }

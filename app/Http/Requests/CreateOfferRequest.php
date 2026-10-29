@@ -2,43 +2,49 @@
 
 namespace App\Http\Requests;
 
+use App\Rules\BlacklistWords;
 use Illuminate\Foundation\Http\FormRequest;
 
 class CreateOfferRequest extends FormRequest
 {
-    /**
-     * Determine if the user is authorized to make this request.
-     *
-     * @return bool
-     */
-    public function authorize()
+    public function authorize(): bool
     {
         return true;
     }
 
-    /**
-     * Get the validation rules that apply to the request.
-     *
-     * @return array
-     */
-    public function rules()
+    public function rules(): array
     {
         return [
-            'title' => 'required',
-            'position' => 'required',
-            'description' => 'required|min:15|max:255',
-            'area' => 'required',
-            'salary' => 'integer|min:1'
+            'title' => ['required', new BlacklistWords],
+            'category_id' => ['required'],
+            'position' => ['required'],
+            'salary_opt' => ['required'],
+            'comune' => ['required'],
+            'handicapped' => ['required'],
+            'description' => ['required', new BlacklistWords],
+            'area' => ['required'],
+            'experience' => ['required'],
+            'requirements' => ['required', new BlacklistWords],
+            'vacancy' => ['required'],
+            'benefits' => ['nullable', 'array'],
+            'benefits.*' => ['nullable', 'string', 'max:255'],
         ];
     }
 
-    public function messages()
+    public function messages(): array
     {
         return [
-            'salary.integer' => "Renta ofrecida no puede contener puntos ni comas",
+            'salary_opt.required' => 'Debe ingresar una opcion de renta',
+            'salary.integer' => 'Renta ofrecida no puede contener puntos ni comas',
             'salary.numeric' => 'Renta ofrecida debe ser un valor numérico',
             'salary.min' => 'Renta ofrecida debe tener un valor de al menos 1',
-            'description' => 'Error en la descripcion, debe tener máximo 3000 caracteres'
+            'comune.required' => 'La comuna es obligatoria',
+            'category_id.required' => 'Debe seleccionar una categoría',
+            'handicapped.required' => 'Campo obligatorio',
+            'position.required' => 'La Jornada es un campo obligatorio',
+            'description.required' => 'La descripción es un campo obligatorio',
+            'requirements.required' => 'Los requisitos son obligatorios',
+            'vacancy.required' => 'Las vacantes son un campo obligatorio',
         ];
     }
 }

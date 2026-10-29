@@ -2,36 +2,33 @@
 
 namespace App\Http\Controllers;
 
+use App\Enums\Membership;
 use App\Models\Role;
-use App\Rules\nonEmptyFiltered;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
 
 class RoleController extends Controller
 {
-    public function edit($id, Request $request)
+    public function edit(int $id, Request $request): RedirectResponse
     {
-        if ("administrador" !== session()->get('role')) {
+        if (session('role') !== 'administrador') {
             return redirect('/')->with('message', ['danger', 'No tienes autorización a cambiar estos datos']);
         }
 
-        $this->validate($request, [
-            'role.*' => ['required']
+        $data = $request->validate([
+            'role' => ['required', 'array'],
+            'role.*' => ['required', Rule::enum(Membership::class)],
         ], [
-            'role.*.required' => "Debes ingresar un rol de usuario valido"
+            'role.*.required' => 'Debes ingresar un rol de usuario valido',
+            'role.*.enum' => 'Debes ingresar un rol de usuario valido',
         ]);
 
-        $id_business = $id;
-        $role = $request->get('role');
+        Role::updateOrCreate(
+            ['id_business' => $id],
+            ['role' => array_values($data['role'])[0]]
+        );
 
-        $roleArray = array_values($role);
-
-        $updateRole = Role::updateOrCreate([
-            'id_business' => $id_business
-        ], [
-            'id_business' => $id_business,
-            'role' => $roleArray[0]
-        ]);
-
-        return back()->with('message', ['success', 'Datos actualizados ' . $id_business]);
+        return back()->with('message', ['success', 'Datos actualizados ' . $id]);
     }
 }

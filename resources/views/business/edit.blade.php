@@ -1,14 +1,22 @@
 @extends("layout.app")
 
 @section("content")
-    <div class="container">
+    <div class="container business-form-page mt-4">
         <div class="row justify-content-center">
-            <div class="col-md-8">
+            <div class="col-lg-9">
                 <form class="form-business" enctype="multipart/form-data" method="post"
                       action="{{ route('business.update') }}">
                     @csrf
                     @method("PUT")
-                    <h3 class="text-left mb-5 mt-3">
+
+                    <div class="d-flex align-items-center justify-content-between mb-3">
+                        <h2 class="page-title mb-0">{{ $business->business_meta ? 'Editar perfil de empresa' : 'Completa el perfil de tu empresa' }}</h2>
+                        <a href="{{ route('business.profile') }}" class="btn btn-link">&larr; Volver al perfil</a>
+                    </div>
+
+                    <div class="card form-card mb-4">
+                    <div class="card-body">
+                    <h3 class="section-title">
                         Administrador
                     </h3>
                     <div class="row">
@@ -67,8 +75,13 @@
                             @endif
                         </div>
                     </div>
-                    <h3 class="text-left mb-5 mt-5">
-                        Completa la información de tu empresa.
+                    </div>
+                    </div>
+
+                    <div class="card form-card mb-4">
+                    <div class="card-body">
+                    <h3 class="section-title">
+                        Información de tu empresa
                     </h3>
                     <div class="row">
                         <div class="col-md-6 form-group">
@@ -173,7 +186,7 @@
 
                     </div>
                     <div class="row">
-                        <div class="col-md-3 form-group">
+                        <div class="col-md-6 form-group">
                             <label>Cantidad de empleados</label>
                             <input type="text" class="form-control {{$errors->has('employees') ? 'is-invalid' : ''}}"
                                    name="employees"
@@ -194,13 +207,65 @@
                             @endif
                         </div>
                     </div>
-                    <button type="submit" class="btn btn-primary">Guardar los datos</button>
+                    </div>
+                    </div>
+
+                    <div class="form-actions mb-5">
+                        <a href="{{ route('business.profile') }}" class="btn btn-outline-secondary">Cancelar</a>
+                        <button type="submit" class="btn btn-primary">Guardar los datos</button>
+                    </div>
 
                 </form>
-            </div>
-            <div class="col-md-4 d-none d-md-block">
-                {{-- Espacio para las cards con info del sitio (CV publicados, usuarios activos, etc) --}}
             </div>
         </div>
     </div>
 @endsection
+
+@push('styles')
+    <style>
+        .business-form-page .page-title {
+            color: #323D7E;
+            font-weight: 800;
+            font-size: 1.6rem;
+        }
+        .business-form-page .form-card {
+            border: 0;
+            border-radius: 10px;
+            box-shadow: 0 1px 4px rgba(50, 61, 126, .12);
+        }
+        .business-form-page .form-card .card-body { padding: 1.75rem; }
+        .business-form-page .section-title {
+            color: #323D7E;
+            font-weight: 700;
+            font-size: 1.15rem;
+            padding-bottom: .6rem;
+            margin-bottom: 1.5rem;
+            border-bottom: 2px solid #f0e3cf;
+        }
+        .business-form-page .form-group { margin-bottom: 1.15rem; }
+        .business-form-page label {
+            font-weight: 600;
+            font-size: .85rem;
+            color: #495057;
+            margin-bottom: .35rem;
+        }
+        .business-form-page .form-control {
+            height: calc(1.6em + 1rem);
+            border-radius: 6px;
+        }
+        .business-form-page .form-control:focus {
+            border-color: #323D7E;
+            box-shadow: 0 0 0 .2rem rgba(50, 61, 126, .15);
+        }
+        .business-form-page input[type=file].form-control {
+            height: auto;
+            padding: .45rem .6rem;
+        }
+        .business-form-page .form-actions {
+            display: flex;
+            justify-content: flex-end;
+            gap: .75rem;
+        }
+        .business-form-page .btn-primary { min-width: 160px; }
+    </style>
+@endpush

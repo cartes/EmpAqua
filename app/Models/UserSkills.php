@@ -27,6 +27,7 @@ class UserSkills extends Model
 {
     protected $table = "aquabe_users_skills";
     protected $primaryKey = "id_skills";
+    protected $fillable = ['skill'];
 
     public function user()
     {
