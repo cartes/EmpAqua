@@ -229,6 +229,13 @@ class OfferController extends Controller
         $business_id = session()->get('id');
         $slug = Str::slug($request->get('title') . '-' . $last_id->id);
 
+        // El slug debe ser único: si ya existe, se agrega un sufijo incremental.
+        $base_slug = $slug;
+        $n = 2;
+        while (Offers::withTrashed()->where('slug', $slug)->exists()) {
+            $slug = $base_slug . '-' . $n++;
+        }
+
         $expiration = Carbon::now()->addDays(30);
 
         $request->merge(['id_business' => $business_id]);
@@ -765,20 +772,6 @@ class OfferController extends Controller
             ->get();
     }
 
-    public function remakeSlug()
-    {
-        $offers = Offers::all();
-        $i = 1;
-        foreach ($offers as $offer) {
-            Offers::whereId($offer->id)->update([
-                'slug' => Str::slug($offer->title)
-            ]);
-            $i++;
-        }
-
-        echo $i;
-    }
-    
     public function all_candidates($slug) {
         $offer = Offers::whereSlug($slug)
             ->first();
