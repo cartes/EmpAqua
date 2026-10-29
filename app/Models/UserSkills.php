@@ -26,9 +26,10 @@ use Illuminate\Database\Eloquent\Model;
 class UserSkills extends Model
 {
     protected $table = "aquabe_users_skills";
+    protected $primaryKey = "id_skills";
 
     public function user()
     {
-        return $this->belongsTo('App\Models\User', 'id', 'id_user');
+        return $this->belongsTo(User::class, 'id_user', 'id');
     }
 }

@@ -50,13 +50,14 @@ class UserEducation extends Model
     const ABANDONED = 3;
 
     protected $table = "aquabe_users_education";
+    protected $primaryKey = "id_education";
     protected $fillable = ['country', 'studies', 'condition', 'title', 'area', 'month_from',
         'year_from', 'month_to', 'year_to', 'institution'];
 
 
     public function user()
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(User::class, 'id_user', 'id');
     }
 
     public function getStudiesLevelAttribute()

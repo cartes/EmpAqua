@@ -55,6 +55,7 @@ use Illuminate\Database\Eloquent\Model;
 class UserExperience extends Model
 {
     protected $table = "aquabe_users_experience";
+    protected $primaryKey = "id_experience";
     protected $fillable = [
         'business_name', 'business_activity', 'business_position', 'experience_level', 'country',
         'month_from', 'year_from', 'month_to', 'year_to', 'area', 'sub_area', 'description', 'dependents'
@@ -62,7 +63,7 @@ class UserExperience extends Model
 
     public function user()
     {
-        return $this->belongsTo('App\Models\User');
+        return $this->belongsTo(User::class, 'id_user', 'id');
     }
 
     public function getMonthFromAttribute($value)

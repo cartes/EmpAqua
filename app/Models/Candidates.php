@@ -48,12 +48,12 @@ class Candidates extends Model
 
     public function offers()
     {
-        return $this->belongsTo('App\Models\Offers', 'id_offer', 'id');
+        return $this->belongsTo(Offers::class, 'id_offer', 'id');
     }
 
     public function user()
     {
-        return $this->belongsTo('App\Models\User', 'id_user', 'id');
+        return $this->belongsTo(User::class, 'id_user', 'id');
     }
     
     public function candidateStatus()

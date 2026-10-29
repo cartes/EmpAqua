@@ -30,6 +30,6 @@ class Benefit extends Model
 
     public function Offers()
     {
-        return $this->belongsTo(Offers::class, 'id', 'offer_id');
+        return $this->belongsTo(Offers::class, 'offer_id', 'id');
     }
 }

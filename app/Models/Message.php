@@ -55,12 +55,12 @@ class Message extends Model
 
     public function offer()
     {
-        return $this->belongsTo(Offers::class);
+        return $this->belongsTo(Offers::class, 'offer_id', 'id');
     }
 
     public function user()
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(User::class, 'user_id', 'id');
     }
 
     public function children()

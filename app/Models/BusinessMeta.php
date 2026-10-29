@@ -97,11 +97,11 @@ class BusinessMeta extends Model
 
     public function business()
     {
-        return $this->belongsTo('App\Models\Business', 'id', 'id_business');
+        return $this->belongsTo(Business::class, 'id_business', 'id');
     }
 
     public function offers()
     {
-        return $this->hasMany('App\Models\Offers', 'id_business', 'id_business');
+        return $this->hasMany(Offers::class, 'id_business', 'id_business');
     }
 }

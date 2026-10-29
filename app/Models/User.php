@@ -122,32 +122,32 @@ class User extends Authenticatable
 
     public function candidates()
     {
-        return $this->hasMany('App\Models\Candidates', 'id_user', 'id');
+        return $this->hasMany(Candidates::class, 'id_user', 'id');
     }
 
     public function userMeta()
     {
-        return $this->hasOne('App\Models\UserMeta', 'id_user', 'id');
+        return $this->hasOne(UserMeta::class, 'id_user', 'id');
     }
 
     public function userExperience()
     {
-        return $this->hasMany('App\Models\UserExperience', 'id_user', 'id');
+        return $this->hasMany(UserExperience::class, 'id_user', 'id');
     }
 
     public function userLanguage()
     {
-        return $this->hasMany('App\Models\UserLanguage', 'id_user', 'id');
+        return $this->hasMany(UserLanguage::class, 'id_user', 'id');
     }
 
     public function userSkills()
     {
-        return $this->hasMany('App\Models\UserSkills', 'id_user', 'id');
+        return $this->hasMany(UserSkills::class, 'id_user', 'id');
     }
 
     public function userEducation()
     {
-        return $this->hasMany('App\Models\UserEducation', 'id_user', 'id')->orderBy('year_from', 'asc');
+        return $this->hasMany(UserEducation::class, 'id_user', 'id')->orderBy('year_from', 'asc');
     }
 
     public function userReferences()
@@ -157,12 +157,12 @@ class User extends Authenticatable
 
     public function messages()
     {
-        return $this->hasMany(Message::class);
+        return $this->hasMany(Message::class, 'user_id', 'id');
     }
 
     public function searches()
     {
-        return $this->belongsToMany(Search::class);
+        return $this->hasMany(Search::class, 'user_id', 'id');
     }
 
     public function getMaritalStatusAttribute($value)

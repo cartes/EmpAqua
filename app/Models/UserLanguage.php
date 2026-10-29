@@ -31,11 +31,12 @@ use Illuminate\Database\Eloquent\Model;
 class UserLanguage extends Model
 {
     protected $table = "aquabe_users_language";
+    protected $primaryKey = "id_language";
     protected $fillable = ['language', 'level_written', 'level_spoken'];
 
     public function user()
     {
-        return $this->belongsTo('App\Models\User');
+        return $this->belongsTo(User::class, 'id_user', 'id');
     }
 
     public function getLevelWrittenAttribute($value)
