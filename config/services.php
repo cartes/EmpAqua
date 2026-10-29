@@ -30,16 +30,6 @@ return [
         'region' => env('AWS_DEFAULT_REGION', 'us-east-1'),
     ],
     
-    'smtp' => [
-        'host' => env('SMTP_HOST', 'mail.editec.cl'),
-        'port' => (int) env('SMTP_PORT', 25),
-        'username' => env('SMTP_USERNAME'),
-        'password' => env('SMTP_PASSWORD'),
-        'encryption' => env('SMTP_ENCRYPTION'),
-        'from' => env('SMTP_FROM', 'empleosaqua@empleosaqua.cl'),
-        'contact_to' => env('SMTP_CONTACT_TO', 'empleosaqua@empleosaqua.cl'),
-    ],
-
     'intersticial'  => env('INTERSTICIAL', true),
 
 ];

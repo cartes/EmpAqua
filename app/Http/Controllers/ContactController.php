@@ -34,7 +34,7 @@ class ContactController extends Controller
         ]);
 
         $sent = $mailer->send(
-            config('services.smtp.contact_to'),
+            config('mail.contact_to'),
             $data['subject'],
             view('emails.notice', [
                 'title' => 'Tienes un contacto',

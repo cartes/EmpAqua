@@ -135,4 +135,15 @@ class ControllersSmokeTest extends TestCase
         $this->assertTrue(Hash::check('nueva-clave', Business::first()->password));
         $this->assertDatabaseCount('password_resets', 0);
     }
+
+    public function test_mailer_sends_html_through_laravel_mail(): void
+    {
+        config(['mail.default' => 'array']);
+
+        $this->assertTrue(app(Mailer::class)->send('a@example.com', 'Asunto', '<p>Hola</p>'));
+
+        $sent = app('mail.manager')->mailer('array')->getSymfonyTransport()->messages();
+        $this->assertCount(1, $sent);
+        $this->assertStringContainsString('Asunto', $sent[0]->getOriginalMessage()->getSubject());
+    }
 }
