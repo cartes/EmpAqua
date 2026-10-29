@@ -1,5 +1,5 @@
 <div class="row justify-content-center">
-    <div class="col-md-10">
+    <div class="col-12 col-xl-11">
         <div class="card">
             <div class="card-body">
                 <div class="row">
@@ -10,7 +10,7 @@
                 </div>
                 <hr>
                 <div class="row justify-content-end">
-                    <div class="col-sm-4">
+                    <div class="col-sm-4 mb-3">
                         <label for="status-filter">Filtrar por Estado:</label>
                         <select id="status-filter" class="form-control">
                             <option value="">Todos</option>
@@ -26,8 +26,8 @@
                         <table id="candidate-table" class="table table-bordered">
                             <thead>
                             <tr>
-                                <th></th>
-                                <th scope="col"><p class="m-0 text-center">Nombre Postulante</p></th>
+                                <th class="col-fav"></th>
+                                <th scope="col" class="col-name"><p class="m-0 text-center">Nombre Postulante</p></th>
                                 <th scope="col"><p class="m-0 text-center">Edad</p></th>
                                 <th scope="col"><p class="m-0 text-center">Género</p></th>
                                 <!-- Estado Civil columna removida -->
@@ -35,7 +35,7 @@
                                 <th scope="col"><p class="m-0 text-center" data-orderable="false">Nivel educacional</p></th>
                                 <th scope="col"><p class="m-0 text-center">Nacionalidad</p></th>
                                 <th scope="col"><p class="m-0 text-center">Email</p></th>
-                                <th scope="col"><p class="m-0 text-center" data-orderable="false">Teléfono</p></th>
+                                <th scope="col" class="col-phone"><p class="m-0 text-center" data-orderable="false">Teléfono</p></th>
                                 <th data-orderable="false"></th>
                                 <th data-orderable="false"></th>
                                 <th scope="col">Estado</th>
@@ -45,7 +45,7 @@
                             @foreach($candidates as $candidate)
                                 @if ($candidate->user)
                                 <tr @if($candidate->favorite == 1) class="table-light"  @endif>
-                                    <td>
+                                    <td class="col-fav">
                                         <input type="checkbox" 
                                             class="form-check-input add-favorite" 
                                             style="margin-left: 0;"
@@ -53,7 +53,7 @@
                                         <input type="hidden" name="user" value="{{ $candidate->user->id }}"/>
                                         <input type="hidden" name="offer" value="{{ $offer->id }}"/>
                                     </td>
-                                    <td>
+                                    <td class="col-name">
                                         <p class="m-0">
                                             @if (!is_null($candidate->user))
                                                 <a href="{{ route('user.file', [$candidate->user->id, $offer->id]) }}">
@@ -69,7 +69,7 @@
                                     <td><p class="m-0 text-center">{{ $candidate->date ?? '' }}</p></td>
 
                                     <td>
-                                        <ul>
+                                        <ul class="education-list">
                                         @foreach($candidate->user->userEducation as $education)
                                             <li>{{$education->title}} ({{$education->condition}})</li>
                                         @endforeach
@@ -77,7 +77,17 @@
                                     </td>
                                     <td><p class="m-0 text-left">{{ $candidate->user->nacionality ?? '' }}</p></td>
                                     <td><p class="m-0 text-left">{{ $candidate->user->email ?? '' }}</p></td>
-                                    <td><p class="m-0 text-right">{{ $candidate->user->userMeta->phone ?? '' }}</p></td>
+                                    <td class="col-phone">
+                                        @php(
+                                            $phones = array_filter(array_map('trim', preg_split(
+                                                '/\s*[\/,;]\s*|\s+-\s+|\s{3,}|(?<=\d{8})\s*-\s*(?=[+(\d])/',
+                                                $candidate->user->userMeta->phone ?? ''
+                                            )))
+                                        )
+                                        @foreach($phones as $phone)
+                                            <p class="m-0 text-left">{{ $phone }}</p>
+                                        @endforeach
+                                    </td>
                                     @if($candidate->user->userMeta)
                                     <td class="text-center">
                                         <p>
@@ -159,8 +169,8 @@
                 loadingRecords: "Cargando...",
                 processing: "Procesando...",
                 emptyTable: "No hay datos disponibles en la tabla"
-            }
-            
+            },
+            dom: 'lf<"table-scroll"t>ip'
     });
 
     // Filtro personalizado por estado
@@ -223,4 +233,65 @@
   #candidate-table th:last-child, #candidate-table td:last-child {
       border-right: none;
   }
+
+  /* Contenedor con scroll horizontal: la tabla no se comprime, se desplaza */
+  .table-scroll {
+      overflow-x: auto;
+      margin: 0.75rem 0;
+  }
+  #candidate-table {
+      min-width: 1300px;
+      width: 100%;
+      border-collapse: separate;
+      border-spacing: 0;
+      margin: 0 !important;
+  }
+  #candidate-table th,
+  #candidate-table td {
+      white-space: nowrap;
+      vertical-align: middle;
+      border-bottom: 1px solid #ddd;
+  }
+  #candidate-table thead th {
+      background: #f8f9fa;
+      border-top: 1px solid #ddd;
+  }
+  #candidate-table tbody td { background: #fff; }
+  #candidate-table tbody tr.table-light td { background: #f1f3f5; }
+  #candidate-table tbody tr:hover td { background: #fff5f4; }
+  #candidate-table .education-list {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+      white-space: normal;
+      min-width: 220px;
+  }
+  #candidate-table .select-status { min-width: 170px; }
+  #candidate-table .col-phone {
+      width: 120px;
+      min-width: 120px;
+      max-width: 120px;
+      padding-left: 0.5rem !important;
+      padding-right: 0.5rem !important;
+  }
+
+  /* Primera columna (favorito) y nombre fijos al desplazar */
+  #candidate-table .col-fav,
+  #candidate-table .col-name {
+      position: sticky;
+      z-index: 2;
+  }
+  #candidate-table .col-fav {
+      left: 0;
+      width: 48px;
+      min-width: 48px;
+      text-align: center;
+  }
+  #candidate-table .col-name {
+      left: 48px;
+      min-width: 190px;
+      box-shadow: 2px 0 4px -2px rgba(0, 0, 0, .25);
+  }
+  #candidate-table thead .col-fav,
+  #candidate-table thead .col-name { z-index: 3; }
 </style>

@@ -58,7 +58,7 @@ class Business extends Model
 
     protected $fillable = ['rut_user', 'password', 'firstname', 'surname', 'email_user', 'position', 'phone_user'];
     protected $table = "aquabe_business";
-    protected $hidden = "password";
+    protected $hidden = ['password'];
     protected $withCount = ['offers'];
 
     public function business_meta()

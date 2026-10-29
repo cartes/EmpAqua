@@ -43,7 +43,7 @@
             resize: none;
         }
         .table {
-            font-size: 0.75rem;
+            font-size: 0.85rem;
         }
         table.dataTable thead th {
         	background-repeat: no-repeat;
@@ -52,7 +52,7 @@
         }
 
         .table th, .table td {
-        	padding: 0.25rem !important;
+        	padding: 0.6rem 0.9rem !important;
         }
         table.dataTable thead .sorting {
           background-image: url('{{url("images/sort_both.png")}}');
