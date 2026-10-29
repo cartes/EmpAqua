@@ -26,16 +26,17 @@
     <div class="container">
         <div class="row justify-content-center">
             <div class="col-10">
+                <h1 class="h3 text-center my-4">Preguntas frecuentes</h1>
                 @php ob_start(); @endphp
                 <div id="accordion">
                     <div class="card">
                         <div class="card-header" id="headingOne">
-                            <h5 class="mb-0">
+                            <h2 class="h5 mb-0">
                                 <button class="btn btn-link" data-toggle="collapse" data-target="#collapseOne"
                                         aria-expanded="true" aria-controls="collapseOne">
                                     ¿Qué es <strong>www.empleosaqua.cl</strong>?
                                 </button>
-                            </h5>
+                            </h2>
                         </div>
 
                         <div id="collapseOne" class="collapse show" aria-labelledby="headingOne"
@@ -52,12 +53,12 @@
                     </div>
                     <div class="card">
                         <div class="card-header" id="headingTwo">
-                            <h5 class="mb-0">
+                            <h2 class="h5 mb-0">
                                 <button class="btn btn-link" data-toggle="collapse" data-target="#collapseTwo"
                                         aria-expanded="true" aria-controls="collapseTwo">
                                     ¿El portal <strong>www.empleosaqua.cl</strong> participa en el proceso de selección?
                                 </button>
-                            </h5>
+                            </h2>
                         </div>
 
                         <div id="collapseTwo" class="collapse hide" aria-labelledby="headingTwo"
@@ -73,12 +74,12 @@
                     </div>
                     <div class="card">
                         <div class="card-header" id="headingThree">
-                            <h5 class="mb-0">
+                            <h2 class="h5 mb-0">
                                 <button class="btn btn-link" data-toggle="collapse" data-target="#collapseThree"
                                         aria-expanded="true" aria-controls="collapseThree">
                                     ¿Cuánto tarda un aviso en ser publicado?
                                 </button>
-                            </h5>
+                            </h2>
                         </div>
 
                         <div id="collapseThree" class="collapse hide" aria-labelledby="headingThree"
@@ -91,12 +92,12 @@
                     </div>
                     <div class="card">
                         <div class="card-header" id="headingFour">
-                            <h5 class="mb-0">
+                            <h2 class="h5 mb-0">
                                 <button class="btn btn-link" data-toggle="collapse" data-target="#collapseFour"
                                         aria-expanded="true" aria-controls="collapseFour">
                                     ¿Cuándo recibo la factura por los servicios adquiridos?
                                 </button>
-                            </h5>
+                            </h2>
                         </div>
 
                         <div id="collapseFour" class="collapse hide" aria-labelledby="headingFour"
@@ -110,12 +111,12 @@
                     </div>
                     <div class="card">
                         <div class="card-header" id="headingFive">
-                            <h5 class="mb-0">
+                            <h2 class="h5 mb-0">
                                 <button class="btn btn-link" data-toggle="collapse" data-target="#collapseFive"
                                         aria-expanded="true" aria-controls="collapseFive">
                                     Registro en www.empleosaqua.cl
                                 </button>
-                            </h5>
+                            </h2>
                         </div>
 
                         <div id="collapseFive" class="collapse hide" aria-labelledby="headingFive"
@@ -130,12 +131,12 @@
                     </div>
                     <div class="card">
                         <div class="card-header" id="headingSix">
-                            <h5 class="mb-0">
+                            <h2 class="h5 mb-0">
                                 <button class="btn btn-link" data-toggle="collapse" data-target="#collapseSix"
                                         aria-expanded="true" aria-controls="collapseSix">
-                                    Mi empresa ya se encuentra registrada ¿Cuál es el motivo? </strong>
+                                    Mi empresa ya se encuentra registrada ¿Cuál es el motivo?
                                 </button>
-                            </h5>
+                            </h2>
                         </div>
 
                         <div id="collapseSix" class="collapse hide" aria-labelledby="headingSix"
@@ -150,12 +151,12 @@
                     </div>
                     <div class="card">
                         <div class="card-header" id="headingSeven">
-                            <h5 class="mb-0">
+                            <h2 class="h5 mb-0">
                                 <button class="btn btn-link" data-toggle="collapse" data-target="#collapseSeven"
                                         aria-expanded="true" aria-controls="collapseSeven">
                                     ¿Cuántos tipos de aviso existen?
                                 </button>
-                            </h5>
+                            </h2>
                         </div>
 
                         <div id="collapseSeven" class="collapse hide" aria-labelledby="headingSeven"
@@ -169,12 +170,12 @@
                     </div>
                     <div class="card">
                         <div class="card-header" id="headingEight">
-                            <h5 class="mb-0">
+                            <h2 class="h5 mb-0">
                                 <button class="btn btn-link" data-toggle="collapse" data-target="#collapseEight"
                                         aria-expanded="true" aria-controls="collapseEight">
                                     ¿Cuánto tiempo permanece publicado un aviso en www.empleosaqua.cl?
                                 </button>
-                            </h5>
+                            </h2>
                         </div>
 
                         <div id="collapseEight" class="collapse hide" aria-labelledby="headingEight"
@@ -188,12 +189,12 @@
                     </div>
                     <div class="card">
                         <div class="card-header" id="headingNine">
-                            <h5 class="mb-0">
+                            <h2 class="h5 mb-0">
                                 <button class="btn btn-link" data-toggle="collapse" data-target="#collapseNine"
                                         aria-expanded="true" aria-controls="collapseNine">
                                     ¿Qué tipo de avisos no están permitidos?
                                 </button>
-                            </h5>
+                            </h2>
                         </div>
 
                         <div id="collapseNine" class="collapse hide" aria-labelledby="headingNine"
@@ -209,12 +210,12 @@
                     </div>
                     <div class="card">
                         <div class="card-header" id="headingTen">
-                            <h5 class="mb-0">
+                            <h2 class="h5 mb-0">
                                 <button class="btn btn-link" data-toggle="collapse" data-target="#collapseTen"
                                         aria-expanded="true" aria-controls="collapseTen">
                                     ¿Puedo editar o eliminar un aviso ya publicado?
                                 </button>
-                            </h5>
+                            </h2>
                         </div>
 
                         <div id="collapseTen" class="collapse hide" aria-labelledby="headingTen"
@@ -227,12 +228,12 @@
                     </div>
                     <div class="card">
                         <div class="card-header" id="headingEleven">
-                            <h5 class="mb-0">
+                            <h2 class="h5 mb-0">
                                 <button class="btn btn-link" data-toggle="collapse" data-target="#collapseEleven"
                                         aria-expanded="true" aria-controls="collapseEleven">
                                     ¿Cómo puedo crear mi currículum?
                                 </button>
-                            </h5>
+                            </h2>
                         </div>
 
                         <div id="collapseEleven" class="collapse hide" aria-labelledby="headingEleven"
@@ -247,12 +248,12 @@
                     </div>
                     <div class="card">
                         <div class="card-header" id="headingTwelve">
-                            <h5 class="mb-0">
+                            <h2 class="h5 mb-0">
                                 <button class="btn btn-link" data-toggle="collapse" data-target="#collapseTwelve"
                                         aria-expanded="true" aria-controls="collapseTwelve">
                                     ¿Qué hago si olvidé mi password?
                                 </button>
-                            </h5>
+                            </h2>
                         </div>
 
                         <div id="collapseTwelve" class="collapse hide" aria-labelledby="headingTwelve"
@@ -267,12 +268,12 @@
                     </div>
                     <div class="card">
                         <div class="card-header" id="headingThirteen">
-                            <h5 class="mb-0">
+                            <h2 class="h5 mb-0">
                                 <button class="btn btn-link" data-toggle="collapse" data-target="#collapseThirteen"
                                         aria-expanded="true" aria-controls="collapseThirteen">
                                     ¿Cómo puedo postular a una oferta laboral?
                                 </button>
-                            </h5>
+                            </h2>
                         </div>
 
                         <div id="collapseThirteen" class="collapse hide" aria-labelledby="headingThirteen"
@@ -290,12 +291,12 @@
                     </div>
                     <div class="card">
                         <div class="card-header" id="headingFourteen">
-                            <h5 class="mb-0">
+                            <h2 class="h5 mb-0">
                                 <button class="btn btn-link" data-toggle="collapse" data-target="#collapseFourteen"
                                         aria-expanded="true" aria-controls="collapseFourteen">
                                     ¿Cómo puedo saber en qué estado está mi postulación?
                                 </button>
-                            </h5>
+                            </h2>
                         </div>
 
                         <div id="collapseFourteen" class="collapse hide" aria-labelledby="headingFourteen"
@@ -309,12 +310,12 @@
                     </div>
                     <div class="card">
                         <div class="card-header" id="headingFifteen">
-                            <h5 class="mb-0">
+                            <h2 class="h5 mb-0">
                                 <button class="btn btn-link" data-toggle="collapse" data-target="#collapseFifteen"
                                         aria-expanded="true" aria-controls="collapseFifteen">
                                     ¿Puedo contactar directamente a la empresa?
                                 </button>
-                            </h5>
+                            </h2>
                         </div>
 
                         <div id="collapseFifteen" class="collapse hide" aria-labelledby="headingFifteen"
@@ -327,12 +328,12 @@
                     </div>
                     <div class="card">
                         <div class="card-header" id="headingSixteen">
-                            <h5 class="mb-0">
+                            <h2 class="h5 mb-0">
                                 <button class="btn btn-link" data-toggle="collapse" data-target="#collapseSixteen"
                                         aria-expanded="true" aria-controls="collapseSixteen">
                                     ¿De qué manera las empresas me contactarán?
                                 </button>
-                            </h5>
+                            </h2>
                         </div>
 
                         <div id="collapseSixteen" class="collapse hide" aria-labelledby="headingSixteen"
@@ -347,12 +348,12 @@
                     </div>
                     <div class="card">
                         <div class="card-header" id="headingSeventeen">
-                            <h5 class="mb-0">
+                            <h2 class="h5 mb-0">
                                 <button class="btn btn-link" data-toggle="collapse" data-target="#collapseSeventeen"
                                         aria-expanded="true" aria-controls="collapseSeventeen">
                                     ¿Quién puede ver mi currículum?
                                 </button>
-                            </h5>
+                            </h2>
                         </div>
 
                         <div id="collapseSeventeen" class="collapse hide" aria-labelledby="headingSeventeen"
@@ -365,12 +366,12 @@
                     </div>
                     <div class="card">
                         <div class="card-header" id="headingEighteen">
-                            <h5 class="mb-0">
+                            <h2 class="h5 mb-0">
                                 <button class="btn btn-link" data-toggle="collapse" data-target="#collapseEighteen"
                                         aria-expanded="true" aria-controls="collapseEighteen">
                                     ¿Por qué las empresas no se contactan conmigo?
                                 </button>
-                            </h5>
+                            </h2>
                         </div>
 
                         <div id="collapseEighteen" class="collapse hide" aria-labelledby="headingEighteen"
@@ -383,12 +384,12 @@
                     </div>
                     <div class="card">
                         <div class="card-header" id="headingNineteen">
-                            <h5 class="mb-0">
+                            <h2 class="h5 mb-0">
                                 <button class="btn btn-link" data-toggle="collapse" data-target="#collapseNineteen"
                                         aria-expanded="true" aria-controls="collapseNineteen">
                                     ¿Cómo puedo actualizar mi currículum?
                                 </button>
-                            </h5>
+                            </h2>
                         </div>
 
                         <div id="collapseNineteen" class="collapse hide" aria-labelledby="headingNineteen"
@@ -406,12 +407,12 @@
                     </div>
                     <div class="card">
                         <div class="card-header" id="headingTwenty">
-                            <h5 class="mb-0">
+                            <h2 class="h5 mb-0">
                                 <button class="btn btn-link" data-toggle="collapse" data-target="#collapseTwenty"
                                         aria-expanded="true" aria-controls="collapseTwenty">
                                     ¿Cómo puedo cargar mi currículum en formato Word y PDF?
                                 </button>
-                            </h5>
+                            </h2>
                         </div>
 
                         <div id="collapseTwenty" class="collapse hide" aria-labelledby="headingTwenty"

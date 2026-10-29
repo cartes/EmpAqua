@@ -3,7 +3,7 @@
         <div class="modal-content">
             @if(!session()->has('id'))
                 <div class="modal-header">
-                    <h4 class="modal-title">Ingreso a <strong>{{config('app.name')}}</strong></h4>
+                    <div class="modal-title h4" id="exampleModalLabel">Ingreso a <strong>{{config('app.name')}}</strong></div>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true"><i class="far fa-times-circle"></i></span>
                     </button>

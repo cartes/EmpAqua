@@ -15,7 +15,7 @@
         <div class="modal-content py-3 px-4">
             @if(!session()->has('id'))
                 <div class="modal-header">
-                    <h4 class="modal-title">Crea tu Perfil y únete a <strong>{{config('app.name')}}</strong></h4>
+                    <div class="modal-title h4" id="registerModalLabel">Crea tu Perfil y únete a <strong>{{config('app.name')}}</strong></div>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true"><i class="fas fa-times-circle"></i></span>
                     </button>

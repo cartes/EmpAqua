@@ -13,14 +13,19 @@
     <div class="container">
 
         <div class="row justify-content-center my-3">
-            @isset($search)
-                <div class="col-md-12">
-                    <h3>Resultados para: {{$search}}</h4>
+            @if(!empty($search))
+                <div class="col-10 col-sm-12">
+                    <h1 class="h3 mb-0">Resultados para: {{ $search }}</h1>
                 </div>
-            @endisset
-            <div class="col-10 col-sm-12">
-                <h3>Todas las ofertas</h3>
-            </div>
+            @elseif(!empty($featured))
+                <div class="col-10 col-sm-12">
+                    <h1 class="h3 mb-0">Ofertas destacadas</h1>
+                </div>
+            @else
+                <div class="col-10 col-sm-12">
+                    <h1 class="h3 mb-0">Todas las ofertas</h1>
+                </div>
+            @endif
             <div class="col-2 d-block d-sm-none">
                 <i class="fas fa-filter"></i>
             </div>
@@ -97,9 +102,9 @@
                     <div class="card offer-card mb-3{{ $offer->featured ? ' back-orange offer-card--featured' : '' }}">
                         <div class="card-body">
                             <div class="offer-card__header">
-                                <h5 class="offer-card__title card-title py-0 m-0">
+                                <h2 class="offer-card__title card-title py-0 m-0">
                                     <a href="{{ route("offer.show", $offer->slug) }}">{{ $offer->title }}@if($offer->handicapped)  &nbsp;<i class="fas fa-wheelchair"></i>  @endif</a>
-                                </h5>
+                                </h2>
                                 <div class="offer-card__actions">
                                     @if ($offer->featured)
                                         <span class="badge offer-card__badge">Destacada</span>

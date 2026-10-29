@@ -24,7 +24,7 @@
     <section id="content-container" class="container-fluid p-0">
         <div id="row-search" class="row pt-4 px-3 px-sm-0">
             <div class="col-12 col-lg-8 mx-auto">
-                <h3 class="text-center">Busca tu empleo aquí</h3>1
+                <h1 class="text-center">Busca tu empleo aquí</h1>
                 <form class="form-inline my-4 my-lg-0" method="post" action="{{ route('search') }}">
                     <div class="input-group mx-auto">
                         <span class="input-group-addon"><i class="fas fa-briefcase"></i></span>
@@ -171,17 +171,17 @@
                             <div class="card mb-4{{ $offer->featured ? ' back-orange' : '' }}">
                                 <div class="card-body row">
                                     <div class="col-12">
-                                        <h5 class="card-title py-0">
+                                        <h3 class="card-title h5 py-0">
                                             <a href="{{ route("offer.show", $offer->slug) }}">{{ $offer->title }}@if($offer->handicapped)  &nbsp;<i class="fas fa-wheelchair"></i>  @endif</a>
-                                        </h5>
+                                        </h3>
                                     </div>
                                     <div class="col-12 col-sm-7 border-bottom mb-3 pb-3">
                                         @if ($offer->businessMeta)
                                             @if(!$offer->confidential)
-                                                <h6><strong>{{$offer->businessMeta->business_name}}</strong>
-                                                    - {{ $offer->publication }}</h6>
+                                                <div class="h6"><strong>{{$offer->businessMeta->business_name}}</strong>
+                                                    - {{ $offer->publication }}</div>
                                             @else
-                                                <h6><strong>Confidencial</strong> - {{ $offer->publication }}</h6>
+                                                <div class="h6"><strong>Confidencial</strong> - {{ $offer->publication }}</div>
                                             @endif
 
                                         @endif
@@ -189,9 +189,9 @@
                                             <div class="d-block d-sm-none">
                                                 <div class="row">
                                                     <div class="col-6">
-                                                        <h6><i class="fas fa-map-marker-alt"></i> &nbsp;<span
+                                                        <div class="h6"><i class="fas fa-map-marker-alt"></i> &nbsp;<span
                                                                     class="text-capitalize">{{ $offer->businessMeta->comune }}</span>
-                                                        </h6>
+                                                        </div>
                                                     </div>
                                                     <div class="col-6">
                                                         <i class="far fa-building"></i> &nbsp;<span
@@ -209,9 +209,9 @@
                                             <div class="d-none d-sm-block">
                                                 <div class="row">
                                                     <div class="col-6 col-sm-12">
-                                                        <h6><i class="fas fa-map-marker-alt"></i> &nbsp;<span
+                                                        <div class="h6"><i class="fas fa-map-marker-alt"></i> &nbsp;<span
                                                                     class="text-capitalize">{{ $offer->businessMeta->comune }}</span>
-                                                        </h6>
+                                                        </div>
                                                     </div>
                                                     <div class="col-6 col-sm-12">
                                                         <i class="far fa-building"></i> &nbsp;<span
@@ -271,21 +271,27 @@
                         <div class="row estadisticas my-sm-5">
                             <div class="col-12 col-sm-4 text-center">
                                 <img class="icon" src="/images/icon-visitas.png" alt="Visitas" width="51" height="51" loading="lazy" decoding="async">
-                                <h4>RECIBIMOS MÁS DE </h4>
-                                <h4 class="cifra">3.000.000</h4>
-                                <h4>VISITAS AL AÑO</h4>
+                                <h3 class="h4">
+                                    <span class="d-block mb-2">RECIBIMOS MÁS DE</span>
+                                    <span class="cifra d-block mb-2">3.000.000</span>
+                                    <span class="d-block">VISITAS AL AÑO</span>
+                                </h3>
                             </div>
                             <div class="col-12 col-sm-4 text-center">
                                 <img class="icon" src="/images/icon-ofertas.png" alt="Ofertas" width="51" height="51" loading="lazy" decoding="async">
-                                <h4>PUBLICAMOS</h4>
-                                <h4 class="cifra">MÁS DE 500</h4>
-                                <h4>OFERTAS MENSUALMENTE</h4>
+                                <h3 class="h4">
+                                    <span class="d-block mb-2">PUBLICAMOS</span>
+                                    <span class="cifra d-block mb-2">MÁS DE 500</span>
+                                    <span class="d-block">OFERTAS MENSUALMENTE</span>
+                                </h3>
                             </div>
                             <div class="col-12 col-sm-4 text-center">
                                 <img class="icon" src="/images/icon-postulante.png" alt="Postulantes" width="52" height="51" loading="lazy" decoding="async">
-                                <h4>REGISTRAMOS MÁS DE</h4>
-                                <h4 class="cifra">22.000</h4>
-                                <h4>POSTULANTES</h4>
+                                <h3 class="h4">
+                                    <span class="d-block mb-2">REGISTRAMOS MÁS DE</span>
+                                    <span class="cifra d-block mb-2">22.000</span>
+                                    <span class="d-block">POSTULANTES</span>
+                                </h3>
                             </div>
                         </div>
 

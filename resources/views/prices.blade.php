@@ -28,6 +28,9 @@
                 <div class="col-md-4 d-flex">
                     <img class="mx-auto text-center w-75" src="{{asset('/images/1x/logo-empleos.png')}}" alt="EmpleosAqua" width="758" height="172" decoding="async">
                 </div>
+                <div class="col-12 text-center mt-3">
+                    <h1 class="h3 mb-0">Planes y Tarifas</h1>
+                </div>
             </div>
         </div>
         <div class="mt-3 mt-md-5 prices-table row justify-content-center">

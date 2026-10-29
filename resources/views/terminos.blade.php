@@ -9,9 +9,9 @@
             <div class="col-10">
                 <div class="card">
                     <div class="card-header">
-                        <h3 class="mb-0 text-center">
+                        <h1 class="h3 mb-0 text-center">
                             POLÍTICA DE PRIVACIDAD
-                        </h3>
+                        </h1>
                     </div>
                     <div class="card-body">
                         <p>
@@ -21,8 +21,8 @@
                                 EN QUE ELLOS ESTÁN SIENDO RESGUARDADOS, CON ESTRICTO APEGO A LA NORMATIVA VIGENTE.
                             </strong>
                         </p>
+                        <h2 class="h6 font-weight-bold mb-1">1. NUESTRO COMPROMISO CON LA PRIVACIDAD</h2>
                         <p>
-                            <strong>1. NUESTRO COMPROMISO CON LA PRIVACIDAD</strong><br>
                             B2B Group Media SPA, a través de su portal de empleos WWW.EMPLEOSAQUA.CL, en adelante
                             EMPLEOS AQUA, y las empresas que componen el grupo, respetan la privacidad de toda
                             persona que visite el sitio Web enunciado (en lo sucesivo, el "Sitio Web").
@@ -33,8 +33,8 @@
                             EMPLEOS AQUA para que sus consultas, en relación con esta Política de Privacidad, sean
                             resueltas.
                         </p>
+                        <h2 class="h6 font-weight-bold mb-1">2. INFORMACIÓN PERSONAL PROTEGIDA</h2>
                         <p>
-                            <strong>2. INFORMACIÓN PERSONAL PROTEGIDA</strong><br>
                             a) Usted como usuario declara que la Información Personal brindada es correcta, veráz,
                             actual y conforme a la legislación vigente.<br>
                             b). Como mecanismo de prevención del acceso no autorizado, de mantención de la
@@ -61,8 +61,8 @@
                             de terceros ajenos EMPLEOS AQUA. De producirse alguno de estos eventos, EMPLEOS AQUA
                             procederá conforme las leyes Chilenas en materia de privacidad y protección de datos.
                         </p>
+                        <h2 class="h6 font-weight-bold mb-1">3. DESTINO DE SU INFORMACIÓN PERSONAL</h2>
                         <p>
-                            <strong>3. DESTINO DE SU INFORMACIÓN PERSONAL</strong><br>
                             a). Sin perjuicio del tratamiento confidencial de su información personal
                             voluntariamente entregada a través del Sitio Web en las diferentes etapas y canales del
                             servicio, AQUA EMPLEOS se reserva la facultad de compartir dicha información, total o
@@ -75,8 +75,8 @@
                             información personal sea almacenada por EMPLEOS AQUA y que la misma pueda ser
                             transferida y tratada.
                         </p>
+                        <h2 class="h6 font-weight-bold mb-1">4. TRATAMIENTO DE INFORMACIÓN DE MENORES DE EDAD</h2>
                         <p>
-                            <strong>4. TRATAMIENTO DE INFORMACIÓN DE MENORES DE EDAD</strong><br>
                             a). La naturaleza de los servicios que operan a través de nuestro Sitio Web no incluyen
                             habitualmente el ingreso, recopilación y tratamiento de Información Personal
                             perteneciente a menores de edad.<br>
@@ -91,8 +91,8 @@
                             Sitio Web, servicios ofrecidos, como a la información disponible a través del Sitio Web,
                             por lo que se aconseja tomar todas las precauciones necesarias en la navegación.
                         </p>
+                        <h2 class="h6 font-weight-bold mb-1">5. UTILIZACIÓN Y RECOPILACIÓN DE SU INFORMACIÓN PERSONAL</h2>
                         <p>
-                            <strong>5. UTILIZACIÓN Y RECOPILACIÓN DE SU INFORMACIÓN PERSONAL </strong><br>
                             a). EMPLEOS AQUA no almacenará a través del Sitio Web ninguna “Información Sensible”
                             sobre usted o que permita individualizarlo, con datos tales como, su nombre, dirección,
                             número de teléfono o dirección de correo electrónico (en adelante, la " Información
@@ -119,9 +119,9 @@
                             Información Personal de la base de datos a la que se refiere la presente Política de
                             Privacidad.
                         </p>
+                        <h2 class="h6 font-weight-bold mb-1">6. CANALES DE COMUNICACIÓN Y ENTREGA DE INFORMACIÓN DE INTERÉS
+                            A CLIENTES</h2>
                         <p>
-                            <strong>6. CANALES DE COMUNICACIÓN Y ENTREGA DE INFORMACIÓN DE INTERÉS A
-                                CLIENTES </strong><br>
                             a). Con miras a mantener una comunicación fluida con los clientes y usuarios del Sitio
                             Web, EMPLEOS AQUA podrá hacer envío de correos electrónicos informando acerca del
                             contenido del sitio, información de las cuentas respectivas, servicios ofrecidos, temas
@@ -134,8 +134,8 @@
                             Web, manifestar a EMPLEOS AQUA su intención de no recibir ofertas u otro tipo de
                             información, como la ya mencionada.
                         </p>
+                        <h2 class="h6 font-weight-bold mb-1">7. OTRA INFORMACIÓN – GESTIÓN DE “COOKIES”</h2>
                         <p>
-                            <strong>7. OTRA INFORMACIÓN – GESTIÓN DE “COOKIES” </strong><br>
                             Le informamos que al ingresar al Sitio Web de EMPLEOS AQUA es posible que cierta
                             información pueda quedar almacenada bajo la forma de “Cookie” o archivo similar. Gran
                             parte de los navegadores de Internet permiten borrar las Cookies del disco duro de su
@@ -143,9 +143,9 @@
                             almacenen. Para este fin, le aconsejamos consultar las instrucciones de su navegador
                             para conocer más acerca de estas funciones.
                         </p>
+                        <h2 class="h6 font-weight-bold mb-1">8. DERECHOS DE ACCESO Y ACTUALIZACIÓN PERMANENTE DE INFORMACIÓN
+                            DEL USUARIO</h2>
                         <p>
-                            <strong>8. DERECHOS DE ACCESO Y ACTUALIZACIÓN PERMANENTE DE INFORMACIÓN DEL
-                                USUARIO </strong><br>
                             a) Si usted ha entregado Información Personal con ocasión del registro y o utilización
                             de los servicios ofrecidos por nuestro Sitio Web, tendrá de manera permanente derecho de
                             acceder a ella, modificarla, actualizarla o eliminarla, según lo estime y requiera.<br>
@@ -153,9 +153,9 @@
                             acceso y actualización permanente a través del “perfil de ingreso” de cada cliente o
                             usuario.
                         </p>
+                        <h2 class="h6 font-weight-bold mb-1">9. ALCANCE DE LAS POLÍTICAS DE PRIVACIDAD Y SEGURIDAD DE LA
+                            INFORMACIÓN</h2>
                         <p>
-                            <strong>9. ALCANCE DE LAS POLÍTICAS DE PRIVACIDAD Y SEGURIDAD DE LA
-                                INFORMACIÓN </strong><br>
                             Cabe señalar que con ocasión de la navegación en nuestro Sitio Web, y/o utilización de
                             los servicios ofrecidos, usted puede tener acceso o ser derivado a otros link de sitios
                             de Internet ajenos a EMPLEOS AQUA. En tal caso, EMPLEOS AQUA, directamente o a través de
@@ -165,22 +165,23 @@
                             le recomendamos, antes de navegar por otros sitios de Internet, verificar la existencia
                             y consistencia de las condiciones de uso de tales sitios y las políticas respectivas.
                         </p>
+                        <h2 class="h6 font-weight-bold mb-1">10. PROPIEDAD, JURISDICCIÓN Y COMPETENCIA.</h2>
                         <p>
-                            <strong>10. PROPIEDAD, JURISDICCIÓN Y COMPETENCIA. </strong><br>
                             EMPLEOS AQUA es un Sitio Web perteneciente al B2B Group Media SPA RUT
                             77.285.652-0, con domicilio en calle San Crescente Nº 81, sexto piso, en la comuna de
                             Las Condes, de la ciudad de Santiago de Chile. En razón de su ubicación la presente
                             Política de Privacidad se rige por las leyes Chilenas y serán competentes en su caso los
                             tribunales de la ciudad de Santiago de Chile.
                         </p>
+                        <h2 class="h6 font-weight-bold mb-1">11. CONSULTAS Y CONTACTO</h2>
                         <p>
-                            <strong>11. CONSULTAS Y CONTACTO</strong><br>
                             Si tiene dudas, o requiere de alguna información respecto del manejo y almacenamiento de
                             sus datos, u otros temas relativos a la privacidad de los mismos, por favor contáctenos
                             al correo electrónico contacto@empleosaqua.cl
                         </p>
+                        <h2 class="h6 font-weight-bold mb-1">12. MODIFICACIÓN Y ACTUALIZACIÓN DE LAS POLÍTICAS DE PRIVACIDAD
+                        </h2>
                         <p>
-                            <strong>12. MODIFICACIÓN Y ACTUALIZACIÓN DE LAS POLÍTICAS DE PRIVACIDAD</strong><br>
                             a). EMPLEOS AQUA estará facultado para actualizar y modificar sus Políticas de
                             Privacidad tantas veces como lo estime necesario o corresponde responder a una exigencia
                             normativa. No obstante, cada modificación y/o actualización será debidamente informada a
@@ -202,5 +203,12 @@
 
 @push('meta')
     <link rel="canonical" href="{{ route('terms') }}" />
-    {!! \App\Support\Schema::script(\App\Support\Schema::webPage('WebPage', 'Términos y condiciones', route('terms'), 'Términos y condiciones de uso del portal EmpleosAqua.')) !!}
+    {!! \App\Support\Schema::script(
+        \App\Support\Schema::webPage(
+            'WebPage',
+            'Términos y condiciones',
+            route('terms'),
+            'Términos y condiciones de uso del portal EmpleosAqua.',
+        ),
+    ) !!}
 @endpush

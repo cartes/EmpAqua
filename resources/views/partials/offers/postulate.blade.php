@@ -39,7 +39,7 @@
 <div class="container d-none d-sm-block">
     <div class="row">
         <div class="col-12 my-4">
-            <h3>Detalle de Ofertas</h3>
+            <div class="h3 my-0">Detalle de Ofertas</div>
         </div>
     </div>
 </div>
@@ -105,81 +105,12 @@
             @isset($search)
                 <div class="row">
                     <div class="col-md-10">
-                        <h4>Resultados para: {{$search}}</h4>
+                        <div class="h4">Resultados para: {{$search}}</div>
                     </div>
                 </div>
             @endisset
             <div class="row">
-                <aside class="col-md-4 d-none d-lg-block">
-                    @if (!isset($search))
-                        @php($search = '')
-                    @endif
-
-                    @forelse($offers as $off)
-                        <div class="card container-offer mb-1{{ $off->featured  ? ' back-orange' : '' }}">
-                            <div class="card-body">
-                                <a href="{{ route("offer.show", ['slug' => $off->slug, 'search' => $search, 'featured' => $featured]) }}">
-                                    <div class="py-2 px-3">
-                                        <div class="row">
-                                            <div class="col-md-9">
-                                                <h5 class="card-title text-capitalize text-left m-0 p-0">
-                                                    {{$off->title}}
-                                                </h5>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </a>
-                                <div class="col-12 col-sm-8">
-                                    @if ($off->businessMeta)
-                                        @if(!$off->confidential)
-                                            <h6>
-                                                <strong>{{$off->businessMeta->business_name}}</strong>
-                                                @if ($off->is_new)
-                                                -
-                                                    <span class="text-danger text-uppercase">
-                                                        {{'Nuevo'}}
-                                                    </span>
-                                                @endif
-                                                {{ $off->publication }}
-                                            </h6>
-                                        @else
-                                            <h6>
-                                                <strong>Confidencial</strong> -
-                                                @if ($off->is_new)
-                                                    <span class="text-danger text-uppercase">
-                                                        {{'Nuevo'}}
-                                                    </span>
-                                                @endif
-                                                {{ $off->publication }}
-                                            </h6>
-                                        @endif
-                                        <h6 class="d-inline-flex">
-                                            @if ( $off->featured )
-                                                <span class="text-primary text-uppercase">
-                                                    {{'Destacada'}}
-                                                </span>
-                                            @endif
-                                        </h6>
-
-                                    @endif
-
-                                </div>
-                                <div class="py-2 px-3">
-                                    <p class="p-0 m-0">
-                                        {{\Illuminate\Support\Str::limit(strip_tags(html_entity_decode($off->description)), 50)}}
-                                    </p>
-                                </div>
-                            </div>
-                        </div>
-                    @empty
-                        <div class="card">
-                            <div class="card-body">
-                                <p>No hay ofertas de trabajo para mostrar!</p>
-                            </div>
-                        </div>
-                    @endforelse
-                </aside>
-                <div id="container-offer-display" class="col-12 col-lg-8 px-0">
+                <div id="container-offer-display" class="col-12 col-lg-8 order-lg-2 px-0">
                     <div class="container py-md-4">
                         <div class="offer-header">
                             @if (session()->get('id'))
@@ -203,7 +134,7 @@
                             </div>
                             <div class="offer-header__main">
                                 @if(!is_null($offer))
-                                    <h2 class="container-offer-title font-weight-bold"><strong>{{ $offer->title }}</strong></h2>
+                                    <h1 class="container-offer-title font-weight-bold">{{ $offer->title }}</h1>
                                 @endif
 
                                 @if (is_object($offer->businessMeta))
@@ -259,7 +190,7 @@
                         </div>
 
                         <div class="offer-points">
-                            <h4 class="offer-points__heading d-block d-sm-none">Puntos principales</h4>
+                            <h2 class="offer-points__heading d-block d-sm-none">Puntos principales</h2>
                             {{-- Comuna --}}
                             @if($offer->businessMeta->comune != '')
                                 <div class="offer-points__item">
@@ -285,18 +216,18 @@
                         <div class="row points-offer px-0 mx-0">
 
                             <div class="col-12 d-block d-sm-none">
-                                <h4>Detalles  de la oferta</h4>
+                                <div class="points-offer__label h4">Detalles de la oferta</div>
                             </div>
                             @if (filled(trim(strip_tags(html_entity_decode((string) $offer->description)))))
                             <div class="col-12 mt-2">
-                                <h3 class="mb-3">Funciones del Cargo</h3>
+                                <h2 class="h3 mb-3">Funciones del Cargo</h2>
 
                                 <div id="container-offer-description">{!! preg_replace("/[\w-]+@([\w-]+\.)+[\w-]+/", "[Email Bloqueado]", \App\Helpers\Helper::cleanHtml($offer->description)); !!}</div>
                             </div>
                             @endif
                             @if (filled(trim((string) $offer->requirements)))
                             <div class="col-12">
-                                <h3 class="mb-3">Requerimientos del cargo</h3>
+                                <h2 class="h3 mb-3">Requerimientos del cargo</h2>
 
                                 <div id="container-offer-requirements">{{ $offer->requirements }}</div>
                             </div>
@@ -304,7 +235,7 @@
 
                             @if ( collect($offer->benefits)->isNotEmpty() )
                                 <div class="col-12">
-                                    <h3 class="mb-3">Beneficios</h3>
+                                    <h2 class="h3 mb-3">Beneficios</h2>
 
                                     <div id="container-offer-benefits">
                                         @foreach( $offer->benefits as $benefit )
@@ -316,6 +247,75 @@
                         </div>
                     </div>
                 </div>
+                <aside class="col-md-4 d-none d-lg-block order-lg-1">
+                    @if (!isset($search))
+                        @php($search = '')
+                    @endif
+
+                    @forelse($offers as $off)
+                        <div class="card container-offer mb-1{{ $off->featured  ? ' back-orange' : '' }}">
+                            <div class="card-body">
+                                <a href="{{ route("offer.show", ['slug' => $off->slug, 'search' => $search, 'featured' => $featured]) }}">
+                                    <div class="py-2 px-3">
+                                        <div class="row">
+                                            <div class="col-md-9">
+                                                <div class="card-title h5 text-capitalize text-left m-0 p-0">
+                                                    {{$off->title}}
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </a>
+                                <div class="col-12 col-sm-8">
+                                    @if ($off->businessMeta)
+                                        @if(!$off->confidential)
+                                            <div class="h6">
+                                                <strong>{{$off->businessMeta->business_name}}</strong>
+                                                @if ($off->is_new)
+                                                -
+                                                    <span class="text-danger text-uppercase">
+                                                        {{'Nuevo'}}
+                                                    </span>
+                                                @endif
+                                                {{ $off->publication }}
+                                            </div>
+                                        @else
+                                            <div class="h6">
+                                                <strong>Confidencial</strong> -
+                                                @if ($off->is_new)
+                                                    <span class="text-danger text-uppercase">
+                                                        {{'Nuevo'}}
+                                                    </span>
+                                                @endif
+                                                {{ $off->publication }}
+                                            </div>
+                                        @endif
+                                        @if ( $off->featured )
+                                            <div class="h6 d-inline-flex">
+                                                <span class="text-primary text-uppercase">
+                                                    {{'Destacada'}}
+                                                </span>
+                                            </div>
+                                        @endif
+
+                                    @endif
+
+                                </div>
+                                <div class="py-2 px-3">
+                                    <p class="p-0 m-0">
+                                        {{\Illuminate\Support\Str::limit(strip_tags(html_entity_decode($off->description)), 50)}}
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    @empty
+                        <div class="card">
+                            <div class="card-body">
+                                <p>No hay ofertas de trabajo para mostrar!</p>
+                            </div>
+                        </div>
+                    @endforelse
+                </aside>
             </div>
             <div class="row d-none d-sm-block mt-3 justify-content-center">
                 {{ $offers->links('partials.pagination') }}

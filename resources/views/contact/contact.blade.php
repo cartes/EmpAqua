@@ -20,9 +20,9 @@
 
                 <div class="card card-user">
                     <div class="card-header">
-                        <h3 class="card-title">
+                        <h1 class="card-title h3">
                             Contáctanos
-                        </h3>
+                        </h1>
                     </div>
 
                     <div class="card-body">

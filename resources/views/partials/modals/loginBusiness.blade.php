@@ -3,7 +3,7 @@
         <div class="modal-content">
             @if(!session()->has('id'))
                 <div class="modal-header">
-                    <h4 class="modal-title">Ingresa con tu usuario de empresa</h4>
+                    <div class="modal-title h4">Ingresa con tu usuario de empresa</div>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <i class="far fa-times-circle"></i>
                     </button>

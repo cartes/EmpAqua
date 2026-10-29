@@ -17081,7 +17081,7 @@ header .menu-icon {
     padding-top: 90px !important;
     padding-bottom: 80px;
   }
-  main #row-search h3.text-center {
+  main #row-search h1.text-center, main #row-search h3.text-center {
     font-size: 45px;
     font-weight: 700;
     color: #fff;
@@ -17225,12 +17225,12 @@ header .menu-icon {
     border-right-color: #6B6B6B;
     margin-bottom: 0 !important;
   }
-  main #row-buttons .row.estadisticas h4 {
+  main #row-buttons .row.estadisticas h3, main #row-buttons .row.estadisticas h4 {
     font-size: 19px;
     font-weight: 400;
     color: #0D4A96;
   }
-  main #row-buttons .row.estadisticas h4.cifra {
+  main #row-buttons .row.estadisticas .cifra, main #row-buttons .row.estadisticas h4.cifra {
     font-family: Impact, "Open Sans Condensed";
     font-size: 40px !important;
     color: #F08F01;
@@ -17279,7 +17279,7 @@ footer {
     font-weight: 400;
     color: #fff;
   }
-  footer .grupo-b2b h5, footer .grupo-b2b li, footer .rrss h5, footer .rrss li {
+  footer .grupo-b2b h5, footer .grupo-b2b .footer-title, footer .grupo-b2b li, footer .rrss h5, footer .rrss .footer-title, footer .rrss li {
     color: #fff;
     font-size: 12px;
     font-weight: 600;
@@ -17382,7 +17382,7 @@ footer {
     border: 2px solid #fff;
     box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
   }
-  #app-page h3 {
+  #app-page h3, #app-page .h3 {
     font-size: 19px;
     font-weight: 600;
     color: #0D4A96;
@@ -17644,7 +17644,7 @@ footer {
     background-position: center bottom;
     background-repeat: no-repeat;
   }
-  main #row-search h3 {
+  main #row-search h1, main #row-search h3 {
     font-family: "Poppins", Arial, sans-serif;
     font-size: 28.84px;
     font-weight: 700;
@@ -17760,10 +17760,10 @@ footer {
   	top: -720%;
 	right: -135% !important;
   }
-  main #row-buttons .card-body h6 {
+  main #row-buttons .card-body h6, main #row-buttons .card-body .h6 {
     font-size: 13px;
   }
-  main #row-buttons .card-body h6 i {
+  main #row-buttons .card-body h6 i, main #row-buttons .card-body .h6 i {
     font-family: "Font Awesome 5 Free";
     font-size: 24px;
   }
@@ -17773,12 +17773,12 @@ footer {
   main #row-buttons .estadisticas .icon {
     margin-top: 33px;
   }
-  main #row-buttons .estadisticas h4 {
+  main #row-buttons .estadisticas h3, main #row-buttons .estadisticas h4 {
     color: #0D4A96;
     font-size: 19px;
     font-weight: 600;
   }
-  main #row-buttons .estadisticas h4.cifra {
+  main #row-buttons .estadisticas .cifra, main #row-buttons .estadisticas h4.cifra {
     font-family: Impact, "Open Sans Condensed";
     font-size: 43px !important;
     color: #F08F01;
@@ -17843,7 +17843,7 @@ footer {
     padding-bottom: 44px;
     border-top: 1px dashed #fff;
   }
-  footer .info-footer h5:first-child {
+  footer .info-footer h5:first-child, footer .info-footer .footer-title:first-child {
     padding-top: 22px;
     border-top: 1px dashed #fff;
   }
@@ -17851,10 +17851,10 @@ footer {
     font-size: 12px;
     font-weight: 400;
   }
-  footer .rrss h5, footer .grupo-b2b h5 {
+  footer .rrss h5, footer .rrss .footer-title, footer .grupo-b2b h5, footer .grupo-b2b .footer-title {
     font-weight: 700;
   }
-  footer .rrss h5, footer .rrss li, footer .grupo-b2b h5, footer .grupo-b2b li {
+  footer .rrss h5, footer .rrss .footer-title, footer .rrss li, footer .grupo-b2b h5, footer .grupo-b2b .footer-title, footer .grupo-b2b li {
     font-size: 12px;
   }
   footer .rrss li a, footer .rrss li a i, footer .grupo-b2b li a, footer .grupo-b2b li a i {
@@ -18003,7 +18003,7 @@ footer {
   background-color: #E4E4E4;
 }
 @media (max-width: 576px) {
-  .container-results h3 {
+  .container-results h1, .container-results h3 {
     color: #0099CC;
     font-size: 19px;
     font-weight: 700;
@@ -18075,16 +18075,16 @@ footer {
   background: #fff;
   border-radius: 15px;
 }
-.points-offer h3 {
+.points-offer h2, .points-offer h3 {
   color: #0099CC;
   font-size: 20px;
   font-weight: 700;
 }
-.points-offer h4 {
+.points-offer h4, .points-offer .points-offer__label {
   font-size: 14px;
   font-weight: 700;
 }
-.points-offer h4, .points-offer i {
+.points-offer h4, .points-offer .points-offer__label, .points-offer i {
   color: #F08F01;
 }
 .points-offer i {
@@ -18274,7 +18274,7 @@ footer {
   font-size: 22px;
 }
 
-#container-offer-display h3 {
+#container-offer-display h3, #container-offer-display h2.h3 {
   font-size: 16px;
   font-weight: 600;
   margin-top: 20px;

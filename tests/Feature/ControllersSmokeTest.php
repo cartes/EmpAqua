@@ -21,8 +21,12 @@ class ControllersSmokeTest extends TestCase
     private function business(int $role = 90): Business
     {
         $business = Business::create([
-            'rut_user' => '11111111-1', 'firstname' => 'Ana', 'surname' => 'Perez',
-            'email_user' => 'ana@example.com', 'position' => 'RRHH', 'phone_user' => '123',
+            'rut_user' => '11111111-1',
+            'firstname' => 'Ana',
+            'surname' => 'Perez',
+            'email_user' => 'ana@example.com',
+            'position' => 'RRHH',
+            'phone_user' => '123',
             'password' => Hash::make('secret1'),
         ]);
         BusinessMeta::create(['id_business' => $business->id, 'business_name' => 'ACME']);
@@ -35,15 +39,22 @@ class ControllersSmokeTest extends TestCase
     {
         $business = $this->business();
         Offers::create([
-            'id_business' => $business->id, 'title' => 'Aviso', 'slug' => 'aviso-1', 'description' => 'd', 'area' => 'a',
-            'sub_area' => '', 'position' => '1', 'experience' => '1', 'published' => 1, 'expirated_at' => now()->addDays(5),
+            'id_business' => $business->id,
+            'title' => 'Aviso',
+            'slug' => 'aviso-1',
+            'description' => 'd',
+            'area' => 'a',
+            'sub_area' => '',
+            'position' => '1',
+            'experience' => '1',
+            'published' => 1,
+            'expirated_at' => now()->addDays(5),
         ]);
 
-        $this->get('/')->assertOk();
-        $this->get('/contacto')->assertOk();
-        $this->get('/newsletter')->assertOk();
-        $this->get('/offer/list')->assertOk();
-        $this->get('/offer/featured')->assertOk();
+        foreach (['/', '/contacto', '/newsletter', '/offer/list', '/offer/featured', '/offer/show/aviso-1', '/about', '/prices', '/faq', '/terms'] as $path) {
+            $html = $this->get($path)->assertOk()->getContent();
+            $this->assertSame(1, preg_match_all('/<h1\b/i', $html), "Expected exactly one <h1> on {$path}");
+        }
     }
 
     public function test_business_login_sets_membership_session(): void
@@ -63,9 +74,17 @@ class ControllersSmokeTest extends TestCase
         $this->post('/business/login', ['email' => 'ana@example.com', 'password' => 'secret1']);
 
         $this->post('/offer/create', [
-            'title' => 'Operador de planta', 'category_id' => 1, 'position' => '1', 'salary_opt' => '0',
-            'comune' => 'Puerto Montt', 'handicapped' => '0', 'description' => 'Descripcion de la oferta',
-            'area' => 'Produccion', 'experience' => '2', 'requirements' => 'Requisitos', 'vacancy' => '1',
+            'title' => 'Operador de planta',
+            'category_id' => 1,
+            'position' => '1',
+            'salary_opt' => '0',
+            'comune' => 'Puerto Montt',
+            'handicapped' => '0',
+            'description' => 'Descripcion de la oferta',
+            'area' => 'Produccion',
+            'experience' => '2',
+            'requirements' => 'Requisitos',
+            'vacancy' => '1',
             'benefits' => ['Seguro', 'Bono'],
         ])->assertRedirect();
 
@@ -95,7 +114,11 @@ class ControllersSmokeTest extends TestCase
         $user = User::create(['rut_user' => '22222222-2', 'name' => 'Luis', 'surname' => 'Soto', 'email' => 'luis@example.com', 'password' => Hash::make('x')]);
         $other = User::create(['rut_user' => '33333333-3', 'name' => 'Eva', 'surname' => 'Rios', 'email' => 'eva@example.com', 'password' => Hash::make('x')]);
         $experience = $other->userExperience()->create([
-            'business_name' => 'X', 'business_position' => 'Y', 'experience_level' => '1', 'year_from' => '2020', 'description' => 'd',
+            'business_name' => 'X',
+            'business_position' => 'Y',
+            'experience_level' => '1',
+            'year_from' => '2020',
+            'description' => 'd',
         ]);
 
         $this->withSession(['id' => $user->id, 'role' => 'user']);
@@ -111,8 +134,11 @@ class ControllersSmokeTest extends TestCase
         $this->mock(Mailer::class)->shouldReceive('send')->once()->andReturn(false);
 
         $this->post('/contacto', [
-            'name' => 'Ana', 'email' => 'ana@example.com', 'phone' => '123',
-            'subject' => 'Hola', 'message_user' => 'Mensaje',
+            'name' => 'Ana',
+            'email' => 'ana@example.com',
+            'phone' => '123',
+            'subject' => 'Hola',
+            'message_user' => 'Mensaje',
         ])->assertRedirect();
 
         $this->assertDatabaseHas('contacts', ['email' => 'ana@example.com', 'message' => 'Mensaje']);
@@ -128,8 +154,10 @@ class ControllersSmokeTest extends TestCase
         $token = DB::table('password_resets')->value('token');
 
         $this->post('/sendNewBusinessPassword', [
-            'email' => 'ana@example.com', 'token' => $token,
-            'password' => 'nueva-clave', 'password_confirmation' => 'nueva-clave',
+            'email' => 'ana@example.com',
+            'token' => $token,
+            'password' => 'nueva-clave',
+            'password_confirmation' => 'nueva-clave',
         ])->assertSessionHas('message.0', 'success');
 
         $this->assertTrue(Hash::check('nueva-clave', Business::first()->password));

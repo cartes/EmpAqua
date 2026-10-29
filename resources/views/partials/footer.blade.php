@@ -17,8 +17,8 @@
                     </div>
                 </div>
                 <div class="info-footer col-12 col-sm-4">
-                    <h5>© 2023 B2B Media Group ®</h5>
-                    <h5>Todos los derechos reservados</h5>
+                    <p class="footer-title mb-2">© 2023 B2B Media Group ®</p>
+                    <p class="footer-title mb-2">Todos los derechos reservados</p>
 
                     <p>Benavente 550 oficina 705, Edificio Campanario,</p>
                     <p>Puerto Montt, Chile.</p>
@@ -33,7 +33,7 @@
                 <div class="col-12 col-sm-4">
                     <div class="row">
                         <div class="col-6 grupo-b2b">
-                            <h5>SOMOS</h5>
+                            <p class="footer-title mb-2">SOMOS</p>
                             <ul id="portales">
                                 <li><a href="https://www.aqua.cl/" target="_blank">Portal Aqua</a></li>
                                 <li><a href="https://www.revistaei.cl/" target="_blank">Portal Electricidad</a></li>
@@ -43,7 +43,7 @@
                             </ul>
                         </div>
                         <div class="col-6 rrss">
-                            <h5>ENCUENTRANOS EN</h5>
+                            <p class="footer-title mb-2">ENCUENTRANOS EN</p>
                             <ul class="list-inline">
                                 <li class="list-inline-item text-center"><a href="https://www.facebook.com/Empleosaqua" target="_blank"><i class="fab fa-facebook fa-2x"></i></a></li>
                                 <li class="list-inline-item text-center"><a href="https://www.linkedin.com/company/empleosaqua/" target="_blank"><i class="fab fa-linkedin fa-2x"></i></a></li>

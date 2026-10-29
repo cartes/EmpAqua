@@ -3,7 +3,7 @@
         <div class="modal-content py-3 px-4">
             @if (!session()->has('id'))
                 <div class="modal-header">
-                    <h4 style="font-size: 0,9rem;">Crea tu usuario y administra tu Empresa</h4>
+                    <div class="modal-title h4" style="font-size: 0.9rem;">Crea tu usuario y administra tu Empresa</div>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <i class="far fa-times-circle"></i>
                     </button>

@@ -34,7 +34,7 @@
             <div class="modal-dialog modal-dialog-centered" role="document">
                 <div class="modal-content py-3 px-4">
                     <div class="modal-header">
-                        <h4>Deseas postular al aviso {{ $offer->title ?? '' }}</h4>
+                        <div class="modal-title h4" id="modalLabel">Deseas postular al aviso {{ $offer->title ?? '' }}</div>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">×</span>
                         </button>

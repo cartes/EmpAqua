@@ -2,14 +2,15 @@
 
 @section('content')
     <div class="container">
+        <h1 class="sr-only">Boletín de ofertas laborales</h1>
         <div class="row">
             @foreach($offersByCategory as $categoryName => $offers)
                 <table class="table-borderless table">
                     <tr>
                         <td style="background: #e4e4e4; padding: 10px 20px;">
-                            <h3 style="color: #666; padding: 0; margin: 0; font-size: 1.5rem">
+                            <h2 style="color: #666; padding: 0; margin: 0; font-size: 1.5rem">
                                 {{ $categoryName }}
-                            </h3>
+                            </h2>
                         </td>
                     </tr>
                     @foreach($offers as $offer)
