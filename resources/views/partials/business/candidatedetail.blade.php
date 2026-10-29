@@ -98,7 +98,7 @@
                                     <td>
                                         <form class="sendMessage">
                                             @php(
-                                                $lastMessage = \App\Message::where([
+                                                $lastMessage = \App\Models\Message::where([
                                                     'user_id' => $candidate->user->id,
                                                     'offer_id' => $offer->id
                                                 ])->where('sender_id', '!=', session()->get('id') )->latest()->first()

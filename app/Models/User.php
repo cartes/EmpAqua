@@ -1,6 +1,6 @@
 <?php
 
-namespace App;
+namespace App\Models;
 
 use Carbon\Carbon;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
@@ -8,19 +8,19 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
 /**
- * App\User
+ * App\Models\User
  *
- * @property-read \Illuminate\Database\Eloquent\Collection|\App\Candidates[] $Candidates
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Candidates[] $Candidates
  * @property-read int|null $candidates_count
  * @property-read \Illuminate\Notifications\DatabaseNotificationCollection|\Illuminate\Notifications\DatabaseNotification[] $notifications
  * @property-read int|null $notifications_count
- * @method static \Illuminate\Database\Eloquent\Builder|\App\User newModelQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|\App\User newQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|\App\User query()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\User newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\User newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\User query()
  * @mixin \Eloquent
- * @property-read \App\UserMeta $UserMeta
- * @property-read \App\UserExperience $UserExperience
- * @property-read \App\UserLanguage $UserLanguage
+ * @property-read \App\Models\UserMeta $UserMeta
+ * @property-read \App\Models\UserExperience $UserExperience
+ * @property-read \App\Models\UserLanguage $UserLanguage
  * @property int $id
  * @property string $rut_user
  * @property string $name
@@ -34,37 +34,37 @@ use Illuminate\Notifications\Notifiable;
  * @property string|null $remember_token
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
- * @property-read \Illuminate\Database\Eloquent\Collection|\App\Candidates[] $candidates
- * @property-read \Illuminate\Database\Eloquent\Collection|\App\UserEducation[] $userEducation
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Candidates[] $candidates
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\UserEducation[] $userEducation
  * @property-read int|null $user_education_count
- * @property-read \Illuminate\Database\Eloquent\Collection|\App\UserExperience[] $userExperience
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\UserExperience[] $userExperience
  * @property-read int|null $user_experience_count
- * @property-read \Illuminate\Database\Eloquent\Collection|\App\UserLanguage[] $userLanguage
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\UserLanguage[] $userLanguage
  * @property-read int|null $user_language_count
- * @property-read \App\UserMeta $userMeta
- * @property-read \Illuminate\Database\Eloquent\Collection|\App\UserSkills[] $userSkills
+ * @property-read \App\Models\UserMeta $userMeta
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\UserSkills[] $userSkills
  * @property-read int|null $user_skills_count
- * @method static \Illuminate\Database\Eloquent\Builder|\App\User whereBirthday($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\User whereCreatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\User whereEmail($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\User whereGender($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\User whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\User whereMaritalStatus($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\User whereNacionality($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\User whereName($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\User wherePassword($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\User whereRememberToken($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\User whereRutUser($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\User whereSurname($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\User whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\User whereBirthday($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\User whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\User whereEmail($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\User whereGender($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\User whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\User whereMaritalStatus($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\User whereNacionality($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\User whereName($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\User wherePassword($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\User whereRememberToken($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\User whereRutUser($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\User whereSurname($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\User whereUpdatedAt($value)
  * @property-read mixed $age
- * @property-read \Illuminate\Database\Eloquent\Collection|\App\Offers[] $offers
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Offers[] $offers
  * @property-read int|null $offers_count
- * @property-read \Illuminate\Database\Eloquent\Collection|\App\Reference[] $userReferences
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Reference[] $userReferences
  * @property-read int|null $user_references_count
- * @property-read \Illuminate\Database\Eloquent\Collection|\App\Message[] $messages
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Message[] $messages
  * @property-read int|null $messages_count
- * @property-read \Illuminate\Database\Eloquent\Collection|\App\Search[] $searches
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Search[] $searches
  * @property-read int|null $searches_count
  */
 class User extends Authenticatable
@@ -122,32 +122,32 @@ class User extends Authenticatable
 
     public function candidates()
     {
-        return $this->hasMany('App\Candidates', 'id_user', 'id');
+        return $this->hasMany('App\Models\Candidates', 'id_user', 'id');
     }
 
     public function userMeta()
     {
-        return $this->hasOne('App\UserMeta', 'id_user', 'id');
+        return $this->hasOne('App\Models\UserMeta', 'id_user', 'id');
     }
 
     public function userExperience()
     {
-        return $this->hasMany('App\UserExperience', 'id_user', 'id');
+        return $this->hasMany('App\Models\UserExperience', 'id_user', 'id');
     }
 
     public function userLanguage()
     {
-        return $this->hasMany('App\UserLanguage', 'id_user', 'id');
+        return $this->hasMany('App\Models\UserLanguage', 'id_user', 'id');
     }
 
     public function userSkills()
     {
-        return $this->hasMany('App\UserSkills', 'id_user', 'id');
+        return $this->hasMany('App\Models\UserSkills', 'id_user', 'id');
     }
 
     public function userEducation()
     {
-        return $this->hasMany('App\UserEducation', 'id_user', 'id')->orderBy('year_from', 'asc');
+        return $this->hasMany('App\Models\UserEducation', 'id_user', 'id')->orderBy('year_from', 'asc');
     }
 
     public function userReferences()

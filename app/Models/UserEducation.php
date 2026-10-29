@@ -1,15 +1,15 @@
 <?php
 
-namespace App;
+namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
 /**
- * App\UserEducation
+ * App\Models\UserEducation
  *
- * @method static \Illuminate\Database\Eloquent\Builder|\App\UserEducation newModelQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|\App\UserEducation newQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|\App\UserEducation query()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\UserEducation newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\UserEducation newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\UserEducation query()
  * @mixin \Eloquent
  * @property int $id_education
  * @property int $id_user
@@ -25,23 +25,23 @@ use Illuminate\Database\Eloquent\Model;
  * @property string $institution
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
- * @property-read \App\User $user
- * @method static \Illuminate\Database\Eloquent\Builder|\App\UserEducation whereArea($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\UserEducation whereCondition($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\UserEducation whereCountry($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\UserEducation whereCreatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\UserEducation whereIdEducation($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\UserEducation whereIdUser($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\UserEducation whereInstitution($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\UserEducation whereMonthFrom($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\UserEducation whereMonthTo($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\UserEducation whereStudies($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\UserEducation whereTitle($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\UserEducation whereUpdatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\UserEducation whereYearFrom($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\UserEducation whereYearTo($value)
+ * @property-read \App\Models\User $user
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\UserEducation whereArea($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\UserEducation whereCondition($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\UserEducation whereCountry($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\UserEducation whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\UserEducation whereIdEducation($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\UserEducation whereIdUser($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\UserEducation whereInstitution($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\UserEducation whereMonthFrom($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\UserEducation whereMonthTo($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\UserEducation whereStudies($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\UserEducation whereTitle($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\UserEducation whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\UserEducation whereYearFrom($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\UserEducation whereYearTo($value)
  * @property int|null $to_present
- * @method static \Illuminate\Database\Eloquent\Builder|\App\UserEducation whereToPresent($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\UserEducation whereToPresent($value)
  */
 class UserEducation extends Model
 {

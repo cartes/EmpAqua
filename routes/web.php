@@ -94,6 +94,7 @@ Route::prefix('posts')->group(function () {
 Route::prefix('business')->group(function () {
     Route::get('/show_admin/{id}/', [BusinessController::class, 'show_superadmin'])->name('business.showadmin');
     Route::get('index', 'BusinessController@index')->name('business.index');
+    Route::get('/login', 'BusinessController@index');
     Route::post('/login', 'BusinessController@login')->middleware('throttle:10,1')->name('business.login');
     Route::post('register', 'BusinessController@register')->name('business.register');
     Route::get('profile', 'BusinessController@profileIndex')->name('business.profile')->middleware(['redhome']);

@@ -1,11 +1,11 @@
 <?php
 
-namespace App;
+namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
 /**
- * App\UserLanguage
+ * App\Models\UserLanguage
  *
  * @property int $id_language
  * @property int $id_user
@@ -14,19 +14,19 @@ use Illuminate\Database\Eloquent\Model;
  * @property int $level_spoken
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
- * @property-read \App\User $User
- * @method static \Illuminate\Database\Eloquent\Builder|\App\UserLanguage newModelQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|\App\UserLanguage newQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|\App\UserLanguage query()
- * @method static \Illuminate\Database\Eloquent\Builder|\App\UserLanguage whereCreatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\UserLanguage whereIdLanguage($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\UserLanguage whereIdUser($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\UserLanguage whereLanguage($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\UserLanguage whereLevelSpoken($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\UserLanguage whereLevelWritten($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\UserLanguage whereUpdatedAt($value)
+ * @property-read \App\Models\User $User
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\UserLanguage newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\UserLanguage newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\UserLanguage query()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\UserLanguage whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\UserLanguage whereIdLanguage($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\UserLanguage whereIdUser($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\UserLanguage whereLanguage($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\UserLanguage whereLevelSpoken($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\UserLanguage whereLevelWritten($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\UserLanguage whereUpdatedAt($value)
  * @mixin \Eloquent
- * @property-read \App\User $user
+ * @property-read \App\Models\User $user
  */
 class UserLanguage extends Model
 {
@@ -35,7 +35,7 @@ class UserLanguage extends Model
 
     public function user()
     {
-        return $this->belongsTo('App\User');
+        return $this->belongsTo('App\Models\User');
     }
 
     public function getLevelWrittenAttribute($value)

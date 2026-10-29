@@ -2,11 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\Business;
-use App\BusinessMeta;
-use App\Category;
+use App\Models\Business;
+use App\Models\BusinessMeta;
+use App\Models\Category;
 use App\Http\Requests\BusinessRegisterRequest;
-use App\Offers;
+use App\Models\Offers;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;

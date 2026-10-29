@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use App\Offers;
-use App\Candidates;
-use App\Search;
+use App\Models\Offers;
+use App\Models\Candidates;
+use App\Models\Search;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
 

@@ -1,19 +1,19 @@
 <?php
 namespace App\Http\Controllers;
 
-use App\Benefit;
-use App\Business;
-use App\Candidates;
-use App\Category;
-use App\Role;
+use App\Models\Benefit;
+use App\Models\Business;
+use App\Models\Candidates;
+use App\Models\Category;
+use App\Models\Role;
 use App\Http\Requests\CreateOfferRequest;
 use App\Http\Requests\OfferEditRequest;
-use App\Offers;
-use App\CandidateStatus;
-use App\User;
-use App\UserMeta;
-use App\UserEducation;
-use App\UserExperience;
+use App\Models\Offers;
+use App\Models\CandidateStatus;
+use App\Models\User;
+use App\Models\UserMeta;
+use App\Models\UserEducation;
+use App\Models\UserExperience;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\Request;

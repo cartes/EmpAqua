@@ -1,6 +1,6 @@
 <?php
 
-namespace App;
+namespace App\Models;
 
 use App\Traits\DatesTranslator;
 use Carbon\Carbon;
@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 /**
- * App\Offers
+ * App\Models\Offers
  *
  * @property int $id
  * @property int $id_business
@@ -28,65 +28,65 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @property int $period
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
- * @property-read \App\Business $Business
- * @property-read \Illuminate\Database\Eloquent\Collection|\App\Candidates[] $Candidates
+ * @property-read \App\Models\Business $Business
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Candidates[] $Candidates
  * @property-read int|null $candidates_count
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Offers newModelQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Offers newQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Offers query()
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Offers whereAddress($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Offers whereArea($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Offers whereBenefits($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Offers whereCity($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Offers whereCreatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Offers whereDescription($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Offers whereHandicapped($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Offers whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Offers whereIdBusiness($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Offers wherePeriod($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Offers wherePosition($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Offers whereRequirements($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Offers whereSalary($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Offers whereState($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Offers whereSubArea($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Offers whereTitle($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Offers whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Offers newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Offers newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Offers query()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Offers whereAddress($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Offers whereArea($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Offers whereBenefits($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Offers whereCity($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Offers whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Offers whereDescription($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Offers whereHandicapped($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Offers whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Offers whereIdBusiness($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Offers wherePeriod($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Offers wherePosition($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Offers whereRequirements($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Offers whereSalary($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Offers whereState($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Offers whereSubArea($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Offers whereTitle($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Offers whereUpdatedAt($value)
  * @mixin \Eloquent
- * @property-read \App\Business $business
- * @property-read \Illuminate\Database\Eloquent\Collection|\App\Candidates[] $candidates
+ * @property-read \App\Models\Business $business
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Candidates[] $candidates
  * @property string|null $status
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Offers whereStatus($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Offers whereStatus($value)
  * @property string $country
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Offers whereCountry($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Offers whereCountry($value)
  * @property string|null $slug
  * @property \Illuminate\Support\Carbon|null $deleted_at
- * @property-read \Illuminate\Database\Eloquent\Collection|\App\User[] $User
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\User[] $User
  * @property-read int|null $user_count
- * @property-read \App\BusinessMeta $businessMeta
+ * @property-read \App\Models\BusinessMeta $businessMeta
  * @property-read mixed $date
  * @property-read mixed $publication
  * @method static bool|null forceDelete()
- * @method static \Illuminate\Database\Query\Builder|\App\Offers onlyTrashed()
+ * @method static \Illuminate\Database\Query\Builder|\App\Models\Offers onlyTrashed()
  * @method static bool|null restore()
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Offers whereComune($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Offers whereDeletedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Offers whereSlug($value)
- * @method static \Illuminate\Database\Query\Builder|\App\Offers withTrashed()
- * @method static \Illuminate\Database\Query\Builder|\App\Offers withoutTrashed()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Offers whereComune($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Offers whereDeletedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Offers whereSlug($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\Models\Offers withTrashed()
+ * @method static \Illuminate\Database\Query\Builder|\App\Models\Offers withoutTrashed()
  * @property string|null $experience
  * @property string|null $views
  * @property string|null $expirated_at
- * @property-read \Illuminate\Database\Eloquent\Collection|\App\Benefit[] $Benefits
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Benefit[] $Benefits
  * @property-read int|null $benefits_count
  * @property-read mixed $expiration_date
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Offers whereExperience($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Offers whereExpiratedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Offers whereViews($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Offers whereExperience($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Offers whereExpiratedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Offers whereViews($value)
  * @property int|null $featured
  * @property-read mixed $is_new
- * @property-read \Illuminate\Database\Eloquent\Collection|\App\Message[] $messages
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Message[] $messages
  * @property-read int|null $messages_count
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Offers whereFeatured($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Offers whereFeatured($value)
  */
 class Offers extends Model
 {

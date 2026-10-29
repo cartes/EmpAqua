@@ -2,8 +2,8 @@
 
 namespace App\Http\Requests;
 
-use App\Business;
-use App\BusinessMeta;
+use App\Models\Business;
+use App\Models\BusinessMeta;
 use Illuminate\Foundation\Http\FormRequest;
 
 class BusinessProfileRequest extends FormRequest

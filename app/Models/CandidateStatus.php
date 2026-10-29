@@ -1,5 +1,5 @@
 <?php
-namespace App;
+namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
@@ -20,6 +20,6 @@ class CandidateStatus extends Model
 
     public function offer()
     {
-        return $this->belongsTo(Offer::class, 'offer_id');
+        return $this->belongsTo(Offers::class, 'offer_id');
     }
 }

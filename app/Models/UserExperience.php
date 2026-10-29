@@ -1,16 +1,16 @@
 <?php
 
-namespace App;
+namespace App\Models;
 
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 
 /**
- * App\UserExperience
+ * App\Models\UserExperience
  *
- * @method static \Illuminate\Database\Eloquent\Builder|\App\UserExperience newModelQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|\App\UserExperience newQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|\App\UserExperience query()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\UserExperience newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\UserExperience newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\UserExperience query()
  * @mixin \Eloquent
  * @property int $id_experience
  * @property int $id_user
@@ -28,28 +28,28 @@ use Illuminate\Database\Eloquent\Model;
  * @property int $dependents
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
- * @property-read \App\User $User
- * @method static \Illuminate\Database\Eloquent\Builder|\App\UserExperience whereArea($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\UserExperience whereBusinessActivity($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\UserExperience whereBusinessName($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\UserExperience whereBusinessPosition($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\UserExperience whereCreatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\UserExperience whereDependents($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\UserExperience whereDescription($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\UserExperience whereExperienceLevel($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\UserExperience whereIdExperience($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\UserExperience whereIdUser($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\UserExperience whereMonthFrom($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\UserExperience whereMonthTo($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\UserExperience whereSubArea($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\UserExperience whereUpdatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\UserExperience whereYearFrom($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\UserExperience whereYearTo($value)
- * @property-read \App\User $user
+ * @property-read \App\Models\User $User
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\UserExperience whereArea($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\UserExperience whereBusinessActivity($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\UserExperience whereBusinessName($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\UserExperience whereBusinessPosition($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\UserExperience whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\UserExperience whereDependents($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\UserExperience whereDescription($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\UserExperience whereExperienceLevel($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\UserExperience whereIdExperience($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\UserExperience whereIdUser($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\UserExperience whereMonthFrom($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\UserExperience whereMonthTo($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\UserExperience whereSubArea($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\UserExperience whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\UserExperience whereYearFrom($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\UserExperience whereYearTo($value)
+ * @property-read \App\Models\User $user
  * @property string|null $business_country
  * @property int|null $to_present
- * @method static \Illuminate\Database\Eloquent\Builder|\App\UserExperience whereBusinessCountry($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\UserExperience whereToPresent($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\UserExperience whereBusinessCountry($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\UserExperience whereToPresent($value)
  * @property-read mixed $date_diff
  */
 class UserExperience extends Model
@@ -62,7 +62,7 @@ class UserExperience extends Model
 
     public function user()
     {
-        return $this->belongsTo('App\User');
+        return $this->belongsTo('App\Models\User');
     }
 
     public function getMonthFromAttribute($value)

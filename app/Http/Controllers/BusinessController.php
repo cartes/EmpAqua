@@ -1,16 +1,15 @@
-c
 <?php
 
 namespace App\Http\Controllers;
 
-use App\Business;
-use App\BusinessMeta;
+use App\Models\Business;
+use App\Models\BusinessMeta;
 use App\Helpers\Helper;
 use App\Http\Requests\BusinessLoginRequest;
 use App\Http\Requests\BusinessProfileRequest;
 use App\Http\Requests\BusinessRegisterRequest;
-use App\Offers;
-use App\Role;
+use App\Models\Offers;
+use App\Models\Role;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;

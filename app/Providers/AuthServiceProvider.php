@@ -2,7 +2,7 @@
 
 namespace App\Providers;
 
-use App\Offers;
+use App\Models\Offers;
 use App\Policies\OfferPolicy;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
 

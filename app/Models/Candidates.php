@@ -1,40 +1,40 @@
 <?php
 
-namespace App;
+namespace App\Models;
 
 use App\Traits\DatesTranslator;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 
 /**
- * App\Candidates
+ * App\Models\Candidates
  *
  * @property int $id
  * @property int $id_offer
  * @property int $id_candidate
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
- * @property-read \App\Offers $Offers
- * @property-read \App\User $User
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Candidates newModelQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Candidates newQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Candidates query()
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Candidates whereCreatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Candidates whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Candidates whereIdCandidate($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Candidates whereIdOffer($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Candidates whereUpdatedAt($value)
+ * @property-read \App\Models\Offers $Offers
+ * @property-read \App\Models\User $User
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Candidates newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Candidates newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Candidates query()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Candidates whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Candidates whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Candidates whereIdCandidate($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Candidates whereIdOffer($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Candidates whereUpdatedAt($value)
  * @mixin \Eloquent
- * @property-read \App\Offers $offers
- * @property-read \App\User $user
+ * @property-read \App\Models\Offers $offers
+ * @property-read \App\Models\User $user
  * @property int $id_user
  * @property-read mixed $date
  * @property-read mixed $postulated
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Candidates whereIdUser($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Candidates whereIdUser($value)
  * @property int|null $status
  * @property-read mixed $deleted_at
  * @property-read mixed $expirated_at
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Candidates whereStatus($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Candidates whereStatus($value)
  */
 class Candidates extends Model
 {
@@ -48,12 +48,12 @@ class Candidates extends Model
 
     public function offers()
     {
-        return $this->belongsTo('App\Offers', 'id_offer', 'id');
+        return $this->belongsTo('App\Models\Offers', 'id_offer', 'id');
     }
 
     public function user()
     {
-        return $this->belongsTo('App\User', 'id_user', 'id');
+        return $this->belongsTo('App\Models\User', 'id_user', 'id');
     }
     
     public function candidateStatus()

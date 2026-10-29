@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\Message;
-use App\User;
+use App\Models\Message;
+use App\Models\User;
 use Illuminate\Http\Request;
 
 class MessageController extends Controller

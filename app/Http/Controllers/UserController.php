@@ -2,13 +2,13 @@
 
 namespace App\Http\Controllers;
 
-use App\Candidates;
+use App\Models\Candidates;
 use App\Http\Requests\PersonalDataRequest;
 use App\Http\Requests\UserRegisterRequest;
-use App\Message;
-use App\Offers;
-use App\Search;
-use App\User;
+use App\Models\Message;
+use App\Models\Offers;
+use App\Models\Search;
+use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;

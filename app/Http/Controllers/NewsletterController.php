@@ -3,8 +3,8 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Category;
-use App\Offers;
+use App\Models\Category;
+use App\Models\Offers;
 
 class NewsletterController extends Controller
 {

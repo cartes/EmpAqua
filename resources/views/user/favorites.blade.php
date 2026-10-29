@@ -45,7 +45,7 @@
                                                 </p>
                                             </a>
                                             <p class="m-0 text-left">
-                                                @php( $meta = \App\BusinessMeta::where('id_business', '=', $candidate->id_business)->first() )
+                                                @php( $meta = \App\Models\BusinessMeta::where('id_business', '=', $candidate->id_business)->first() )
                                                 @if ( $meta->confidential )
                                                     {{ $meta->fantasy_name }}
                                                 @else
@@ -81,7 +81,7 @@
                                         <td class="align-middle text-center">
                                             <form class="sendMessage" method="post">
                                                 @php(
-                                                $lastMessage = \App\Message::where([
+                                                $lastMessage = \App\Models\Message::where([
                                                     'user_id' => $candidate->pivot->id_user,
                                                     'offer_id' => $candidate->pivot->id_offer])
                                                     ->latest()
