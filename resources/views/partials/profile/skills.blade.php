@@ -1,33 +1,30 @@
-<form class="form" method="post" action="{{ route('profile.skills') }}">
-    <h4 class="text-left">Habilidades</h4>
-    @csrf
-    @method('PUT')
-    <div class="row">
-        <div class="form-group col-md-12">
-            <label>Conocimientos</label>
-            <input class="form-control{{$errors->has('skill') ? ' is-invalid' : ''}}" name="skill"
-                   value="{{old('skill')}}"/>
-            @if($errors->has('skill'))
-                <span class="invalid-feedback">{{$errors->first('skill')}}</span>
-            @endif
-        </div>
+<section id="habilidades" class="card p-card">
+    <div class="card-header">
+        <h2><i class="fas fa-star"></i>Habilidades</h2>
     </div>
-    <button type="submit" class="btn btn-primary">Guardar los Datos</button>
-
-    @if($user->UserSkills)
-        <div class="col-md-12 my-2">
-            <div class="my-3">
-                <div class="body">
-                    <div class="align-content-center">
-                        @foreach($user->UserSkills as $skill)
-                            <h3 class="badge-skills fs-4 badge-info badge bg-secondary p-2 mr-2 text-white" style="cursor: pointer;" data-id="{{$skill->id_skills}}">
-                                {{$skill->skill}}
-                            </h3>
-                        @endforeach
-                    </div>
+    <div class="card-body">
+        <form class="form" method="post" action="{{ route('profile.skills') }}">
+            @csrf
+            @method('PUT')
+            <label class="small font-weight-bold text-muted" for="skill">Agrega un conocimiento o habilidad</label>
+            <div class="input-group mb-3">
+                <input id="skill" class="form-control{{ $errors->has('skill') ? ' is-invalid' : '' }}" name="skill"
+                       value="{{ old('skill') }}" placeholder="Ej: Excel avanzado, Manejo de grúa horquilla"/>
+                <div class="input-group-append">
+                    <button type="submit" class="btn btn-primary"><i class="fas fa-plus mr-1"></i> Agregar</button>
                 </div>
+                @if($errors->has('skill'))
+                    <span class="invalid-feedback">{{ $errors->first('skill') }}</span>
+                @endif
             </div>
-        </div>
-    @endif
+        </form>
 
-</form>
+        @forelse($user->userSkills as $skill)
+            <span class="skill-pill badge-skills" data-id="{{ $skill->id_skills }}" title="Clic para eliminar">
+                {{ $skill->skill }} <i class="fas fa-times"></i>
+            </span>
+        @empty
+            <div class="p-empty">Aún no has agregado habilidades.</div>
+        @endforelse
+    </div>
+</section>

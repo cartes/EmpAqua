@@ -1,4 +1,5 @@
 @extends('layout.app')
+@section('robots', 'noindex, nofollow')
 
 @section('content')
     <div class="container py-sm-5">
@@ -41,7 +42,6 @@
 
         @push('scripts')
         <!-- Banner superior -->
-            <script async src="https://securepubads.g.doubleclick.net/tag/js/gpt.js"></script>
             <script>
                 window.googletag = window.googletag || {cmd: []};
                 googletag.cmd.push(function () {
@@ -51,7 +51,6 @@
                 });
             </script>
 
-            <script async src="https://securepubads.g.doubleclick.net/tag/js/gpt.js"></script>
             <script>
                 window.googletag = window.googletag || {cmd: []};
                 googletag.cmd.push(function () {
@@ -63,7 +62,6 @@
             <!-- Fin Banner Superior -->
 
             <!-- Banner Inferior -->
-            <script async src="https://securepubads.g.doubleclick.net/tag/js/gpt.js"></script>
 
             <script>
                 window.googletag = window.googletag || {cmd: []};
@@ -74,7 +72,6 @@
                 });
             </script>
 
-            <script async src="https://securepubads.g.doubleclick.net/tag/js/gpt.js"></script>
 
             <script>
                 window.googletag = window.googletag || {cmd: []};

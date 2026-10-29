@@ -1,73 +1,105 @@
-<form class="form" action="{{ route('profile.education') }}" method="post">
-    <h4 class="text-left">Completa tu información Académica.</h4>
-    @csrf
-    <div class="row">
-        <div class="form-group col-md-6">
-            <label>Nivel de estudios</label>
-            <select class="form-control{{ $errors->has('studies') ? ' is-invalid' : '' }}" name="studies"
-                value="{{ old('studies') }}">
-                <option>Seleccionar</option>
-                <option value="1"{{ old('studies') == '1' ? ' selected' : '' }}>Secundario</option>
-                <option value="2"{{ old('studies') == '2' ? ' selected' : '' }}>Terciario</option>
-                <option value="3"{{ old('studies') == '3' ? ' selected' : '' }}>Universitario</option>
-                <option value="4"{{ old('studies') == '4' ? ' selected' : '' }}>Posgrado</option>
-                <option value="4"{{ old('studies') == '4' ? ' selected' : '' }}>Master</option>
-                <option value="5"{{ old('studies') == '5' ? ' selected' : '' }}>Doctorado</option>
-                <option value="6"{{ old('studies') == '6' ? ' selected' : '' }}>Otro</option>
-            </select>
-        </div>
-    </div>
-    <div class="row">
-        <div class="form-group col-md-6">
-            <label>Carrera / Título</label>
-            <input class="form-control {{ $errors->has('title') ? 'is-invalid' : '' }}" name="title"
-                value="{{ old('title') }}" />
-            @if ($errors->has('title'))
-                <span class="invalid-feedback">{{ $errors->first('title') }}</span>
-            @endif
-        </div>
-        <div class="form-group col-md-6">
-            <label>Institución</label>
-            <input class="form-control {{ $errors->has('institution') ? 'is-invalid' : '' }}" name="institution"
-                value="{{ old('institution') }}" />
-            @if ($errors->has('institution'))
-                <span class="invalid-feedback">{{ $errors->first('institution') }}</span>
-            @endif
-        </div>
-    </div>
+@php
+    $eduHasErrors = $errors->hasAny(['studies', 'title', 'institution', 'condition', 'year_to']);
+@endphp
 
-    <div class="row">
-        <div class="form-group col-md-6">
-            <label>Estado</label>
-            <select class="form-control {{ $errors->has('condition') ? 'is-invalid' : '' }}" name="condition"
-                value="{{ old('condition') }}">
-                <option value="" {{ old('condition') == '' ? 'selected' : '' }}>Seleccionar</option>
-                <option value="1" {{ old('condition') == '1' ? 'selected' : '' }}>En Curso</option>
-                <option value="2" {{ old('condition') == '2' ? 'selected' : '' }}>Graduado</option>
-                <option value="3" {{ old('condition') == '3' ? 'selected' : '' }}>Abandonado</option>
-            </select>
-            @if ($errors->has('condition'))
-                <span class="invalid-feedback">{{ $errors->first('condition') }}</span>
-            @endif
-        </div>
-        <div class="form-group col-md-3">
-            <label>Año de Egreso</label>
-            <input class="form-control {{ $errors->has('year_to') ? 'is-invalid' : '' }}" name="year_to_st"
-                value="{{ old('year_to') }}" placeholder="Año" />
-            @if ($errors->has('year_to'))
-                <span class="invalid-feedback">{{ $errors->first('year_to') }}</span>
-            @endif
-        </div>
-
+<section id="educacion" class="card p-card">
+    <div class="card-header">
+        <h2><i class="fas fa-graduation-cap"></i>Formación académica</h2>
+        <button class="btn btn-sm btn-outline-primary" type="button" data-toggle="collapse" data-target="#addEducation"
+                aria-expanded="{{ $eduHasErrors ? 'true' : 'false' }}" aria-controls="addEducation">
+            <i class="fas fa-plus mr-1"></i> Agregar
+        </button>
     </div>
-
-    <div class="row">
-        <div class="col-12 text-end my-3">
-            <button type="submit" class="btn btn-primary">Guardar los Datos</button>
+    <div class="card-body">
+        <div class="collapse{{ $eduHasErrors ? ' show' : '' }}" id="addEducation">
+            <form class="form add-form" action="{{ route('profile.education') }}" method="post">
+                @csrf
+                <div class="form-row">
+                    <div class="form-group col-md-6">
+                        <label>Nivel de estudios</label>
+                        <select class="form-control{{ $errors->has('studies') ? ' is-invalid' : '' }}" name="studies">
+                            <option value="">Seleccionar</option>
+                            <option value="1"{{ old('studies') == '1' ? ' selected' : '' }}>Secundario</option>
+                            <option value="2"{{ old('studies') == '2' ? ' selected' : '' }}>Terciario</option>
+                            <option value="3"{{ old('studies') == '3' ? ' selected' : '' }}>Universitario</option>
+                            <option value="4"{{ old('studies') == '4' ? ' selected' : '' }}>Posgrado</option>
+                            <option value="4"{{ old('studies') == '4' ? ' selected' : '' }}>Master</option>
+                            <option value="5"{{ old('studies') == '5' ? ' selected' : '' }}>Doctorado</option>
+                            <option value="6"{{ old('studies') == '6' ? ' selected' : '' }}>Otro</option>
+                        </select>
+                    </div>
+                    <div class="form-group col-md-6">
+                        <label>Estado</label>
+                        <select class="form-control {{ $errors->has('condition') ? 'is-invalid' : '' }}" name="condition">
+                            <option value="" {{ old('condition') == '' ? 'selected' : '' }}>Seleccionar</option>
+                            <option value="1" {{ old('condition') == '1' ? 'selected' : '' }}>En Curso</option>
+                            <option value="2" {{ old('condition') == '2' ? 'selected' : '' }}>Graduado</option>
+                            <option value="3" {{ old('condition') == '3' ? 'selected' : '' }}>Abandonado</option>
+                        </select>
+                        @if ($errors->has('condition'))
+                            <span class="invalid-feedback">{{ $errors->first('condition') }}</span>
+                        @endif
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group col-md-5">
+                        <label>Carrera / Título</label>
+                        <input class="form-control {{ $errors->has('title') ? 'is-invalid' : '' }}" name="title"
+                               value="{{ old('title') }}" />
+                        @if ($errors->has('title'))
+                            <span class="invalid-feedback">{{ $errors->first('title') }}</span>
+                        @endif
+                    </div>
+                    <div class="form-group col-md-5">
+                        <label>Institución</label>
+                        <input class="form-control {{ $errors->has('institution') ? 'is-invalid' : '' }}" name="institution"
+                               value="{{ old('institution') }}" />
+                        @if ($errors->has('institution'))
+                            <span class="invalid-feedback">{{ $errors->first('institution') }}</span>
+                        @endif
+                    </div>
+                    <div class="form-group col-md-2">
+                        <label>Año de egreso</label>
+                        <input class="form-control {{ $errors->has('year_to') ? 'is-invalid' : '' }}" name="year_to_st"
+                               value="{{ old('year_to') }}" placeholder="Año" />
+                        @if ($errors->has('year_to'))
+                            <span class="invalid-feedback">{{ $errors->first('year_to') }}</span>
+                        @endif
+                    </div>
+                </div>
+                <div class="text-right">
+                    <button type="button" class="btn btn-link text-muted" data-toggle="collapse" data-target="#addEducation">Cancelar</button>
+                    <button type="submit" class="btn btn-primary">Guardar formación</button>
+                </div>
+            </form>
         </div>
-    </div>
 
-</form>
+        @forelse($education ?? [] as $ed)
+            <div class="p-item">
+                <div class="icon"><i class="fas fa-university"></i></div>
+                <div class="body">
+                    <div class="sub text-uppercase small">{{ $ed->studies_level }}</div>
+                    <h3>{{ $ed->title }}</h3>
+                    <div class="sub">
+                        {{ $ed->institution }}
+                        <span class="mx-1">·</span>{{ $ed->condition }}
+                        @if($ed->year_to)<span class="mx-1">·</span><strong>{{ $ed->year_to }}</strong>@endif
+                    </div>
+                </div>
+                <div class="actions">
+                    <a href="#" class="edit-education" data-id="{{ $ed->id_education }}" title="Editar">
+                        <i class="far fa-edit"></i>
+                    </a>
+                    <a href="#" class="erase-education" data-id="{{ $ed->id_education }}" title="Eliminar">
+                        <i class="far fa-trash-alt"></i>
+                    </a>
+                </div>
+            </div>
+        @empty
+            <div class="p-empty">Aún no has agregado información académica.</div>
+        @endforelse
+    </div>
+</section>
 
 <!-- Modal -->
 <div class="modal fade" id="editEducationModal" tabindex="-1" role="dialog" aria-labelledby="editEducationModalLabel"
@@ -75,7 +107,7 @@
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="editEducationModalLabel">Editar Información Académica</h5>
+                <h5 class="modal-title" id="editEducationModalLabel">Editar información académica</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
@@ -116,7 +148,7 @@
                         </select>
                     </div>
                     <div class="form-group">
-                        <label for="year_to">Año de Egreso</label>
+                        <label for="year_to">Año de egreso</label>
                         <input type="text" class="form-control" name="year_to" placeholder="Año">
                     </div>
                     <div class="modal-footer">
@@ -129,33 +161,6 @@
     </div>
 </div>
 
-@if ($education)
-    <table class="table bg-white my-1">
-        @foreach ($education as $ed)
-            <tr>
-                <td class='align-middle'>
-                    <a href="#" class="erase-education" data-id="{{ $ed->id_education }}">
-                        <i class="fas fa-minus-circle fa-lg text-danger"></i>
-                    </a>
-                    <a href="#" class="edit-education" data-id="{{ $ed->id_education }}">
-                        <i class="fas fa-edit fa-lg text-primary"></i>
-                    </a>
-                </td>
-                <td>
-                    <div class="col-md-12 my-2">
-                        <div class="my-3">
-                            <div class="header">
-                                <h6>{{ $ed->studies_level }}</h6>
-                                <h4><strong>{{ $ed->title }}</strong> en {{ $ed->institution }}</h4>
-                                <p>{{ $ed->condition }} | <strong>{{ $ed->year_to }}</strong></p>
-                            </div>
-                        </div>
-                    </div>
-                </td>
-            </tr>
-        @endforeach
-    </table>
-@endif
 <script>
     $(document).ready(function() {
         $('.edit-education').on('click', function(event) {

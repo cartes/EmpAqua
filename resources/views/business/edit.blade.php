@@ -1,4 +1,5 @@
 @extends("layout.app")
+@section('robots', 'noindex, nofollow')
 
 @section("content")
     <div class="container business-form-page mt-4">

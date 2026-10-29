@@ -1,5 +1,8 @@
 @extends("layout.app")
 
+@section('title', ' | Precios')
+@section('description', 'Planes y precios para publicar ofertas de trabajo en EmpleosAqua.')
+
 @section("content")
     <div class="container">
         @if(null!==session('message'))
@@ -356,3 +359,7 @@
     </style>
 @endpush
 
+@push('meta')
+    <link rel="canonical" href="{{ route('prices') }}" />
+    {!! \App\Support\Schema::script(\App\Support\Schema::webPage('WebPage', 'Precios', route('prices'), 'Planes y precios para publicar ofertas de trabajo en EmpleosAqua.')) !!}
+@endpush

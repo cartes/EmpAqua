@@ -209,7 +209,6 @@
 </div>
 
 @push('scripts')
-    <script async src="https://securepubads.g.doubleclick.net/tag/js/gpt.js"></script>
     @if (!is_null($offers[0]))
         <script>
             window.googletag = window.googletag || {cmd: []};

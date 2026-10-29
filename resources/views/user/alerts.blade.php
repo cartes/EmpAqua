@@ -1,4 +1,5 @@
 @extends('layout.app')
+@section('robots', 'noindex, nofollow')
 
 @section('content')
     @if(session()->get('role') == 'user')

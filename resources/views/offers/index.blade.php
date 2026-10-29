@@ -1,4 +1,5 @@
 @extends('layout.app')
+@section('robots', 'noindex, nofollow')
 
 @push('styles')
     <style>

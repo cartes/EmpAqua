@@ -1,5 +1,8 @@
 @extends('layout.app')
 
+@section('title', ' | Términos y condiciones')
+@section('description', 'Términos y condiciones de uso del portal EmpleosAqua.')
+
 @section('content')
     <div class="container">
         <div class="row justify-content-center">
@@ -196,3 +199,8 @@
     </div>
 
 @endsection
+
+@push('meta')
+    <link rel="canonical" href="{{ route('terms') }}" />
+    {!! \App\Support\Schema::script(\App\Support\Schema::webPage('WebPage', 'Términos y condiciones', route('terms'), 'Términos y condiciones de uso del portal EmpleosAqua.')) !!}
+@endpush

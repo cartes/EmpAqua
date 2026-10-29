@@ -1,224 +1,149 @@
-<div class="row" id="profile-view">
-    <div class="col-md-10">
-        <div class="row my-3">
-            <div class="col-12 text-right">
-                <a href="{{ route('profile') }}" class="btn btn-secondary">Modificar mi CV</a>
-            </div>
-        </div>
+@php $meta = $user->userMeta; @endphp
 
-        <div class="row border-bottom pb-4 mb-4">
-            <div class="col-md-3">
-                <div class="container-img-profile d-flex">
-                    <div class="img-profile d-flex">
-                        @if ($user->path)
-                            <img class="my-auto w-100 h-auto" src="{{ $user->profileAttachment() }}"/>
-                        @else
-                            <p class="my-auto text-center w-100 h-auto">No picture</p>
+<div id="profile-view">
+    <div class="profile-hero mb-4">
+        <div class="avatar">
+            @if ($user->path)
+                <img src="{{ $user->profileAttachment() }}" alt="Foto de perfil">
+            @else
+                {{ mb_strtoupper(mb_substr($user->name, 0, 1) . mb_substr($user->surname, 0, 1)) }}
+            @endif
+        </div>
+        <div>
+            <h1>{{ $user->name }} {{ $user->surname }}</h1>
+            <div class="meta">
+                <i class="far fa-envelope mr-1"></i>{{ $user->email }}
+                @if($meta?->phone)
+                    <span class="mx-2">·</span><i class="fas fa-phone mr-1"></i>{{ $meta->phone }}
+                @endif
+            </div>
+            @if($meta?->pretentions)
+                <div class="meta mt-1"><i class="fas fa-dollar-sign mr-1"></i>Pretensión salarial: {{ $meta->pretentions }}</div>
+            @endif
+        </div>
+        <div class="btn-cv no-print">
+            <button type="button" class="btn btn-outline-light mr-1" onclick="window.print()">
+                <i class="fas fa-print mr-1"></i> Imprimir
+            </button>
+            <a href="{{ route('profile') }}" class="btn btn-light"><i class="fas fa-pen mr-1"></i> Modificar mi CV</a>
+        </div>
+    </div>
+
+    <section class="card p-card">
+        <div class="card-header"><h2><i class="fas fa-user"></i>Datos personales</h2></div>
+        <div class="card-body">
+            <dl class="cv-facts">
+                <div><dt>RUT</dt><dd>{{ $user->rut_user ?: '—' }}</dd></div>
+                <div><dt>Fecha de nacimiento</dt><dd>{{ $user->birthday ?: '—' }}@if($user->birthday) <span class="text-muted">({{ $user->age }})</span>@endif</dd></div>
+                <div><dt>Nacionalidad</dt><dd>{{ $user->nacionality ?: '—' }}</dd></div>
+                <div><dt>Género</dt><dd>{{ $user->gender ?: '—' }}</dd></div>
+                <div><dt>Estado civil</dt><dd>{{ $user->marital_status ?: '—' }}</dd></div>
+                <div>
+                    <dt>Dirección</dt>
+                    <dd>{{ collect([$meta?->address, $meta?->comune, $meta?->city])->filter()->unique()->implode(', ') ?: '—' }}</dd>
+                </div>
+            </dl>
+        </div>
+    </section>
+
+    @if($meta?->objectives)
+        <section class="card p-card">
+            <div class="card-header"><h2><i class="fas fa-bullseye"></i>Objetivo laboral</h2></div>
+            <div class="card-body">
+                {!! \App\Helpers\Helper::cleanHtml($meta->objectives) !!}
+            </div>
+        </section>
+    @endif
+
+    <section class="card p-card">
+        <div class="card-header">
+            <h2><i class="fas fa-briefcase"></i>Experiencia laboral</h2>
+            <span class="badge badge-light">{{ $user->experience ?? 0 }} años en total</span>
+        </div>
+        <div class="card-body">
+            @forelse($experiences as $exp)
+                <div class="p-item">
+                    <div class="icon"><i class="fas fa-building"></i></div>
+                    <div class="body">
+                        <h3>{{ $exp->business_position }}</h3>
+                        <div class="sub">
+                            {{ $exp->business_name }}
+                            @if($exp->business_activity)<span class="mx-1">·</span>{{ $exp->business_activity }}@endif
+                            @if($exp->area)<span class="mx-1">·</span>{{ $exp->area }}@endif
+                        </div>
+                        <div class="sub">
+                            <i class="far fa-calendar-alt mr-1"></i>{{ $exp->year_from }} – {{ $exp->year_to }}
+                            <span class="mx-1">·</span>{{ $exp->level_experience ?? 'Sin nivel de experiencia' }}
+                        </div>
+                        @if($exp->description)
+                            <p class="desc">{{ $exp->description }}</p>
                         @endif
                     </div>
                 </div>
-            </div>
-
-            <div class="col-md-9">
-                <div class="row">
-                    <div class="col-12">
-                        <h3 class="text-dark">{{ $user->name }} {{ $user->surname }}</h3>
-                    </div>
-                    <div class="col-3">
-                        <p>RUT</p>
-                    </div>
-                    <div class="col-9">
-                        {{ $user->rut_user ?? '' }}
-                    </div>
-                    <div class="col-3">
-                        <p>Email</p>
-                    </div>
-                    <div class="col-9">
-                        {{ $user->email ?? '' }}
-                    </div>
-                    <div class="col-3">
-                        <p>Teléfono</p>
-                    </div>
-                    <div class="col-9">
-                        {{ $user->userMeta->phone ?? '' }}
-                    </div>
-                    <div class="col-3">
-                        <p>Estado Civil</p>
-                    </div>
-                    <div class="col-9">
-                        {{ $user->marital_status ?? '' }}
-                    </div>
-                    <div class="col-3">
-                        <p>Dirección</p>
-                    </div>
-                    <div class="col-9">
-                        {{ $user->userMeta->address ?? '' }}{{ isset($user->userMeta->comune) ? ', ' . $user->userMeta->comune : '' }}
-                    </div>
-                    <div class="col-3">
-                        <p>Fecha de Nacimiento</p>
-                    </div>
-                    <div class="col-9">
-                        {{ $user->birthday }} | ({{ $user->age }})
-                    </div>
-                    <div class="col-3">
-                        <p>Nacionalidad</p>
-                    </div>
-                    <div class="col-9">
-                        {{ $user->nacionality ?? '' }}
-                    </div>
-                    <div class="col-3">
-                        <p>Género</p>
-                    </div>
-                    <div class="col-9">
-                        {{ $user->gender ?? '' }}
-                    </div>
-                </div>
-            </div>
+            @empty
+                <div class="p-empty">Sin experiencia laboral registrada.</div>
+            @endforelse
         </div>
+    </section>
 
-        <div class="row border-bottom pb-4 mb-4">
-            <div class="col-12">
-                <h4>Objetivo Laboral</h4>
-            </div>
-            <div class="col-12">
-                {!! \App\Helpers\Helper::cleanHtml($user->userMeta->objectives ?? '') !!}
-            </div>
-        </div>
-
-        <div class="row border-bottom pb-4 mb-4">
-            <div class="col-12">
-                <h4>Experiencia Laboral</h4>
-            </div>
-            <div class="col-md-3">
-                <strong>Preferencia Salarial</strong>
-            </div>
-            <div class="col-md-9">
-                {{ $user->userMeta->pretentions ?? '' }}
-            </div>
-            <div class="col-md-3">
-                <strong>Nivel de Experiencia</strong>
-            </div>
-            <div class="col-md-9">
-                {{ $user->experience ?? '' }} Años
-            </div>
-        </div>
-
-        @if ( $experiences->count() > 0 )
-            <div class="row border-bottom pb-4 mb-4">
-                @foreach($experiences as $exp)
-                    <div class="col-12">
-                        <div class="row border-bottom pb-4 mb-4">
-                            <div class="col-12">
-                                <div class="row">
-                                    <div class="col-md-3">
-                                        <strong>Puesto</strong>
-                                    </div>
-                                    <div class="col-md-3">{{ $exp->business_position }}</div>
-                                    <div class="col-md-3">
-                                        <strong>Empresa</strong>
-                                    </div>
-                                    <div class="col-md-3">{{ $exp->business_name }}</div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-md-3">
-                                        <strong>Actividad de la empresa</strong>
-                                    </div>
-                                    <div class="col-md-3">{{ $exp->business_activity }}</div>
-                                    <div class="col-md-3">
-                                        <strong>Área</strong>
-                                    </div>
-                                    <div class="col-md-3">{{ $exp->area }}</div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-md-3">
-                                        <strong>Desde</strong>
-                                    </div>
-                                    <div class="col-md-3">{{ $exp->year_from }}</div>
-                                    <div class="col-md-3">
-                                        <strong>Hasta</strong>
-                                    </div>
-                                    <div class="col-md-3">{{ $exp->year_to }}</div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-md-3">
-                                        <strong>Nivel de experiencia</strong>
-                                    </div>
-                                    <div class="col-md-3">{{ $exp->level_experience ?? 'Sin nivel de experiencia' }}</div>
-                                </div>
+    @if ($user->userEducation->count() > 0)
+        <section class="card p-card">
+            <div class="card-header"><h2><i class="fas fa-graduation-cap"></i>Antecedentes académicos</h2></div>
+            <div class="card-body">
+                @foreach($user->userEducation as $educ)
+                    <div class="p-item">
+                        <div class="icon"><i class="fas fa-university"></i></div>
+                        <div class="body">
+                            <div class="sub text-uppercase small">{{ $educ->studies_level }}</div>
+                            <h3>{{ $educ->title }}</h3>
+                            <div class="sub">
+                                {{ $educ->institution }}
+                                <span class="mx-1">·</span>{{ $educ->condition }}
+                                @if($educ->year_from || $educ->year_to)
+                                    <span class="mx-1">·</span>{{ $educ->year_from }}{{ $educ->year_to ? ($educ->year_from ? ' – ' : '') . $educ->year_to : '' }}
+                                @endif
                             </div>
                         </div>
                     </div>
                 @endforeach
             </div>
-        @endif
+        </section>
+    @endif
 
-        @if ($user->userEducation->count() > 0)
-            <div class="row border-bottom pb-4 mb-4">
-                <div class="col-12 mb-3">
-                    <h4>Antecedentes Académicos</h4>
-                </div>
-                @foreach($user->userEducation as $educ)
-                    <div class="col-12">
-                        <div class="row mb-2 pb-2 border-bottom border-light">
-                            <div class="col-md-3">{{ $educ->year_from }}{{ $educ->year_to ? ' - ' . $educ->year_to : '' }}</div>
-                            <div class="col-md-3">{{ $educ->studies_level }} - {{ $educ->condition }}</div>
-                            <div class="col-md-3">{{ $educ->title }}</div>
-                            <div class="col-md-3">{{ $educ->institution }}</div>
+    @if ($user->userSkills->count() > 0)
+        <section class="card p-card">
+            <div class="card-header"><h2><i class="fas fa-star"></i>Habilidades</h2></div>
+            <div class="card-body">
+                @foreach ($user->userSkills as $skill)
+                    <span class="skill-pill" style="cursor: default;">{{ $skill->skill }}</span>
+                @endforeach
+            </div>
+        </section>
+    @endif
+
+    @if ($user->userReferences->count() > 0)
+        <section class="card p-card">
+            <div class="card-header"><h2><i class="fas fa-user-friends"></i>Referencias</h2></div>
+            <div class="card-body">
+                @foreach($user->userReferences as $ref)
+                    <div class="p-item">
+                        <div class="icon"><i class="fas fa-user-tie"></i></div>
+                        <div class="body">
+                            <h3>{{ $ref->referencer_firstname }} {{ $ref->referencer_surname }}</h3>
+                            <div class="sub">
+                                {{ $ref->referencer_business }}
+                                @if($ref->referencer_relation)<span class="mx-1">·</span>{{ $ref->referencer_relation }}@endif
+                                @if($ref->referencer_type)<span class="mx-1">·</span>{{ $ref->referencer_type }}@endif
+                            </div>
+                            <div class="sub">
+                                <i class="far fa-envelope mr-1"></i>{{ $ref->referencer_email }}
+                                <span class="mx-2"></span>
+                                <i class="fas fa-phone mr-1"></i>{{ $ref->referencer_phone }}
+                            </div>
                         </div>
                     </div>
                 @endforeach
             </div>
-        @endif
-
-        @if ($user->userSkills->count() > 0)
-            <div class="row border-bottom pb-4 mb-4">
-                <div class="col-12 mb-3">
-                    <h4>Habilidades</h4>
-                </div>
-                <div class="col-12">
-                    <div class="align-content-center">
-                        @foreach ($user->userSkills as $skill)
-                            <span class="badge-xl fs-4 badge-info badge bg-secondary badge-info p-2 mr-2">
-                                <span class="p-3 text-white">{{ $skill->skill }}</span>
-                            </span>
-                        @endforeach
-                    </div>
-                </div>
-            </div>
-        @endif
-
-        @if ($user->userReferences->count() > 0)
-            <div class="row border-bottom pb-4 mb-4">
-                <div class="col-12 mb-3">
-                    <h4>Referencias</h4>
-                </div>
-                <div class="col-12">
-                    @foreach($user->userReferences as $ref)
-                    <div class="row">
-                        <div class="col-3">Nombre</div>
-                        <div class="col-9">{{ $ref->referencer_firstname }} {{ $ref->referencer_surname }}</div>
-                        <div class="col-3">Empresa</div>
-                        <div class="col-9">{{ $ref->referencer_business }}</div>
-                        <div class="col-3">Email</div>
-                        <div class="col-9">{{ $ref->referencer_email }}</div>
-                        <div class="col-3">Teléfono</div>
-                        <div class="col-9">{{ $ref->referencer_phone }}</div>
-                        <div class="col-3">Relación</div>
-                        <div class="col-9">{{ $ref->referencer_relation }}</div>
-                        <div class="col-3">Tipo de referencia</div>
-                        <div class="col-9">{{ $ref->referencer_type }}</div>
-                    </div>
-                    @endforeach
-                </div>
-            </div>
-        @endif
-        <div class="row">
-            <div class="col-12 text-right">
-                <a href="{{ route('profile') }}" class="btn btn-secondary">Modificar mi CV</a>
-            </div>
-        </div>
-    </div>
-    <div class="col-md-2">
-
-    </div>
+        </section>
+    @endif
 </div>

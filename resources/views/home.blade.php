@@ -336,13 +336,14 @@
 @endsection
 
 @push('meta')
-    @if ($offers->isNotEmpty())
-        <link rel="canonical" href="{{ route('offer.show', ['slug' => $offers->first()->slug]) }}" />
-    @endif
+    <link rel="canonical" href="{{ route('/') }}" />
 
-    <meta property=”og:image” content=”https://www.empleosaqua.cl/images/1x/logo-empleos-aqua.png” />
-    <meta property=”og:type” content=”article” />
-    <meta property="og:title" content="Empleos Aqua{{ $offers->isNotEmpty() ? ' | ' . $offers->first()->title : '' }}" />
+    <meta property="og:image" content="{{ asset('images/1x/logo-empleos-aqua.png') }}" />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Empleos Aqua | Ofertas de trabajo" />
+
+    {{-- Home: listado de ofertas (los JobPosting van solo en cada ficha) --}}
+    {!! \App\Support\Schema::script(\App\Support\Schema::itemList($offers)) !!}
 
 @endpush
 
@@ -358,7 +359,6 @@
 @endpush
 
 @push('scripts')
-    <script async src="https://securepubads.g.doubleclick.net/tag/js/gpt.js"></script>
     <script>
       window.googletag = window.googletag || {cmd: []};
       googletag.cmd.push(function() {
@@ -369,7 +369,6 @@
     </script>
     
             <!-- Banner superior -->
-            <script async src="https://securepubads.g.doubleclick.net/tag/js/gpt.js"></script>
             <script>
                 window.googletag = window.googletag || {cmd: []};
                 googletag.cmd.push(function () {
@@ -379,7 +378,6 @@
                 });
             </script>
 
-            <script async src="https://securepubads.g.doubleclick.net/tag/js/gpt.js"></script>
             <script>
                 window.googletag = window.googletag || {cmd: []};
                 googletag.cmd.push(function () {
@@ -391,7 +389,6 @@
             <!-- Fin Banner Superior -->
 
             <!-- Banner Inferior -->
-            <script async src="https://securepubads.g.doubleclick.net/tag/js/gpt.js"></script>
 
             <script>
                 window.googletag = window.googletag || {cmd: []};
@@ -402,7 +399,6 @@
                 });
             </script>
 
-            <script async src="https://securepubads.g.doubleclick.net/tag/js/gpt.js"></script>
 
             <script>
                 window.googletag = window.googletag || {cmd: []};

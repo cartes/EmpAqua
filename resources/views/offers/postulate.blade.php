@@ -61,17 +61,21 @@
 @endsection
 
 @push('meta')
-    <link rel=“canonical” href=“{{ route('offer.show', ['slug' => $offer->slug ])}}” />
+    @if (is_object($offer))
+        <link rel="canonical" href="{{ route('offer.show', ['slug' => $offer->slug]) }}" />
 
-    <meta property=”og:image” content=”https://www.empleosaqua.cl/images/1x/logo-empleos-aqua.png” />
-    <meta property=”og:type” content=”article” />
-    <meta property=”og:title” content=”Empleos Aqua | {{ $offer->title }}” />
+        <meta property="og:image" content="{{ asset('images/1x/logo-empleos-aqua.png') }}" />
+        <meta property="og:type" content="website" />
+        <meta property="og:title" content="Empleos Aqua | {{ $offer->title }}" />
+
+        {{-- Oferta de trabajo: JobPosting (solo si está publicada y vigente) --}}
+        {!! \App\Support\Schema::script(\App\Support\Schema::jobPosting($offer)) !!}
+    @endif
 @endpush
 
 @push('scripts')
 
     <!-- Banner superior -->
-    <script async src="https://securepubads.g.doubleclick.net/tag/js/gpt.js"></script>
     
     <script>
         $(document).ready(function() {

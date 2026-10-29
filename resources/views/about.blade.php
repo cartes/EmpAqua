@@ -1,5 +1,8 @@
 @extends('layout.app')
 
+@section('title', ' | Quiénes somos')
+@section('description', 'Conoce EmpleosAqua, el portal de empleos de la industria acuícola y salmonicultora de B2B Group Media SPA.')
+
 @section("content")
 
     <div class="container">
@@ -53,3 +56,8 @@
         </div>
     </div>
 @endsection
+
+@push('meta')
+    <link rel="canonical" href="{{ route('about') }}" />
+    {!! \App\Support\Schema::script(\App\Support\Schema::webPage('AboutPage', 'Quiénes somos', route('about'), 'Conoce EmpleosAqua, el portal de empleos de la industria acuícola y salmonicultora de B2B Group Media SPA.')) !!}
+@endpush

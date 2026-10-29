@@ -6,20 +6,32 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     @stack('meta')
 
+    @hasSection('robots')
+        <meta name="robots" content="@yield('robots')">
+    @else
+        {{-- Schema global: Organization + WebSite (no en áreas privadas) --}}
+        {!! \App\Support\Schema::script(['@graph' => [\App\Support\Schema::organization(), \App\Support\Schema::website()]]) !!}
+    @endif
+
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <link rel="icon" href="/images/Favicon-EmpleosAqua2.png" type="image/x-icon" />
 
     <title>{{ config('app.name', 'Laravel') }} @yield('title')</title>
+    <meta name="description" content="@yield('description', 'Ofertas de trabajo. Publique sus ofertas laborales con nosotros. Busque el puesto de trabajo que necesita. Tenemos experiencia como Bolsa de Empleos Aqua')">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preconnect" href="https://www.googletagmanager.com" crossorigin>
+    <link rel="preconnect" href="https://securepubads.g.doubleclick.net" crossorigin>
 
     <!-- Scripts -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
     <!-- <script src="{{ asset('js/jquery.min.js') }}"></script> -->
     <script src="{{ asset('js/jquery.offcanvas.min.js') }}"></script>
-    <script type="text/javascript" src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script>
 
-    <script src="//cdnjs.cloudflare.com/ajax/libs/velocity/2.0.6/velocity.min.js"></script>
+    <script defer src="https://cdnjs.cloudflare.com/ajax/libs/velocity/2.0.6/velocity.min.js"></script>
 
     <!-- Bootstrap CSS -->
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
@@ -50,10 +62,7 @@
 
     <!-- Fonts -->
     <link rel="dns-prefetch" href="//fonts.gstatic.com">
-    <link href="https://fonts.googleapis.com/css?family=Nunito" rel="stylesheet">
-
-    <!-- Global site tag (gtag.js) - Google Analytics -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-184220893-1"></script>
+    <link href="https://fonts.googleapis.com/css?family=Nunito&display=swap" rel="stylesheet">
 
     @if (app()->environment('production'))
         <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8544975266159001"
@@ -65,18 +74,6 @@
                 'sitekey': '6Lc5wGwcAAAAAMgqHGq8JHvZ-bZCLEnAFS1Ppxkf'
             });
         };
-    </script>
-
-    <script>
-        window.dataLayer = window.dataLayer || [];
-
-        function gtag() {
-            dataLayer.push(arguments);
-        }
-
-        gtag('js', new Date());
-
-        gtag('config', 'UA-184220893-1');
     </script>
 
     <!-- Styles -->

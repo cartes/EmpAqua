@@ -1,4 +1,5 @@
 @extends('layout.app')
+@section('robots', 'noindex, nofollow')
 
 @section('title', ' | ' . $business->business_meta->fantasy_name)
 

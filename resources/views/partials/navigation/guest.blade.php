@@ -36,7 +36,7 @@
     </a>
 </div>
 
-<!-- Botón de acceso para pantallas muy pequeñas (celulares) -->
+<!-- BotÃ³n de acceso para pantallas muy pequeÃ±as (celulares) -->
 <div class="d-sm-none text-center d-flex justify-content-end">
     <a class="btn btn-outline-info" href="#" data-toggle="modal" data-target="#loginUserModal">
         Acceso Postulante

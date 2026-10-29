@@ -1,5 +1,8 @@
 @extends('layout.app')
 
+@section('title', ' | Preguntas frecuentes')
+@section('description', 'Preguntas frecuentes sobre postulación y publicación de ofertas en EmpleosAqua.')
+
 @section('content')
 
     <div class="container">
@@ -23,6 +26,7 @@
     <div class="container">
         <div class="row justify-content-center">
             <div class="col-10">
+                @php ob_start(); @endphp
                 <div id="accordion">
                     <div class="card">
                         <div class="card-header" id="headingOne">
@@ -424,7 +428,13 @@
                         </div>
                     </div>
                 </div>
+                @php $faqHtml = ob_get_clean(); echo $faqHtml; $faq = \App\Support\Schema::faqFromHtml($faqHtml); @endphp
             </div>
         </div>
     </div>
 @endsection
+
+@push('meta')
+    <link rel="canonical" href="{{ route('faq') }}" />
+    {!! \App\Support\Schema::script(\App\Support\Schema::webPage('FAQPage', 'Preguntas frecuentes', route('faq'), 'Preguntas frecuentes sobre postulación y publicación de ofertas en EmpleosAqua.', ['mainEntity' => ($faq['mainEntity'] ?? [])])) !!}
+@endpush

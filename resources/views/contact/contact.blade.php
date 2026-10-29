@@ -1,5 +1,8 @@
 @extends('layout.app')
 
+@section('title', ' | Contacto')
+@section('description', 'Contáctanos: consultas de postulantes y empresas de EmpleosAqua.')
+
 @section('content')
     <div class="container container-contact">
         @if (null !== session('message'))
@@ -113,3 +116,8 @@
         </div>
     </div>
 @endsection
+
+@push('meta')
+    <link rel="canonical" href="{{ route('contactPage') }}" />
+    {!! \App\Support\Schema::script(\App\Support\Schema::webPage('ContactPage', 'Contacto', route('contactPage'), 'Contáctanos: consultas de postulantes y empresas de EmpleosAqua.')) !!}
+@endpush

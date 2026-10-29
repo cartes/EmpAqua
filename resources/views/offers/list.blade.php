@@ -142,20 +142,19 @@
 @endsection
 
 @push('meta')
-    @if ($offers->isNotEmpty())
-        <link rel="canonical" href="{{ route('offer.show', ['slug' => $offers[0]->slug ])}}" />
+    <link rel="canonical" href="{{ route('offer.list') }}" />
 
-        <meta property=”og:image” content=”https://www.empleosaqua.cl/images/1x/logo-empleos-aqua.png” />
-        <meta property=”og:type” content=”article” />
-        <meta property=”og:title” content=”Empleos Aqua | {{ $offers[0]->title }}” />
-    @endif
+    <meta property="og:image" content="{{ asset('images/1x/logo-empleos-aqua.png') }}" />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Empleos Aqua | Ofertas de trabajo" />
+
+    {!! \App\Support\Schema::script(\App\Support\Schema::itemList($offers)) !!}
 
 
 @endpush
 
 @push('scripts')
 
-    <script async src="https://securepubads.g.doubleclick.net/tag/js/gpt.js"></script>
     <script>
         $(document).ready(function() {
             $('.toast').toast('show');
@@ -218,7 +217,6 @@
     </script>
 
 
-    <script async src="https://securepubads.g.doubleclick.net/tag/js/gpt.js"></script>
 
     <script>
         window.googletag = window.googletag || {
