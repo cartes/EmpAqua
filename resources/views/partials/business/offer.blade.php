@@ -1,23 +1,25 @@
-<form class="form-offer w-100 my-3 p-4" method="post" action="{{ route('offer.create') }}">
+<style>
+    .form-offer .switch-lg { display: flex; align-items: center; min-height: calc(1.5em + .75rem + 2px); padding-left: 3.75rem; }
+    .form-offer .switch-lg .custom-control-label { font-size: 1rem; line-height: 1.5; white-space: nowrap; }
+    .form-offer .switch-lg .custom-control-label::before { left: -3.75rem; width: 3rem; height: 1.6rem; border-radius: .8rem; top: 50%; transform: translateY(-50%); }
+    .form-offer .switch-lg .custom-control-label::after { left: calc(-3.75rem + 3px); top: 50%; transform: translateY(-50%); width: calc(1.6rem - 6px); height: calc(1.6rem - 6px); border-radius: 50%; }
+    .form-offer .switch-lg .custom-control-input:checked ~ .custom-control-label::after { transform: translate(1.4rem, -50%); }
+</style>
+<form class="form-offer card card-body w-100 mb-4 p-4" method="post" action="{{ route('offer.create') }}">
     @csrf
-    <h4 class="text-left">Completa la información de la oferta que quieres publicar.</h4>
+    <h4 class="text-left mb-4">Completa la información de la oferta que quieres publicar.</h4>
     
     <div class="form-group">
-        <div class="row my-2">
-            <div class="col-md-9 col-9">
-                    <label class="pe-2" style="font-size: 20px; font-weight: 700">¿Es una oferta confidencial? (Aparece como "Empresa Prestigiosa")</label>
-            </div>
-            <div class="col-md-3 col-3">
-                <input type="checkbox" name="status" class="form-check-input" checked />
-    
-            </div>
+        <div class="custom-control custom-checkbox">
+            <input type="checkbox" name="status" id="status" class="custom-control-input" checked />
+            <label class="custom-control-label font-weight-bold" for="status">¿Es una oferta confidencial? (Aparece como "Empresa Prestigiosa")</label>
         </div>
     </div>
     <div class="row">
         <div class="col-md-12 col-12">
             <div class="form-group">
                 <label>Categoría</label>
-                <select id="category_id" name="category_id" class="form-control form-select{{$errors->has('category_id') ? ' is-invalid' : ''}}">
+                <select id="category_id" name="category_id" class="form-control{{$errors->has('category_id') ? ' is-invalid' : ''}}">
                     <option class="text-start" value=''>Seleccione una categoría</option>
                     @foreach($categories as $category)
                         <option value="{{ $category->id }}" {{ old('category_id') == $category->id ? 'selected' : '' }}>{{ $category->title }}</option>
@@ -73,7 +75,7 @@
         </div>
     </div>
     <div class="row">
-        <div class="col-md-4 form-group">
+        <div class="col-md-6 col-xl-3 form-group">
             <label>Tipo de contrato</label>
             <select class="form-control{{$errors->has('experience') ? ' is-invalid' : ''}}" name="experience" id="experience">
                 <option value="">Seleccione un tipo de contrato</option>
@@ -87,19 +89,19 @@
             @endif
 
         </div>
-        <div class="col-md-4 form-group">
-            <label>La oferta es inclusiva <i class="fas fa-wheelchair"></i></label>
-            <select class="form-control{{$errors->has('handicapped') ? ' is-invalid' : ''}}" name="handicapped">
-                <option value="">Seleccione</option>
-                <option value="0" {{old('handicapped') == "0" ? 'selected' : ''}}>No</option>
-                <option value="1" {{old('handicapped') == "1" ? 'selected' : ''}}>Si</option>
-            </select>
+        <div class="col-md-6 col-xl-5 form-group">
+            <label class="d-block">Oferta inclusiva <i class="fas fa-wheelchair"></i></label>
+            <input type="hidden" name="handicapped" value="0">
+            <div class="custom-control custom-switch switch-lg">
+                <input type="checkbox" class="custom-control-input{{$errors->has('handicapped') ? ' is-invalid' : ''}}"
+                       id="handicapped" name="handicapped" value="1" {{ old('handicapped') == "1" ? 'checked' : '' }}>
+                <label class="custom-control-label" for="handicapped">Sí, es inclusiva</label>
+            </div>
             @if($errors->has('handicapped'))
-                <span class="invalid-feedback">{{$errors->first('handicapped')}}</span>
+                <span class="invalid-feedback d-block">{{$errors->first('handicapped')}}</span>
             @endif
-
         </div>
-        <div class="col-md-4 form-group">
+        <div class="col-12 col-xl-4 form-group">
             <label>Renta ofrecida</label>
             <select id="selectSalary" class="form-control{{ $errors->has('salary_opt') ? ' is-invalid' : ''}}" name="salary_opt">
                 <option value="">Seleccione una opción de Salario</option>
@@ -207,11 +209,11 @@
                 </div>
             </div>
             <div class="row">
-                <div class="d-inline col-md-5">
+                <div class="col-md-7 mb-2">
                     <input class="form-control{{ $errors->has('benefit') ? ' is-invalid' : '' }}" name="benefit"/>
                 </div>
-                <div class="d-inline col-md-3">
-                    <a id="addBenefit" href="#">Agregar Beneficio</a>
+                <div class="col-md-5 mb-2">
+                    <a id="addBenefit" class="btn btn-outline-primary" href="#">Agregar Beneficio</a>
                 </div>
             </div>
             <div class="row">
@@ -225,7 +227,7 @@
         <div class="col-12 form-group">
             <label>Vacantes</label>
             <div class="row">
-                <div class="d-inline col-md-5">
+                <div class="col-md-5">
                     <input class="form-control{{ $errors->has('vacancy') ? ' is-invalid' : '' }}" name="vacancy" value="{{ old('vacancy') ?? '' }}"/>
                 @if ($errors->has('vacancy'))
                     <span class="invalid-feedback">{{ $errors->first('vacancy') }}</span>
@@ -235,7 +237,7 @@
         </div>
     </div>
     <div class="row">
-        <div class="col-12 my-2">
+        <div class="col-12 mt-3">
             <button class="btn btn-primary" type="submit">Publicar Aviso</button>
         </div>
     </div>

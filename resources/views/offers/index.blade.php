@@ -1,5 +1,19 @@
 @extends('layout.app')
 
+@push('styles')
+    <style>
+        .container.container-admin { width: 100% !important; max-width: 1320px !important; }
+        .subscription-card { border-width: 2px; }
+        .subscription-days { font-size: 3.5rem; font-weight: 700; line-height: 1; margin: .25rem 0; }
+        .offers-file { overflow-x: auto; }
+        .table-offers td { white-space: nowrap; } .table-offers th, .table-offers td { padding: .5rem .4rem; }
+        .table-offers td:nth-child(3) { white-space: normal; min-width: 120px; }
+        .table-offers form { display: inline-block; margin: 0; }
+        .table-offers td.ofertas-activas .row { flex-wrap: nowrap; margin: 0; }
+        .table-offers td.ofertas-activas [class^="col-"] { flex: 0 0 auto; width: auto; padding: 0 .25rem; }
+    </style>
+@endpush
+
 @section('content')
     <div class="container container-admin mt-5">
         @if(session()->has('message'))
@@ -75,11 +89,20 @@
             </div>
             <div class="col-md-4">
                 @if (session()->has('exp_role'))
-                <div class="card">
-                    <div class="card-body{{session()->get('exp_role') <= 5 ? ' bg-danger' : ' bg-success'}}">
-                        <h4 class="text-light">A tu suscripción le quedan: {{session()->get('exp_role')}} {{session()->get('exp_role') <= 1 ? 'Día' : 'Días'}}</h4>
+                    @php
+                        $days = (int) session('exp_role');
+                        $tone = $days <= 5 ? 'danger' : ($days <= 15 ? 'warning' : 'success');
+                    @endphp
+                    <div class="card border-{{ $tone }} subscription-card">
+                        <div class="card-body text-center">
+                            <div class="small text-uppercase text-muted">Tu suscripción vence en</div>
+                            <div class="subscription-days text-{{ $tone }}">{{ $days }}</div>
+                            <div class="font-weight-bold">{{ $days === 1 ? 'día' : 'días' }}</div>
+                            @if ($days <= 15)
+                                <a href="{{ route('prices') }}" class="btn btn-sm btn-{{ $tone }} mt-3">Renovar suscripción</a>
+                            @endif
+                        </div>
                     </div>
-                </div>
                 @endif
             </div>
         </div>
@@ -122,7 +145,6 @@
                             <th scope="col"><p class="m-0 text-center">Fecha termino</p></th>
                             <th></th>
                             <th></th>
-                            <th></th>
                         </tr>
                         </thead>
                         <tbody>
@@ -160,7 +182,7 @@
                                         {{$of->id}}
                                     </p>
                                 </td>
-                                <td style="width: 200px;">
+                                <td>
                                     <p class="m-0 text-left">
                                     @if (session()->get('role_id') == '90' || is_null(session()->get('role_id')))
                                             @if ($i > 0)
@@ -199,8 +221,6 @@
                                 </td>
                                 <td>
                                     <p class="m-0 text-center">{{$of->expiration_date}}</p>
-                                </td>
-                                <td>
                                 </td>
                                 <td>
                                     <p>
