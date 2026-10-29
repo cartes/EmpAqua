@@ -1,0 +1,30 @@
+.modal {
+  font-family: Roboto, sans-serif, Arial;
+  .modal-dialog {
+    max-width: 600px;
+    margin: 1.75rem auto;
+
+    .modal-title {
+      color: $aqBlue;
+
+      & > strong {
+        font-weight: 900 !important;
+      }
+    }
+  }
+  label {
+    color: $aqBlue;
+  }
+  .forgot-password {
+    color: $aqOrange;
+  }
+  p {
+    color: $aqBlue;
+    & > a {
+      font-family: Roboto, Sans-serif, Arial;
+      font-size: 21px;
+      color: $aqBlue;
+      font-weight: bolder;
+    }
+  }
+}

@@ -1,0 +1,68 @@
+html {
+  height: 100%;
+}
+.form {
+  padding: 20px;
+  background-color: #ffffff;
+  border-bottom: 1px solid #e5e5e5;
+  border-radius: 0px;
+}
+
+.file {
+  padding: 20px;
+  position: relative;
+  background-color: #ffffff;
+  border: 1px solid #e5e5e5;
+}
+.offers-file {
+    margin: 20px 0px;
+}
+
+.app {
+  #app {
+    margin-bottom: 105px;
+  }
+}
+
+#app {
+  background-color: $white;
+  main {
+    background-color: $white;
+  }
+}
+
+.date {
+  font-size: 0.85rem;
+}
+
+body {
+  position: relative;
+  background-color: $white;
+  .page-container {
+    position: relative;
+    min-height: 100vh;
+    padding-bottom: 110px;
+  }
+}
+footer {
+  padding: {
+    top: 80px;
+    bottom: 20px;
+    left: 0px;
+  };
+  position: absolute;
+  bottom: 0px;
+  background: {
+    image: url("/images/footer-back.png");
+    size: cover;
+    position: bottom center;
+    color: transparent;
+  };
+  @media (min-width: 1440px) {
+    min-height: 191px;
+  }
+}
+
+.table-offers th, .table-offers td {
+    padding: 5px;
+}

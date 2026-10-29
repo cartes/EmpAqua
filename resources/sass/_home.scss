@@ -1,0 +1,184 @@
+.home {
+  #app {
+    main {
+      background-color: transparent;
+    }
+  }
+  #nav-bolsa {
+    background: $white;
+    .nav-link {
+      color: $aqBlue;
+    }
+  }
+  h2 {
+    font-size: 15px;
+    color: $aqOrange;
+    font-weight: 600;
+  }
+}
+
+.app {
+  #nav-bolsa {
+    background-color: $white;
+  }
+}
+
+#search-container {
+  .row-form {
+    background: {
+      image: url("/images/1x/back-form-80.jpg");
+      size: cover;
+    }
+  ;
+    border-bottom: 2px solid $aqOrange;
+    min-height: 470px;
+  }
+}
+
+#nav-bolsa {
+  height: 120px;
+  position: relative;
+  color: $white;
+
+  a, button {
+    color: $aqBlue;
+    &:hover {
+      color: darken($aqBlue, 30);
+    }
+  }
+
+  .btn-access-border {
+    background-color: transparent;
+    border: 1px solid $aqOrange;
+    color: $aqOrange;
+  }
+
+  .btn-access {
+    background-color: $aqOrange;
+    color: $white;
+  }
+
+  button.dropdown-toggle {
+    color: $aqOrange;
+  }
+
+  .dropdown-menu {
+    background: {
+      color: $gray-900;
+    }
+  }
+
+  .dropdown-menu li a {
+    color: $white !important;
+    &:hover {
+      color: $aqOrange !important;
+    }
+  }
+
+  .navbar-brand {
+    position: relative;
+    text-indent: -99999rem;
+    width: 205px;
+    height: 110px;
+    padding: {
+      top: 5px;
+      bottom: 5px;
+    }
+    background: {
+      image: url("/images/1x/logo-empleos-aqua.png");
+      repeat: no-repeat;
+      size: contain;
+      position: center center;
+    }
+  }
+}
+
+#home-main {
+  position: relative;
+  min-height: 300px;
+  @media (min-width: 1440px) {
+    min-height: 550px;
+    margin-bottom: 85px;
+  }
+
+  .position-absolute {
+    bottom: 0px;
+    left: 0px;
+    @media (min-width: 1280px) {
+      bottom: 23px;
+      left: 140px;
+    }
+  }
+  @media (max-width: 424px) {
+    min-height: 370px;
+  }
+
+  .job-container {
+    background-color: lighten($aqBlue, 25%);
+    border-bottom: 2px solid $aqBlue;
+    h3 {
+      font-size: 16px;
+    }
+    h4 {
+      font-size: 13px;
+    }
+    small, .col-3 {
+      font-size: 11px;
+      line-height: 11px;
+    }
+  }
+}
+
+.form-search {
+  padding: 15px 10px;
+  background-color: rgba(216, 216, 216, 0.8);
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
+
+  .input-group-append {
+    button.btn {
+      border: 1px solid #ced4da;
+      border-left: 1px solid white;
+      color: $aqOrange;
+    }
+  }
+
+  .form-group {
+    margin: 0px;
+    padding: 0px;
+  }
+}
+
+.container-offer {
+  cursor: pointer;
+  &:hover {
+    background-color: rgba($aqOrange, 0.4);
+  }
+  &.back-orange {
+    background-color: $aqOrange;
+    & * {
+      color: $white;
+    }
+  }
+}
+
+.row.row-eq-height {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  flex-wrap: wrap;
+
+  .col-md-4 {
+    display: flex;
+    flex-direction: column;
+  }
+}
+
+.btn-control {
+  background: {
+    color: $aqBlue;
+  }
+  color: $white
+}
+

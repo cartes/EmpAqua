@@ -1,0 +1,25 @@
+@import url('https://fonts.googleapis.com/css?family=Nunito|Roboto&display=swap');
+
+// Font-awesome
+@import '~@fortawesome/fontawesome-free/scss/fontawesome';
+@import '~@fortawesome/fontawesome-free/scss/regular';
+@import '~@fortawesome/fontawesome-free/scss/solid';
+@import '~@fortawesome/fontawesome-free/scss/brands';
+
+//Variables locales
+@import "variables";
+
+// Bootstrap
+@import '~bootstrap/scss/bootstrap';
+
+//Datepicker
+@import "~jquery-ui/themes/base/all.css";
+
+//App
+@import "style";
+@import "home";
+@import "modals";
+@import "user";
+@import "business";
+@import "offers";
+@import "mobile";
