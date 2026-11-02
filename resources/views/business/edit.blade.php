@@ -207,6 +207,7 @@
                                 <span class="invalid-feedback">{{ $errors->first('picture') }}</span>
                             @endif
                         </div>
+@include('partials.business.logo-cropper')
                     </div>
                     </div>
                     </div>

@@ -15,8 +15,8 @@
 
         <div class="row justify-content-center mt-4">
             <div class="col-md-2">
-                <div class="container-logo-img">
-                    <img class="logo-img h-100 w-auto" src="{{ $business->business_meta->pathAttachment() ?? '' }}">
+                <div class="container-logo-img" style="--logo: url('{{ optional($business->business_meta)->pathAttachment() }}')">
+                    <img class="logo-img" src="{{ $business->business_meta->pathAttachment() ?? '' }}">
                 </div>
                 <div class="container-edit">
                     <a href="{{ route('business.edit') }}">

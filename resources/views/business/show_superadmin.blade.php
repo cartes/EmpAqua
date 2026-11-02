@@ -16,9 +16,9 @@
 
         <div class="row justify-content-center mt-4">
             <div class="col-md-2">
-                <div class="container-logo-img">
+                <div class="container-logo-img" style="--logo: url('{{ optional($business->business_meta)->pathAttachment() }}')">
                     @if( $business->business_meta )
-                        <img class="logo-img h-100 w-auto" src="{{ $business->business_meta->pathAttachment() ?? '' }}">
+                        <img class="logo-img" src="{{ $business->business_meta->pathAttachment() ?? '' }}">
                     @endif
                 </div>
             </div>

@@ -21,9 +21,9 @@
                 <div class="card business-card business-header mb-4">
                     <div class="card-body d-flex align-items-center">
                         <div class="business-logo-wrap">
-                            <div class="container-logo-img">
+                            <div class="container-logo-img" style="--logo: url('{{ optional($meta)->pathAttachment() }}')">
                                 @if($meta)
-                                    <img class="logo-img h-100 w-auto" src="{{ $meta->pathAttachment() ?? '' }}" alt="">
+                                    <img class="logo-img" src="{{ $meta->pathAttachment() ?? '' }}" alt="">
                                 @endif
                             </div>
                         </div>

@@ -18225,9 +18225,22 @@ footer {
   overflow: hidden;
   border-radius: 80px;
 }
+.container-logo-img {
+  background: #fff;
+}
+.container-logo-img::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: var(--logo) center / cover;
+  filter: blur(10px);
+  transform: scale(1.3);
+}
 .container-logo-img .logo-img {
+  position: relative;
   height: 100%;
-  width: auto;
+  width: 100%;
+  object-fit: contain;
   display: block;
 }
 

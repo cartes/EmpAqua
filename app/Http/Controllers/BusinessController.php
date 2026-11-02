@@ -167,7 +167,7 @@ class BusinessController extends Controller
 
     public function edit(): View
     {
-        $business = Business::with(['business_meta', 'offers'])->find(session('id'));
+        $business = Business::with(['business_meta', 'offers'])->findOrFail(session('id'));
 
         return view('business.edit', compact('business'));
     }

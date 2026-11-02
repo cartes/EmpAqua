@@ -68,6 +68,36 @@ class ControllersSmokeTest extends TestCase
         $this->assertSame('10', session('role_id'));
     }
 
+    public function test_business_edit_route_accessible_by_business_and_admin(): void
+    {
+        // Admin role (0)
+        $business = $this->business(Membership::Admin->value);
+        $this->post('/business/login', ['email' => 'ana@example.com', 'password' => 'secret1']);
+        $this->get('/business/edit')->assertOk();
+
+        // Standard business role (10)
+        $this->flushSession();
+        $this->business(Membership::Basic->value);
+        $this->post('/business/login', ['email' => 'ana@example.com', 'password' => 'secret1']);
+        $this->get('/business/edit')->assertOk();
+
+        // Legacy session without explicit role
+        $this->withSession(['id' => $business->id])
+            ->get('/business/edit')
+            ->assertOk();
+
+        // Candidate user is blocked
+        $user = User::create(['rut_user' => '22222222-2', 'name' => 'Luis', 'surname' => 'Soto', 'email' => 'luis@example.com', 'password' => Hash::make('x')]);
+        $this->withSession(['id' => $user->id, 'role' => 'user'])
+            ->get('/business/edit')
+            ->assertRedirect(route('/'));
+
+        // Unauthenticated guest is redirected to login
+        $this->flushSession();
+        $this->get('/business/edit')
+            ->assertRedirect(route('business.login'));
+    }
+
     public function test_business_creates_and_lists_offers(): void
     {
         $business = $this->business(Membership::Basic->value);

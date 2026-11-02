@@ -61,9 +61,22 @@
   overflow: hidden;
   border-radius: 80px;
 
+  background: #fff;
+
+  &::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: var(--logo) center / cover;
+    filter: blur(10px);
+    transform: scale(1.3);
+  }
+
   .logo-img {
+    position: relative;
     height: 100%;
-    width: auto;
+    width: 100%;
+    object-fit: contain;
     display: block;
   }
 }

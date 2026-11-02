@@ -15,14 +15,16 @@
 
         <div class="row justify-content-center">
             <div class="col-md-4">
-                <div class="card">
+                <div class="card company-info-sticky">
                     <div class="card-body">
                         <div class="row">
                             <div class="col-12 text-center">
                                 <div class="row justify-content-center">
-                                    <div class="col-md-6">
+                                    <div class="col-md-6 d-flex justify-content-center">
                                         @if($business->business_meta)
-                                            <img class="w-100 h-auto" src="{{ $business->business_meta->pathAttachment() ?? '' }}">
+                                            <div class="container-logo-img" style="--logo: url('{{ $business->business_meta->pathAttachment() }}'); width: 120px; height: 120px;">
+                                                <img class="logo-img" src="{{ $business->business_meta->pathAttachment() ?? '' }}" alt="">
+                                            </div>
                                         @endif
                                     </div>
                                 </div>
@@ -70,6 +72,15 @@
         </div>
     </div>
 @endsection
+
+@push('styles')
+    <style>
+        @media (min-width: 768px) {
+            /* Queda fija al hacer scroll; el top deja espacio para la barra de navegación que se fija al bajar */
+            .company-info-sticky { position: sticky; top: 100px; }
+        }
+    </style>
+@endpush
 
 @push('scripts')
     <script src="{{ asset('js/tinymce/tinymce.min.js') }}"></script>
