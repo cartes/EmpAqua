@@ -18,7 +18,14 @@
                             </div>
                             <div class="col-md-6 form-group">
                                 <label>Contraseña</label>
-                                <input class="form-control" type="password" id="password" name="password" required/>
+                                <div class="input-group">
+                                    <input class="form-control" type="password" id="password" name="password" required/>
+                                    <div class="input-group-append">
+                                        <button class="btn btn-outline-secondary toggle-password" type="button" data-target="#password" tabindex="-1" title="Mostrar / ocultar contraseña">
+                                            <i class="far fa-eye"></i>
+                                        </button>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                         <div class="row mb-3">

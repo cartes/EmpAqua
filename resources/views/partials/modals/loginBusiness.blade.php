@@ -19,11 +19,18 @@
                                     <span class="invalid-feedback">{{$errors->first('email')}}</span>
                                 @endif
                             </div>
-                            <div class="col-md-6">
-                                <input type="password" class="form-control {{$errors->has('password') ? 'is-invalid' : ''}}"
-                                       name="password" placeholder="Clave" value="{{old('password')}}"/>
+                            <div class="col-md-6 form-group">
+                                <div class="input-group">
+                                    <input type="password" class="form-control {{$errors->has('password') ? 'is-invalid' : ''}}"
+                                           name="password" id="passwordBusiness" placeholder="Clave" value="{{old('password')}}"/>
+                                    <div class="input-group-append">
+                                        <button class="btn btn-outline-secondary toggle-password" type="button" data-target="#passwordBusiness" tabindex="-1" title="Mostrar / ocultar clave">
+                                            <i class="far fa-eye"></i>
+                                        </button>
+                                    </div>
+                                </div>
                                 @if($errors->has('password'))
-                                    <span class="invalid-feedback">{{$errors->first('password')}}</span>
+                                    <span class="invalid-feedback d-block">{{$errors->first('password')}}</span>
                                 @endif
                             </div>
                         </div>

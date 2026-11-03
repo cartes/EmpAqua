@@ -106,6 +106,18 @@
             background-color: rgba(0, 0, 0, 0.8);
             z-index: 10000;
         }
+        .toggle-password {
+            border-color: #ced4da;
+            background-color: #ffffff;
+            color: #6c757d;
+        }
+        .toggle-password:hover,
+        .toggle-password:focus {
+            color: #0c578f;
+            background-color: #f8f9fa;
+            border-color: #ced4da;
+            box-shadow: none;
+        }
     </style>
 </head>
 
@@ -219,6 +231,22 @@
 
         <script type="text/javascript">
             jQuery(document).ready(function($) {
+                // Toggle ver/ocultar contraseña
+                $(document).on('click', '.toggle-password', function(e) {
+                    e.preventDefault();
+                    let target = $(this).data('target');
+                    let $input = target ? $(target) : $(this).closest('.input-group').find('input');
+                    let $icon = $(this).find('i');
+
+                    if ($input.attr('type') === 'password') {
+                        $input.attr('type', 'text');
+                        $icon.removeClass('fa-eye').addClass('fa-eye-slash');
+                    } else {
+                        $input.attr('type', 'password');
+                        $icon.removeClass('fa-eye-slash').addClass('fa-eye');
+                    }
+                });
+
                 let seg = 12; // segundos que dura visible el intersticial
                 let ahora = Math.floor(Date.now() / 1000); // Tiempo actual en segundos
                 let ultimaVez = localStorage.getItem('intersticial_last_show');

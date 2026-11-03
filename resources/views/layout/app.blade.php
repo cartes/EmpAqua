@@ -58,6 +58,18 @@
             white-space: pre-wrap;
             /* permite wrapping pero respeta saltos */
         }
+        .toggle-password {
+            border-color: #ced4da;
+            background-color: #ffffff;
+            color: #6c757d;
+        }
+        .toggle-password:hover,
+        .toggle-password:focus {
+            color: #0c578f;
+            background-color: #f8f9fa;
+            border-color: #ced4da;
+            box-shadow: none;
+        }
     </style>
 
     <!-- Fonts -->
@@ -181,6 +193,22 @@
 
         <script type="text/javascript">
             jQuery(document).ready(function($) {
+                // Toggle ver/ocultar contraseña
+                $(document).on('click', '.toggle-password', function(e) {
+                    e.preventDefault();
+                    let target = $(this).data('target');
+                    let $input = target ? $(target) : $(this).closest('.input-group').find('input');
+                    let $icon = $(this).find('i');
+
+                    if ($input.attr('type') === 'password') {
+                        $input.attr('type', 'text');
+                        $icon.removeClass('fa-eye').addClass('fa-eye-slash');
+                    } else {
+                        $input.attr('type', 'password');
+                        $icon.removeClass('fa-eye-slash').addClass('fa-eye');
+                    }
+                });
+
                 let seg = 12; // segundos intersticial
                 $("#intersticial").css({
                     'z-index': 3000,
