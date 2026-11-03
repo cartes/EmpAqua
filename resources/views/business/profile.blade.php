@@ -5,16 +5,6 @@
     @php($meta = $business->business_meta)
 
     <div class="container business-page mt-5">
-        @if(session()->has('message'))
-            <div class="row justify-content-center">
-                <div class="col-12">
-                    <div class="alert alert-{{session('message')[0]}}" role="alert">
-                        {{session('message')[1]}}
-                    </div>
-                </div>
-            </div>
-        @endif
-
         <div class="row">
             <div class="col-lg-8">
                 {{-- Encabezado: logo + nombre --}}

@@ -40,12 +40,6 @@
 
 @section('content')
     <div class="roles-page">
-        @if(session()->has('message'))
-            <div class="alert alert-{{ session('message')[0] }}" role="alert">
-                {{ session('message')[1] }}
-            </div>
-        @endif
-
         <div class="card shadow-sm">
             <div class="card-header">
                 <div class="form-row align-items-end">

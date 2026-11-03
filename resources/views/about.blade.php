@@ -1,24 +1,16 @@
 @extends('layout.app')
 
 @section('title', ' | Quiénes somos')
-@section('description', 'Conoce EmpleosAqua, el portal de empleos de la industria acuícola y salmonicultora de B2B Group Media SPA.')
+@section('description',
+    'Conoce EmpleosAqua, el portal de empleos de la industria acuícola y salmonicultora de B2B Group
+    Media SPA.')
 
-@section("content")
+@section('content')
 
     <div class="container">
-        @if (null !== session('message'))
-            <div class="row justify-content-center">
-                <div class="col-md-5">
-                    <div class="alert alert-{{session('message')[0]}}" role="alert">
-                        {{session('message')[1]}}
-                    </div>
-                </div>
-            </div>
-        @endif
-
         @include('partials.modals.loginHome')
         @include('partials.modals.loginBusiness')
-        @include("partials.modals.register")
+        @include('partials.modals.register')
         @include('partials.modals.registerBusiness')
 
     </div>
@@ -27,7 +19,8 @@
         <div class="container">
             <div class="row">
                 <div class="col-md-8 offset-2 text-center">
-                    <img class="w-25 my-5 text-center" src="{{asset('/images/1x/logo-empleos-aqua.png')}}" alt="EmpleosAqua" width="758" height="172" decoding="async" />
+                    <img class="w-25 my-5 text-center" src="{{ asset('/images/1x/logo-empleos-aqua.png') }}" alt="EmpleosAqua"
+                        width="758" height="172" decoding="async" />
                     <h1 class="h3 my-5 text-center">Quienes somos</h1>
                     <p>
                         “EmpleosAqua” es una iniciativa de B2B Group Media SPA, casa editorial de la revista AQUA y del
@@ -59,5 +52,12 @@
 
 @push('meta')
     <link rel="canonical" href="{{ route('about') }}" />
-    {!! \App\Support\Schema::script(\App\Support\Schema::webPage('AboutPage', 'Quiénes somos', route('about'), 'Conoce EmpleosAqua, el portal de empleos de la industria acuícola y salmonicultora de B2B Group Media SPA.')) !!}
+    {!! \App\Support\Schema::script(
+        \App\Support\Schema::webPage(
+            'AboutPage',
+            'Quiénes somos',
+            route('about'),
+            'Conoce EmpleosAqua, el portal de empleos de la industria acuícola y salmonicultora de B2B Group Media SPA.',
+        ),
+    ) !!}
 @endpush

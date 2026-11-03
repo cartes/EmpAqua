@@ -5,16 +5,6 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script>
 
     <div class="container-fluid mt-5">
-        @if(session()->has('message'))
-            <div class="row justify-content-center">
-                <div class="col-md-10">
-                    <div class="alert alert-{{session('message')[0]}}" role="alert">
-                        {{session('message')[1]}}
-                    </div>
-                </div>
-            </div>
-        @endif
-
         @include('partials.business.candidatedetail')
 
         @include('partials.modals.message')

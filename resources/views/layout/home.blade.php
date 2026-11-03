@@ -215,6 +215,8 @@
 
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script>
 
+        @include('partials.toast')
+
         <script type="text/javascript">
             jQuery(document).ready(function($) {
                 let seg = 12; // segundos que dura visible el intersticial

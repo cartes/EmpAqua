@@ -7,22 +7,6 @@
 @section('content')
 
     <div class="container-fluid p-0" style="padding-top: 3.75rem !important;">
-        @if(session()->has('message'))
-            <div aria-live="polite" aria-atomic="true" style="position: fixed; top: 1rem; right: 1rem; z-index: 1050;">
-                <div class="toast" role="alert" aria-live="assertive" aria-atomic="true" data-delay="5000">
-                    <div class="toast-header bg-{{ session('message')[0] }} text-white">
-                        <strong class="mr-auto">Notificación</strong>
-                        <button type="button" class="ml-2 mb-1 close text-white" data-dismiss="toast" aria-label="Cerrar">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
-                    <div class="toast-body">
-                        {{ session('message')[1] }}
-                    </div>
-                </div>
-            </div>
-        @endif
-
         @include("partials.modals.loginHome")
         @include("partials.modals.loginBusiness")
         @include("partials.modals.register")            {{-- Modals registro usuario --}}
@@ -77,11 +61,6 @@
 
     <!-- Banner superior -->
     
-    <script>
-        $(document).ready(function() {
-            $('.toast').toast('show');
-        });
-    </script>
 
     <script>
       window.googletag = window.googletag || {cmd: []};

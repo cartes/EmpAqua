@@ -19,12 +19,6 @@
 
 @section('content')
     <div class="container mt-4 profile-page">
-        @if(session()->has('message'))
-            <div class="alert alert-{{ session('message')[0] == 'error' ? 'danger' : session('message')[0] }}" role="alert">
-                {{ session('message')[1] }}
-            </div>
-        @endif
-
         @include('partials.user.view')
     </div>
 @endsection

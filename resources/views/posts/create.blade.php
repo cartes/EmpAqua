@@ -3,16 +3,6 @@
 
 @section('content')
     <div class="container mt-5">
-        @if(session()->has('message'))
-            <div class="row justify-content-center">
-                <div class="col-md-8">
-                    <div class="alert alert-{{session('message')[0]}}" role="alert">
-                        {{session('message')[1]}}
-                    </div>
-                </div>
-            </div>
-        @endif
-
         <div class="row justify-content-center">
             <div class="col-md-4">
                 <div class="card company-info-sticky">

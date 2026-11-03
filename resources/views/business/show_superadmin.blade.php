@@ -4,16 +4,6 @@
 @section('content')
 
     <div class="container mt-5">
-        @if(session()->has('message'))
-            <div class="row justify-content-center">
-                <div class="col-md-12">
-                    <div class="alert alert-{{session('message')[0]}}" role="alert">
-                        {{session('message')[1]}}
-                    </div>
-                </div>
-            </div>
-        @endif
-
         <div class="row justify-content-center mt-4">
             <div class="col-md-2">
                 <div class="container-logo-img" style="--logo: url('{{ optional($business->business_meta)->pathAttachment() }}')">
