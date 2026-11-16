@@ -204,4 +204,51 @@ class ControllersSmokeTest extends TestCase
         $this->assertCount(1, $sent);
         $this->assertStringContainsString('Asunto', $sent[0]->getOriginalMessage()->getSubject());
     }
+
+    public function test_postulations_are_counted_in_business_admin_panel(): void
+    {
+        $business = $this->business(Membership::Basic->value);
+        $offer = Offers::create([
+            'id_business' => $business->id,
+            'title' => 'Jefe de Centro',
+            'slug' => 'jefe-de-centro-1',
+            'description' => 'd',
+            'area' => 'a',
+            'sub_area' => '',
+            'position' => '1',
+            'experience' => '1',
+            'published' => 1,
+            'expirated_at' => now()->addDays(15),
+        ]);
+
+        $user1 = User::create(['rut_user' => '22222222-2', 'name' => 'Luis', 'surname' => 'Soto', 'email' => 'luis@example.com', 'password' => Hash::make('x')]);
+        $user2 = User::create(['rut_user' => '33333333-3', 'name' => 'Eva', 'surname' => 'Rios', 'email' => 'eva@example.com', 'password' => Hash::make('x')]);
+
+        $this->withSession(['id' => $user1->id, 'role' => 'user'])
+            ->get(route('offer.postulate', $offer->slug))
+            ->assertRedirect();
+
+        $this->withSession(['id' => $user2->id, 'role' => 'user'])
+            ->get(route('offer.postulate', $offer->slug))
+            ->assertRedirect();
+
+        $response = $this->withSession(['id' => $business->id, 'role' => 'business', 'role_id' => (string) Membership::Basic->value])
+            ->get(route('offer.admin'))
+            ->assertOk();
+
+        $response->assertSee(route('offer.candidates', $offer->slug), false);
+        $this->assertSame(2, $response->viewData('offers')->first()->candidates_count);
+
+        $candidatesPage = $this->withSession(['id' => $business->id, 'role' => 'business', 'role_id' => (string) Membership::Basic->value])
+            ->get(route('offer.candidates', $offer->slug))
+            ->assertOk();
+
+        $this->assertCount(2, $candidatesPage->viewData('candidates'));
+
+        $profilePage = $this->withSession(['id' => $business->id, 'role' => 'business', 'role_id' => (string) Membership::Basic->value])
+            ->get(route('business.profile'))
+            ->assertOk();
+
+        $this->assertSame(2, $profilePage->viewData('candidates'));
+    }
 }

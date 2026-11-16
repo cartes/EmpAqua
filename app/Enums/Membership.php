@@ -75,7 +75,7 @@ enum Membership: int
             self::Basic => 20,
             self::Premium => 35,
             self::Gold => 50,
-            self::CorporateA1, self::CorporateA2, self::CorporateA3,
+            self::Admin, self::CorporateA1, self::CorporateA2, self::CorporateA3,
             self::CorporateA4, self::CorporatePlus => -1,
             default => 3,
         };

@@ -13,13 +13,17 @@
     </div>
 
     <div class="container">
-        <div class="mb-3">
+        <div class="mb-4 pt-3">
             <div class="row justify-content-center">
-                <div class="col-md-4 d-flex">
-                    <img class="mx-auto text-center w-75" src="{{asset('/images/1x/logo-empleos.png')}}" alt="EmpleosAqua" width="758" height="172" decoding="async">
+                <div class="col-12 text-center">
+                    <img class="img-fluid mx-auto d-block"
+                         src="{{ asset('/images/1x/logo-empleos-aqua.png') }}"
+                         alt="EmpleosAqua"
+                         style="max-width: 260px; height: auto; object-fit: contain;"
+                         decoding="async">
                 </div>
                 <div class="col-12 text-center mt-3">
-                    <h1 class="h3 mb-0">Planes y Tarifas</h1>
+                    <h1 class="h3 font-weight-bold mb-0" style="color: #0c578f;">Planes y Tarifas</h1>
                 </div>
             </div>
         </div>

@@ -50,6 +50,7 @@ class OfferController extends Controller
 
         $offers = Offers::where('id_business', $id)
             ->select(['id', 'id_business', 'title', 'visit', 'featured', 'published', 'slug', 'created_at', 'expirated_at'])
+            ->withCount('candidates')
             ->whereDate('expirated_at', '>=', now())
             ->with(['businessMeta', 'Benefits', 'candidates', 'User'])
             ->orderByDesc('created_at')
@@ -227,7 +228,7 @@ class OfferController extends Controller
         $limit = Membership::fromSession(session('role_id'))?->candidateLimit() ?? 3;
 
         $candidates = Candidates::where('id_offer', $offer->id)
-            ->take($limit)
+            ->when($limit > 0, fn ($query) => $query->take($limit))
             ->orderByDesc('favorite')
             ->with([
                 'user', 'user.userMeta', 'user.userEducation',

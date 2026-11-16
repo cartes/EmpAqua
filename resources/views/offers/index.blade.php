@@ -298,10 +298,10 @@ if(session()->get('role_id') == '90' || is_null(session()->get('role_id'))) {
                                         <span class="badge badge-light px-2 py-1">{{ $of->visit ?? '0' }}</span>
                                     </td>
                                     <td class="text-center align-middle">
-                                        @if ($of->candidates_count > 0)
+                                        @if (($of->candidates_count ?? $of->candidates->count()) > 0)
                                             <a href="{{ route('offer.candidates', $of->slug) }}"
                                                 class="btn btn-sm btn-outline-success font-weight-bold py-1 px-2">
-                                                <i class="fas fa-users mr-1"></i> {{ $of->candidates_count }}
+                                                <i class="fas fa-users mr-1"></i> {{ $of->candidates_count ?? $of->candidates->count() }}
                                             </a>
                                         @else
                                             <span class="text-muted small">0</span>

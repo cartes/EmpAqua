@@ -240,14 +240,10 @@ class BusinessController extends Controller
     {
         abort_unless(Membership::fromSession(session('role_id')) === Membership::Admin, 403, 'No autorizado');
 
-        $business = Business::with('business_meta')->findOrFail($id);
+        $business = Business::with(['business_meta', 'offers'])->findOrFail($id);
 
         // Postulaciones recibidas en los últimos 7 días por sus ofertas.
-        $candidates = $business->offers()
-            ->where('created_at', '>=', now()->subDays(7))
-            ->withCount('candidates')
-            ->get()
-            ->sum('candidates_count');
+        $candidates = (int) $business->offers->sum('candidates_count');
 
         return view('business.show_superadmin', compact('business', 'candidates'));
     }
