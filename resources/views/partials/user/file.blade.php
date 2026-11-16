@@ -2,9 +2,18 @@
     <div class="col-sm-10">
         <div class="card">
             <div class="card-body">
-                <div class="row">
-                    <div class="col-12">
-                        <h3>Perfil de {{ $user->name }} {{ $user->surname }}</h3>
+                <div class="row align-items-center">
+                    <div class="col-md-8">
+                        <h3 class="mb-0">Perfil de {{ $user->name }} {{ $user->surname }}</h3>
+                    </div>
+                    <div class="col-md-4 text-md-right mt-2 mt-md-0">
+                        @if ($user->userMeta && !is_null($user->userMeta->path))
+                            <a href="{{ asset('storage/resume/' . $user->userMeta->path) }}" target="_blank" class="btn btn-primary btn-sm">
+                                <i class="far fa-file-alt mr-1"></i> Ver / Descargar CV
+                            </a>
+                        @else
+                            <span class="badge badge-secondary p-2">Sin CV adjunto</span>
+                        @endif
                     </div>
                 </div>
                 <hr>

@@ -2,7 +2,7 @@
 @section('robots', 'noindex, nofollow')
 
 @section('content')
-    @if(session()->get('role') == 'business')
+    @if(in_array(session()->get('role'), ['business', 'administrador'], true))
         <div class="container">
             @include('partials.user.file')
         </div>

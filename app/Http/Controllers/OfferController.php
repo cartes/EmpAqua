@@ -57,8 +57,10 @@ class OfferController extends Controller
             ->paginate(25);
 
         $expired = Offers::where('id_business', $id)
+            ->withCount('candidates')
+            ->with('candidates')
             ->whereDate('expirated_at', '<', now())
-            ->orderBy('created_at')
+            ->orderByDesc('created_at')
             ->paginate(25);
 
         $business = Business::with('business_meta')->withCount('offers')->find($id);

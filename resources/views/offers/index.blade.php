@@ -435,10 +435,10 @@ if(session()->get('role_id') == '90' || is_null(session()->get('role_id'))) {
                                             class="badge badge-light px-2 py-1">{{ $exp->views ?? ($exp->visit ?? 0) }}</span>
                                     </td>
                                     <td class="text-center align-middle">
-                                        @if ($exp->candidates_count > 0)
+                                        @if (($exp->candidates_count ?? $exp->candidates->count()) > 0)
                                             <a href="{{ route('offer.candidates', $exp->slug) }}"
                                                 class="btn btn-sm btn-outline-secondary font-weight-bold py-1 px-2">
-                                                <i class="fas fa-users mr-1"></i> {{ $exp->candidates_count }}
+                                                <i class="fas fa-users mr-1"></i> {{ $exp->candidates_count ?? $exp->candidates->count() }}
                                             </a>
                                         @else
                                             <span class="text-muted small">0</span>

@@ -222,6 +222,7 @@ class ControllersSmokeTest extends TestCase
         ]);
 
         $user1 = User::create(['rut_user' => '22222222-2', 'name' => 'Luis', 'surname' => 'Soto', 'email' => 'luis@example.com', 'password' => Hash::make('x')]);
+        $user1->userMeta()->create(['path' => 'cv-luis.pdf', 'filename' => 'cv-luis.pdf']);
         $user2 = User::create(['rut_user' => '33333333-3', 'name' => 'Eva', 'surname' => 'Rios', 'email' => 'eva@example.com', 'password' => Hash::make('x')]);
 
         $this->withSession(['id' => $user1->id, 'role' => 'user'])
@@ -244,6 +245,37 @@ class ControllersSmokeTest extends TestCase
             ->assertOk();
 
         $this->assertCount(2, $candidatesPage->viewData('candidates'));
+        $candidatesPage->assertSee('storage/resume/cv-luis.pdf', false);
+
+        // Ficha curricular del candidato accesible tanto por empresa como por administrador
+        $this->withSession(['id' => $business->id, 'role' => 'business', 'role_id' => (string) Membership::Basic->value])
+            ->get(route('user.file', [$user1->id, $offer->id]))
+            ->assertOk()
+            ->assertSee('Perfil de Luis Soto')
+            ->assertSee('storage/resume/cv-luis.pdf', false);
+
+        $this->withSession(['id' => $business->id, 'role' => 'administrador', 'role_id' => (string) Membership::Admin->value])
+            ->get(route('user.file', [$user1->id, $offer->id]))
+            ->assertOk()
+            ->assertSee('Perfil de Luis Soto')
+            ->assertSee('storage/resume/cv-luis.pdf', false);
+
+        // Cuando la oferta se cierra/vence, las postulaciones y sus CVs siguen visibles en ofertas cerradas
+        $offer->update(['expirated_at' => now()->subDay()]);
+
+        $expiredAdmin = $this->withSession(['id' => $business->id, 'role' => 'business', 'role_id' => (string) Membership::Basic->value])
+            ->get(route('offer.admin'))
+            ->assertOk();
+
+        $this->assertSame(2, $expiredAdmin->viewData('expired')->first()->candidates_count);
+        $expiredAdmin->assertSee(route('offer.candidates', $offer->slug), false);
+
+        $expiredCandidatesPage = $this->withSession(['id' => $business->id, 'role' => 'business', 'role_id' => (string) Membership::Basic->value])
+            ->get(route('offer.candidates', $offer->slug))
+            ->assertOk();
+
+        $this->assertCount(2, $expiredCandidatesPage->viewData('candidates'));
+        $expiredCandidatesPage->assertSee('storage/resume/cv-luis.pdf', false);
 
         $profilePage = $this->withSession(['id' => $business->id, 'role' => 'business', 'role_id' => (string) Membership::Basic->value])
             ->get(route('business.profile'))

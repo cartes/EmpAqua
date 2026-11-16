@@ -36,8 +36,8 @@
                                 <th scope="col"><p class="m-0 text-center">Nacionalidad</p></th>
                                 <th scope="col"><p class="m-0 text-center">Email</p></th>
                                 <th scope="col" class="col-phone"><p class="m-0 text-center" data-orderable="false">Teléfono</p></th>
-                                <th data-orderable="false"></th>
-                                <th data-orderable="false"></th>
+                                <th data-orderable="false"><p class="m-0 text-center">CV</p></th>
+                                <th data-orderable="false"><p class="m-0 text-center">Mensaje</p></th>
                                 <th scope="col">Estado</th>
                             </tr>
                             </thead>
@@ -78,21 +78,21 @@
                                     <td><p class="m-0 text-left">{{ $candidate->user->nacionality ?? '' }}</p></td>
                                     <td><p class="m-0 text-left">{{ $candidate->user->email ?? '' }}</p></td>
                                     <td class="col-phone">
-                                        @php(
+                                        @php
                                             $phones = array_filter(array_map('trim', preg_split(
                                                 '/\s*[\/,;]\s*|\s+-\s+|\s{3,}|(?<=\d{8})\s*-\s*(?=[+(\d])/',
                                                 $candidate->user->userMeta->phone ?? ''
-                                            )))
-                                        )
+                                            )));
+                                        @endphp
                                         @foreach($phones as $phone)
                                             <p class="m-0 text-left">{{ $phone }}</p>
                                         @endforeach
                                     </td>
                                     @if($candidate->user->userMeta)
                                     <td class="text-center">
-                                        <p>
+                                        <p class="m-0">
                                             @if (!is_null($candidate->user->userMeta->path))
-                                            <a href="{{asset( 'storage/resume/' . $candidate->user->userMeta->path )}}">
+                                            <a href="{{ asset('storage/resume/' . $candidate->user->userMeta->path) }}" target="_blank" title="Ver CV">
                                                 <i style="font-size: 20px;" class="far fa-file-alt"></i>
                                             </a>
                                             @else
@@ -101,18 +101,18 @@
                                         </p>
                                     </td>
                                     @else
-                                        <td>
-                                            <p>Sin CV</p>
+                                        <td class="text-center">
+                                            <p class="m-0">Sin CV</p>
                                         </td>
                                     @endif
                                     <td>
                                         <form class="sendMessage">
-                                            @php(
+                                            @php
                                                 $lastMessage = \App\Models\Message::where([
                                                     'user_id' => $candidate->user->id,
                                                     'offer_id' => $offer->id
-                                                ])->where('sender_id', '!=', session()->get('id') )->latest()->first()
-                                            )
+                                                ])->where('sender_id', '!=', session()->get('id') )->latest()->first();
+                                            @endphp
                                             <input type="hidden" name="user" value="{{ $candidate->user->id }}"/>
                                             <input type="hidden" name="offer" value="{{ $offer->id }}"/>
                                             <button type="submit" class="submitSendMessage"
