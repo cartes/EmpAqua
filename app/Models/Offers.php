@@ -92,6 +92,11 @@ class Offers extends Model
 {
     use SoftDeletes, DatesTranslator;
 
+    // Estados de publicación; el campo status se usa para confidencialidad.
+    const INACTIVE = 0;
+    const ACTIVE = 1;
+    const CLOSED = 2;
+
     const REVIEWED = 1;
     const INTERVIEW = 2;
 

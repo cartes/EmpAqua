@@ -149,7 +149,7 @@ class Schema
      */
     public static function jobPosting(?Offers $offer): ?array
     {
-        if (!$offer || !$offer->getRawOriginal('published') || empty($offer->slug)) {
+        if (!$offer || (int) $offer->getRawOriginal('published') !== 1 || empty($offer->slug)) {
             return null;
         }
 

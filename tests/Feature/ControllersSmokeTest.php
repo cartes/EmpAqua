@@ -36,6 +36,53 @@ class ControllersSmokeTest extends TestCase
         return $business;
     }
 
+    public function test_business_can_pause_close_and_republish_without_losing_candidates(): void
+    {
+        $business = $this->business(Membership::Basic->value);
+        $offer = Offers::create([
+            'id_business' => $business->id, 'title' => 'Oferta de prueba', 'slug' => 'estado-oferta',
+            'description' => 'd', 'area' => 'a', 'sub_area' => '', 'position' => '1',
+            'experience' => '1', 'published' => 1, 'expirated_at' => now()->addDays(15),
+        ]);
+        $user = User::create(['rut_user' => '22222222-2', 'name' => 'Luis', 'surname' => 'Soto', 'email' => 'luis@example.com', 'password' => Hash::make('x')]);
+        $candidate = $offer->candidates()->create(['id_user' => $user->id, 'status' => 2]);
+        $url = route('offer.publication-status', $offer->slug);
+        $session = ['id' => $business->id, 'role' => 'business', 'role_id' => (string) Membership::Basic->value];
+
+        $this->withSession($session)->get(route('offer.admin'))->assertOk()->assertSee($url, false)->assertSee('Inactiva');
+        $this->patch($url, ['publication_status' => 'invalid'])->assertSessionHasErrors('publication_status');
+        $this->patch($url, ['publication_status' => 'inactive'])->assertRedirect();
+        $this->assertEquals(Offers::INACTIVE, $offer->fresh()->published);
+        $this->assertCount(1, $this->get(route('offer.admin'))->viewData('offers'));
+
+        $this->withSession(['id' => $user->id, 'role' => 'user'])->get(route('offer.postulate', $offer->slug))->assertSessionHas('message.0', 'warning');
+        $this->assertEquals(2, $candidate->fresh()->getRawOriginal('status'));
+        $this->get(route('offer.show', $offer->slug))->assertNotFound();
+        $this->get(route('offer.list'))->assertDontSee('Oferta de prueba');
+        $this->patch($url, ['publication_status' => 'active'])->assertRedirect();
+        $this->assertEquals(Offers::INACTIVE, $offer->fresh()->published);
+
+        $this->withSession(['id' => $business->id + 100, 'role' => 'business'])->patch($url, ['publication_status' => 'closed'])->assertForbidden();
+        $this->withSession($session)->patch($url, ['publication_status' => 'active'])->assertRedirect();
+        $this->assertEquals(Offers::ACTIVE, $offer->fresh()->published);
+        $expiration = $offer->fresh()->expirated_at;
+        $this->patch($url, ['publication_status' => 'closed'])->assertRedirect();
+        $this->assertEquals(Offers::CLOSED, $offer->fresh()->published);
+        $this->assertEquals($expiration, $offer->fresh()->expirated_at);
+        $panel = $this->get(route('offer.admin'))->assertOk()->assertSee('Cerrada');
+        $this->assertCount(0, $panel->viewData('offers'));
+        $this->assertCount(1, $panel->viewData('expired'));
+        $this->get(route('offer.candidates', $offer->slug))->assertOk()->assertSee('Luis');
+        $this->patch($url, ['publication_status' => 'active'])->assertSessionHas('message.0', 'warning');
+        $this->assertEquals(Offers::CLOSED, $offer->fresh()->published);
+        $this->withSession(['id' => $user->id, 'role' => 'user'])->get(route('offer.postulate', $offer->slug))->assertSessionHas('message.0', 'warning');
+        $this->get(route('offer.show', $offer->slug))->assertNotFound();
+        $this->withSession($session)->put(route('offer.republish', $offer->slug))->assertRedirect();
+        $this->assertEquals(Offers::ACTIVE, $offer->fresh()->published);
+        $this->assertEquals(2, $candidate->fresh()->getRawOriginal('status'));
+        $this->assertSame(1, $offer->fresh()->candidates()->count());
+    }
+
     public function test_public_pages_render(): void
     {
         $business = $this->business();

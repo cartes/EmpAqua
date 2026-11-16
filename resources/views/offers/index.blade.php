@@ -219,7 +219,7 @@
                 @else
                     <p class="mb-1 text-muted">Tu membresía no tiene avisos destacados</p>
                 @endif
-                <h5 class="p-0 m-0 font-weight-bold" style="color: #0D4A96;">Ofertas activas</h5>
+                <h5 class="p-0 m-0 font-weight-bold" style="color: #0D4A96;">Ofertas vigentes</h5>
             </div>
         </div>
 
@@ -307,12 +307,22 @@ if(session()->get('role_id') == '90' || is_null(session()->get('role_id'))) {
                                             <span class="text-muted small">0</span>
                                         @endif
                                     </td>
-                                    <td class="text-center align-middle">
-                                        @if ($of->published == '1')
-                                            <span class="badge-status-active">Activa</span>
-                                        @else
-                                            <span class="badge-status-hidden">Oculta</span>
-                                        @endif
+                                    <td class="text-center align-middle" style="min-width: 140px;">
+                                        <form method="post" action="{{ route('offer.publication-status', $of->slug) }}" class="form-publication-status m-0 d-inline-block">
+                                            @csrf
+                                            @method('PATCH')
+                                            <label class="sr-only" for="publication-status-{{ $of->id }}">Estado de {{ $of->title }}</label>
+                                            <select name="publication_status" id="publication-status-{{ $of->id }}"
+                                                class="form-control form-control-sm font-weight-bold status-select-trigger {{ $of->published == 1 ? 'border-success text-success bg-white' : 'border-warning text-dark bg-white' }}"
+                                                data-current="{{ $of->published == 1 ? 'active' : 'inactive' }}"
+                                                data-title="{{ $of->title }}"
+                                                style="border-radius: 20px; font-size: 0.8rem; cursor: pointer; min-width: 120px;"
+                                                title="Cambiar estatus de la oferta">
+                                                <option value="active" {{ $of->published == 1 ? 'selected' : '' }}>🟢 Activa</option>
+                                                <option value="inactive" {{ $of->published == 0 ? 'selected' : '' }}>🟡 Inactiva</option>
+                                                <option value="closed">🔴 Cerrada</option>
+                                            </select>
+                                        </form>
                                     </td>
                                     <td class="text-center align-middle text-muted small">
                                         {{ $of->date }}
@@ -326,47 +336,23 @@ if(session()->get('role_id') == '90' || is_null(session()->get('role_id'))) {
                                             <i class="fas fa-pencil-alt"></i>
                                         </a>
                                     </td>
-                                    <td class="ofertas-activas align-middle">
-                                        <div class="row align-items-center">
-                                            <div class="col-auto">
-                                                @if ($of->published == '1')
-                                                    <form method="post"
-                                                        action="{{ route('offer.unpublish', $of->slug) }}">
-                                                        @csrf
-                                                        <button class="btn btn-xs btn-outline-warning text-dark"
-                                                            type="submit" title="Ocultar de la búsqueda">
-                                                            <i class="far fa-eye-slash mr-1"></i> Ocultar
-                                                        </button>
-                                                    </form>
-                                                @else
-                                                    <form method="post"
-                                                        action="{{ route('offer.republish', $of->slug) }}">
-                                                        @csrf
-                                                        <button class="btn btn-xs btn-outline-success" type="submit"
-                                                            title="Mostrar en la búsqueda">
-                                                            <i class="far fa-eye mr-1"></i> Mostrar
-                                                        </button>
-                                                    </form>
-                                                @endif
-                                            </div>
-                                            <div class="col-auto">
-                                                <form method="post" action="{{ route('offer.delete', $of->slug) }}"
-                                                    onsubmit="return confirm('¿Estás seguro de eliminar esta oferta?');">
-                                                    @csrf
-                                                    @method('DELETE')
-                                                    <button class="btn btn-xs btn-outline-danger" type="submit"
-                                                        title="Eliminar oferta">
-                                                        <i class="fas fa-trash-alt"></i>
-                                                    </button>
-                                                </form>
-                                            </div>
+                                    <td class="ofertas-activas align-middle text-center">
+                                        <div class="d-inline-flex align-items-center">
+                                            <form method="post" action="{{ route('offer.delete', $of->slug) }}"
+                                                class="d-inline m-0"
+                                                onsubmit="return confirm('¿Estás seguro de eliminar esta oferta?');">
+                                                @csrf
+                                                @method('DELETE')
+                                                <button class="btn btn-sm btn-outline-danger" type="submit"
+                                                    title="Eliminar oferta">
+                                                    <i class="fas fa-trash-alt"></i>
+                                                </button>
+                                            </form>
                                             @if (session()->get('role_id') == '17')
-                                                <div class="col-auto">
-                                                    <a href="{{ route('offer.allcandidates', $of->slug) }}"
-                                                        class="btn btn-xs btn-info" title="Biblioteca CV">
-                                                        <i class="fas fa-folder-open mr-1"></i> CVs
-                                                    </a>
-                                                </div>
+                                                <a href="{{ route('offer.allcandidates', $of->slug) }}"
+                                                    class="btn btn-sm btn-info ml-1" title="Biblioteca CV">
+                                                    <i class="fas fa-folder-open mr-1"></i> CVs
+                                                </a>
                                             @endif
                                         </div>
                                     </td>
@@ -445,7 +431,7 @@ if(session()->get('role_id') == '90' || is_null(session()->get('role_id'))) {
                                         @endif
                                     </td>
                                     <td class="text-center align-middle">
-                                        <span class="badge badge-secondary px-2 py-1">Vencida</span>
+                                        <span class="badge badge-secondary px-2 py-1">{{ $exp->published == \App\Models\Offers::CLOSED ? 'Cerrada' : 'Vencida' }}</span>
                                     </td>
                                     <td class="text-center align-middle text-muted small">
                                         {{ $exp->date }}
@@ -501,6 +487,32 @@ if(session()->get('role_id') == '90' || is_null(session()->get('role_id'))) {
     <script>
         $(document).ready(function() {
             $('[data-toggle="popover"]').popover();
+
+            $('.status-select-trigger').on('change', function() {
+                var $select = $(this);
+                var newStatus = $select.val();
+                var previousStatus = $select.data('current');
+                var offerTitle = $select.data('title') || 'esta oferta';
+                var form = $select.closest('form');
+
+                if (newStatus === 'closed') {
+                    var confirmed = confirm('¿Deseas marcar como "Cerrada" la oferta "' + offerTitle + '"?\n\nLa oferta dejará de mostrarse en el portal y pasará al listado de ofertas cerradas.');
+                    if (confirmed) {
+                        form.submit();
+                    } else {
+                        $select.val(previousStatus);
+                    }
+                } else if (newStatus === 'inactive') {
+                    var confirmed = confirm('¿Deseas marcar como "Inactiva" la oferta "' + offerTitle + '"?\n\nLa oferta quedará pausada y no se mostrará a los postulantes hasta que la vuelvas a activar.');
+                    if (confirmed) {
+                        form.submit();
+                    } else {
+                        $select.val(previousStatus);
+                    }
+                } else {
+                    form.submit();
+                }
+            });
 
             $('.btn-republish').click(function(e) {
                 e.preventDefault();

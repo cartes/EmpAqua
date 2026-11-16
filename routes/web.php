@@ -103,8 +103,9 @@ Route::prefix('offer')->controller(OfferController::class)->group(function () {
     Route::get('/{offer}/edit', 'detail')->name('offer.detail')->middleware('business');
     Route::post('/create', 'create')->name('offer.create')->middleware('business');
     Route::post('/{offer}/store', 'store')->name('offer.store')->middleware('business');
+    Route::patch('/{offer}/publication-status', 'updatePublicationStatus')->name('offer.publication-status')->middleware('business');
     Route::post('/{offer}/unpublish', 'unpublish')->name('offer.unpublish')->middleware('business');
-    Route::post('/{offer}/republish', 'republishState')->name('offer.republish')->middleware('business');
+    Route::post('/{offer}/republish', 'republishState')->name('offer.republish-state')->middleware('business');
     Route::delete('/{offer}/destroy', 'destroy')->name('offer.delete')->middleware('business');
     Route::get('/show/{slug}/{search?}', 'show')->name('offer.show');
     Route::get('/{offer}/candidates', 'candidates')->name('offer.candidates')->middleware('redhome');

@@ -1,297 +1,183 @@
-<div class="row justify-content-center">
-    <div class="col-12 col-xl-11">
-        <div class="card">
-            <div class="card-body">
-                <div class="row">
-                    <div class="col-sm-12">
-                        <h3>Candidatos para oferta {{ $offer->title }}</h3>
-                        <small>Id: {{ $offer->id }}</small>
-                    </div>
-                </div>
-                <hr>
-                <div class="row justify-content-end">
-                    <div class="col-sm-4 mb-3">
-                        <label for="status-filter">Filtrar por Estado:</label>
-                        <select id="status-filter" class="form-control">
-                            <option value="">Todos</option>
-                            <option value="Revisar">Revisar</option>
-                            <option value="Preselección">Preselección</option>
-                            <option value="Selección">Selección</option>
-                            <option value="Entrevistado">Entrevistado</option>
-                            <option value="Contratado">Contratado</option>
-                            <option value="Sin perfil">Sin perfil</option>
-                        </select>
-                    </div>
-                    <div class="col-sm-12">
-                        <table id="candidate-table" class="table table-bordered">
-                            <thead>
-                            <tr>
-                                <th class="col-fav"></th>
-                                <th scope="col" class="col-name"><p class="m-0 text-center">Nombre Postulante</p></th>
-                                <th scope="col"><p class="m-0 text-center">Edad</p></th>
-                                <th scope="col"><p class="m-0 text-center">Género</p></th>
-                                <!-- Estado Civil columna removida -->
-                                <th scope="col"><p class="m-0 text-center">Fecha de Postulación</p></th>
-                                <th scope="col"><p class="m-0 text-center" data-orderable="false">Nivel educacional</p></th>
-                                <th scope="col"><p class="m-0 text-center">Nacionalidad</p></th>
-                                <th scope="col"><p class="m-0 text-center">Email</p></th>
-                                <th scope="col" class="col-phone"><p class="m-0 text-center" data-orderable="false">Teléfono</p></th>
-                                <th data-orderable="false"><p class="m-0 text-center">CV</p></th>
-                                <th data-orderable="false"><p class="m-0 text-center">Mensaje</p></th>
-                                <th scope="col">Estado</th>
-                            </tr>
-                            </thead>
-                            <tbody>
-                            @foreach($candidates as $candidate)
-                                @if ($candidate->user)
-                                <tr @if($candidate->favorite == 1) class="table-light"  @endif>
-                                    <td class="col-fav">
-                                        <input type="checkbox" 
-                                            class="form-check-input add-favorite" 
-                                            style="margin-left: 0;"
-                                            name="favorite" @if($candidate->favorite == 1) checked  @endif />
-                                        <input type="hidden" name="user" value="{{ $candidate->user->id }}"/>
-                                        <input type="hidden" name="offer" value="{{ $offer->id }}"/>
-                                    </td>
-                                    <td class="col-name">
-                                        <p class="m-0">
-                                            @if (!is_null($candidate->user))
-                                                <a href="{{ route('user.file', [$candidate->user->id, $offer->id]) }}">
-                                                    {{ $candidate->user->name ?? '' }} {{ $candidate->user->surname ?? '' }}
-                                                </a>
-                                            @endif
-                                        </p>
-                                    </td>
-                                    <td><p class="m-0 text-center">{{ $candidate->user->age ?? '' }}</p></td>
-                                    <td><p class="m-0 text-left">{{ $candidate->user->gender ?? '' }}</p></td>
+<div class="card border-0 shadow-sm mb-5" style="border-radius: 12px; overflow: hidden;">
+    <div class="card-header bg-white border-bottom py-3 px-4 d-flex flex-wrap justify-content-between align-items-center">
+        <div>
+            <h5 class="font-weight-bold m-0" style="color: #0D4A96;">
+                <i class="fas fa-users mr-2" style="color: #D88F32;"></i> Postulaciones recibidas
+            </h5>
+            <small class="text-muted">Desplaza horizontalmente para ver toda la información de cada candidato.</small>
+        </div>
+        <div class="d-flex align-items-center mt-2 mt-sm-0">
+            <label for="status-filter" class="mr-2 mb-0 small font-weight-bold text-muted text-uppercase">Filtrar por estado:</label>
+            <select id="status-filter" class="custom-select custom-select-sm" style="min-width: 180px; border-radius: 20px;">
+                <option value="">Todos los estados</option>
+                <option value="Revisar">🔍 Revisar</option>
+                <option value="Preselección">📋 Preselección</option>
+                <option value="Selección">⭐ Selección</option>
+                <option value="Entrevistado">🗣️ Entrevistado</option>
+                <option value="Contratado">✅ Contratado</option>
+                <option value="Sin perfil">⚪ Sin perfil</option>
+            </select>
+        </div>
+    </div>
 
-                                    <!-- Nueva columna: Fecha de Postulación -->
-                                    <td><p class="m-0 text-center">{{ $candidate->date ?? '' }}</p></td>
-
-                                    <td>
-                                        <ul class="education-list">
-                                        @foreach($candidate->user->userEducation as $education)
-                                            <li>{{$education->title}} ({{$education->condition}})</li>
-                                        @endforeach
-                                        </ul>
-                                    </td>
-                                    <td><p class="m-0 text-left">{{ $candidate->user->nacionality ?? '' }}</p></td>
-                                    <td><p class="m-0 text-left">{{ $candidate->user->email ?? '' }}</p></td>
-                                    <td class="col-phone">
-                                        @php
-                                            $phones = array_filter(array_map('trim', preg_split(
-                                                '/\s*[\/,;]\s*|\s+-\s+|\s{3,}|(?<=\d{8})\s*-\s*(?=[+(\d])/',
-                                                $candidate->user->userMeta->phone ?? ''
-                                            )));
-                                        @endphp
-                                        @foreach($phones as $phone)
-                                            <p class="m-0 text-left">{{ $phone }}</p>
-                                        @endforeach
-                                    </td>
-                                    @if($candidate->user->userMeta)
-                                    <td class="text-center">
-                                        <p class="m-0">
-                                            @if (!empty($candidate->user->userMeta->path))
-                                            <a href="{{ route('user.resume', [$candidate->user->id, $offer->id]) }}" target="_blank" title="Ver CV">
-                                                <i style="font-size: 20px;" class="far fa-file-alt"></i>
-                                            </a>
-                                            @else
-                                                Sin CV
-                                            @endif
-                                        </p>
-                                    </td>
-                                    @else
-                                        <td class="text-center">
-                                            <p class="m-0">Sin CV</p>
-                                        </td>
-                                    @endif
-                                    <td>
-                                        <form class="sendMessage">
-                                            @php
-                                                $lastMessage = \App\Models\Message::where([
-                                                    'user_id' => $candidate->user->id,
-                                                    'offer_id' => $offer->id
-                                                ])->where('sender_id', '!=', session()->get('id') )->latest()->first();
-                                            @endphp
-                                            <input type="hidden" name="user" value="{{ $candidate->user->id }}"/>
-                                            <input type="hidden" name="offer" value="{{ $offer->id }}"/>
-                                            <button type="submit" class="submitSendMessage"
-                                                    style="background: none; padding: 0; border: none;">
-                                                <i style="font-size: 20px;" class="far fa-comment-alt"></i>
-                                                @isset ($lastMessage->status)
-                                                    {!! $lastMessage->status == 3 ? "<span class='badge badge-pill badge-success'>1</span>" : ""  !!}
-                                                @endisset
-                                            </button>
-                                        </form>
-                                    </td>
-                                    <td>
-                                        <input type="hidden" id="statusValue" name="statusValue" value="{{optional($candidate->candidateStatus)->status}}" />
-                                        <select class="form-control select-status" data-candidate-id="{{ $candidate->user->id }}" data-offer-id="{{ $offer->id }}">
-                                            <option>Seleccione un estatus</option>
-                                            <option value="Revisar" {{ optional($candidate->candidateStatus)->status == 'Revisar' ? 'selected' : '' }}>Revisar</option>
-                                            <option value="Preselección" {{ optional($candidate->candidateStatus)->status == 'Preselección' ? 'selected' : '' }}>Preselección</option>
-                                            <option value="Selección" {{ optional($candidate->candidateStatus)->status == 'Selección' ? 'selected' : '' }}>Selección</option>
-                                            <option value="Entrevistado" {{ optional($candidate->candidateStatus)->status == 'Entrevistado' ? 'selected' : '' }}>Entrevistado</option>
-                                            <option value="Contratado" {{ optional($candidate->candidateStatus)->status == 'Contratado' ? 'selected' : '' }}>Contratado</option>
-                                            <option value="Sin perfil" {{ optional($candidate->candidateStatus)->status == 'Sin perfil' ? 'selected' : '' }}>Sin perfil</option>
-                                        </select>
-                                    </td>
-                                </tr>
+    <div class="card-body p-0">
+        <div class="candidate-table-scroll table-responsive">
+            <table id="candidate-table" class="table table-hover mb-0">
+                <thead>
+                    <tr>
+                        <th class="col-fav text-center" data-orderable="false" style="width: 48px;" title="Marcar como favorito">
+                            <i class="far fa-star"></i>
+                        </th>
+                        <th scope="col" class="col-name text-left">Nombre Postulante</th>
+                        <th scope="col" class="text-center">Edad</th>
+                        <th scope="col" class="text-center">Género</th>
+                        <th scope="col" class="text-center">Fecha Postulación</th>
+                        <th scope="col" class="text-left" data-orderable="false" style="min-width: 220px;">Nivel Educacional</th>
+                        <th scope="col" class="text-center">Nacionalidad</th>
+                        <th scope="col" class="text-left">Email</th>
+                        <th scope="col" class="col-phone text-center" data-orderable="false">Teléfono</th>
+                        <th scope="col" class="text-center" data-orderable="false">Curriculum</th>
+                        <th scope="col" class="text-center" data-orderable="false">Mensajes</th>
+                        <th scope="col" class="text-center" style="min-width: 175px;">Estado Proceso</th>
+                    </tr>
+                </thead>
+                <tbody>
+                @forelse($candidates as $candidate)
+                    @if ($candidate->user)
+                    <tr class="candidate-row {{ $candidate->favorite == 1 ? 'table-favorite' : '' }}" data-id="{{ $candidate->user->id }}">
+                        <td class="col-fav text-center align-middle">
+                            <label class="custom-control custom-checkbox m-0 d-inline-block" style="cursor: pointer;" title="Marcar / desmarcar favorito">
+                                <input type="checkbox"
+                                    class="custom-control-input add-favorite"
+                                    name="favorite" {{ $candidate->favorite == 1 ? 'checked' : '' }} />
+                                <span class="custom-control-label"></span>
+                            </label>
+                            <input type="hidden" name="user" value="{{ $candidate->user->id }}"/>
+                            <input type="hidden" name="offer" value="{{ $offer->id }}"/>
+                        </td>
+                        <td class="col-name align-middle">
+                            <div class="font-weight-bold">
+                                <a href="{{ route('user.file', [$candidate->user->id, $offer->id]) }}" class="text-dark hover-primary" title="Ver ficha completa">
+                                    {{ $candidate->user->name ?? '' }} {{ $candidate->user->surname ?? '' }}
+                                </a>
+                            </div>
+                            <div class="small text-muted">
+                                RUT: {{ $candidate->user->rut_user ?? 'No registrado' }}
+                            </div>
+                        </td>
+                        <td class="text-center align-middle font-weight-bold">
+                            {{ $candidate->user->age ? $candidate->user->age . ' años' : '-' }}
+                        </td>
+                        <td class="text-center align-middle">
+                            {{ $candidate->user->gender ?: '-' }}
+                        </td>
+                        <td class="text-center align-middle text-muted small">
+                            {{ $candidate->date ?: ($candidate->created_at ? $candidate->created_at->format('d-m-Y') : '-') }}
+                        </td>
+                        <td class="align-middle">
+                            @if($candidate->user->userEducation && $candidate->user->userEducation->count() > 0)
+                                <ul class="education-list mb-0 pl-3 small">
+                                    @foreach($candidate->user->userEducation as $education)
+                                        <li><strong>{{ $education->title }}</strong> ({{ $education->condition }})</li>
+                                    @endforeach
+                                </ul>
+                            @else
+                                <span class="text-muted small">Sin información</span>
+                            @endif
+                        </td>
+                        <td class="text-center align-middle">
+                            {{ $candidate->user->nacionality ?: '-' }}
+                        </td>
+                        <td class="align-middle">
+                            @if (!empty($candidate->user->email))
+                                <a href="mailto:{{ $candidate->user->email }}" class="text-muted small" title="Enviar correo">
+                                    <i class="far fa-envelope mr-1 text-primary"></i>{{ $candidate->user->email }}
+                                </a>
+                            @else
+                                <span class="text-muted small">-</span>
+                            @endif
+                        </td>
+                        <td class="col-phone text-center align-middle">
+                            @php
+                                $phones = array_filter(array_map('trim', preg_split(
+                                    '/\s*[\/,;]\s*|\s+-\s+|\s{3,}|(?<=\d{8})\s*-\s*(?=[+(\d])/',
+                                    $candidate->user->userMeta->phone ?? ''
+                                )));
+                            @endphp
+                            @forelse($phones as $phone)
+                                <a href="tel:{{ $phone }}" class="d-block small text-dark" title="Llamar">
+                                    <i class="fas fa-phone-alt text-primary mr-1" style="font-size: 0.72rem;"></i>{{ $phone }}
+                                </a>
+                            @empty
+                                <span class="text-muted small">-</span>
+                            @endforelse
+                        </td>
+                        <td class="text-center align-middle">
+                            @if (!empty(optional($candidate->user->userMeta)->path))
+                                <a href="{{ route('user.resume', [$candidate->user->id, $offer->id]) }}" target="_blank" class="btn btn-sm btn-outline-danger font-weight-bold py-1 px-2" title="Ver / Descargar CV en PDF">
+                                    <i class="fas fa-file-pdf mr-1"></i> Ver CV
+                                </a>
+                            @else
+                                <span class="badge badge-light border text-muted">Sin CV</span>
+                            @endif
+                        </td>
+                        <td class="text-center align-middle">
+                            @php
+                                $lastMessage = \App\Models\Message::where([
+                                    'user_id' => $candidate->user->id,
+                                    'offer_id' => $offer->id
+                                ])->where('sender_id', '!=', session()->get('id'))->latest()->first();
+                            @endphp
+                            <button type="button" class="btn btn-sm btn-outline-info py-1 px-2 submitSendMessage"
+                                data-user="{{ $candidate->user->id }}"
+                                data-offer="{{ $offer->id }}"
+                                title="Enviar mensaje directo">
+                                <i class="far fa-comment-alt"></i>
+                                @if (isset($lastMessage->status) && $lastMessage->status == 3)
+                                    <span class="badge badge-success ml-1">1</span>
                                 @endif
-                            @endforeach
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            </div>
+                            </button>
+                        </td>
+                        <td class="text-center align-middle" style="min-width: 175px;">
+                            <input type="hidden" name="statusValue" value="{{ optional($candidate->candidateStatus)->status ?: 'Sin estado' }}" />
+                            @php
+                                $curStatus = optional($candidate->candidateStatus)->status;
+                                $statusClass = match($curStatus) {
+                                    'Revisar' => 'border-info text-info',
+                                    'Preselección' => 'border-primary text-primary',
+                                    'Selección' => 'border-primary text-primary font-weight-bold',
+                                    'Entrevistado' => 'border-warning text-dark font-weight-bold',
+                                    'Contratado' => 'border-success text-success font-weight-bold',
+                                    'Sin perfil' => 'border-secondary text-muted',
+                                    default => 'border-secondary text-dark'
+                                };
+                            @endphp
+                            <select class="custom-select custom-select-sm select-status {{ $statusClass }}"
+                                data-candidate-id="{{ $candidate->user->id }}"
+                                data-candidate-name="{{ $candidate->user->name }} {{ $candidate->user->surname }}"
+                                data-offer-id="{{ $offer->id }}"
+                                style="border-radius: 20px; font-size: 0.8rem; cursor: pointer;">
+                                <option value="" {{ empty($curStatus) ? 'selected' : '' }}>Seleccione estatus</option>
+                                <option value="Revisar" {{ $curStatus == 'Revisar' ? 'selected' : '' }}>🔍 Revisar</option>
+                                <option value="Preselección" {{ $curStatus == 'Preselección' ? 'selected' : '' }}>📋 Preselección</option>
+                                <option value="Selección" {{ $curStatus == 'Selección' ? 'selected' : '' }}>⭐ Selección</option>
+                                <option value="Entrevistado" {{ $curStatus == 'Entrevistado' ? 'selected' : '' }}>🗣️ Entrevistado</option>
+                                <option value="Contratado" {{ $curStatus == 'Contratado' ? 'selected' : '' }}>✅ Contratado</option>
+                                <option value="Sin perfil" {{ $curStatus == 'Sin perfil' ? 'selected' : '' }}>⚪ Sin perfil</option>
+                            </select>
+                        </td>
+                    </tr>
+                    @endif
+                @empty
+                    <tr>
+                        <td colspan="12" class="text-center py-5 text-muted">
+                            <i class="fas fa-users-slash fa-3x mb-3 text-muted"></i>
+                            <h5>Aún no hay candidatos postulados para esta oferta.</h5>
+                        </td>
+                    </tr>
+                @endforelse
+                </tbody>
+            </table>
         </div>
     </div>
 </div>
-
-
-<!-- DataTables JS -->
-<script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
-
-<script>
-    jQuery(document).ready(function ($) {
-        var table = $('#candidate-table').DataTable({
-            language: {
-                paginate: {
-                    previous: '<span aria-hidden="true">&larr;</span>', // Flecha izquierda
-                    next: '<span aria-hidden="true">&rarr;</span>'     // Flecha derecha
-                },
-                lengthMenu: "Mostrar _MENU_ registros por página",
-                zeroRecords: "No se encontraron resultados",
-                info: "Mostrando _START_ a _END_ de _TOTAL_ registros",
-                infoEmpty: "Mostrando 0 a 0 de 0 registros",
-                infoFiltered: "(filtrado de _MAX_ registros totales)",
-                search: "Buscar:",
-                loadingRecords: "Cargando...",
-                processing: "Procesando...",
-                emptyTable: "No hay datos disponibles en la tabla"
-            },
-            dom: 'lf<"table-scroll"t>ip'
-    });
-
-    // Filtro personalizado por estado
-    $('#status-filter').on('change', function () {
-        var selectedStatus = $(this).val();
-        $.fn.dataTable.ext.search = [];
-
-        $.fn.dataTable.ext.search.push(function (settings, data, dataIndex) {
-            var row = table.row(dataIndex).node();
-            var estadoHidden = $(row).find('input[name="statusValue"]').val();
-            return selectedStatus === "" || estadoHidden === selectedStatus;
-        });
-
-        table.draw();
-    });
-
-    // Actualización de estado por fila
-    $('.select-status').on('change', function () {
-        let candidateId = $(this).data('candidate-id');
-        let offerId = $(this).data('offer-id');
-        let status = $(this).val();
-        let $row = $(this).closest('tr');
-
-        $.ajaxSetup({
-            headers: {
-                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-            }
-        });
-
-        $.ajax({
-            type: 'POST',
-            url: '{{ route('candidate.updateStatus') }}',
-            data: {
-                'candidate_id': candidateId,
-                'offer_id': offerId,
-                'status': status
-            },
-            success: function (data) {
-                if (data.success) {
-                    // Muestra el toast
-                    $('#successToast').toast({ delay: 4000 }).toast('show');
-
-                    // Actualiza el input oculto de la fila
-                    $row.find('input[name="statusValue"]').val(status);
-
-                    // Vuelve a aplicar el filtro si está activo
-                    $('#status-filter').trigger('change');
-                }
-            }
-        });
-    });
-});
-</script>
-
-<style>
-  #candidate-table td, #candidate-table th {
-      border-right: 1px solid #ddd;
-  }
-  
-  #candidate-table th:last-child, #candidate-table td:last-child {
-      border-right: none;
-  }
-
-  /* Contenedor con scroll horizontal: la tabla no se comprime, se desplaza */
-  .table-scroll {
-      overflow-x: auto;
-      margin: 0.75rem 0;
-  }
-  #candidate-table {
-      min-width: 1300px;
-      width: 100%;
-      border-collapse: separate;
-      border-spacing: 0;
-      margin: 0 !important;
-  }
-  #candidate-table th,
-  #candidate-table td {
-      white-space: nowrap;
-      vertical-align: middle;
-      border-bottom: 1px solid #ddd;
-  }
-  #candidate-table thead th {
-      background: #f8f9fa;
-      border-top: 1px solid #ddd;
-  }
-  #candidate-table tbody td { background: #fff; }
-  #candidate-table tbody tr.table-light td { background: #f1f3f5; }
-  #candidate-table tbody tr:hover td { background: #fff5f4; }
-  #candidate-table .education-list {
-      list-style: none;
-      margin: 0;
-      padding: 0;
-      white-space: normal;
-      min-width: 220px;
-  }
-  #candidate-table .select-status { min-width: 170px; }
-  #candidate-table .col-phone {
-      width: 120px;
-      min-width: 120px;
-      max-width: 120px;
-      padding-left: 0.5rem !important;
-      padding-right: 0.5rem !important;
-  }
-
-  /* Primera columna (favorito) y nombre fijos al desplazar */
-  #candidate-table .col-fav,
-  #candidate-table .col-name {
-      position: sticky;
-      z-index: 2;
-  }
-  #candidate-table .col-fav {
-      left: 0;
-      width: 48px;
-      min-width: 48px;
-      text-align: center;
-  }
-  #candidate-table .col-name {
-      left: 48px;
-      min-width: 190px;
-      box-shadow: 2px 0 4px -2px rgba(0, 0, 0, .25);
-  }
-  #candidate-table thead .col-fav,
-  #candidate-table thead .col-name { z-index: 3; }
-</style>

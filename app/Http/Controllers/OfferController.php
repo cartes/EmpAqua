@@ -52,6 +52,7 @@ class OfferController extends Controller
             ->select(['id', 'id_business', 'title', 'visit', 'featured', 'published', 'slug', 'created_at', 'expirated_at'])
             ->withCount('candidates')
             ->whereDate('expirated_at', '>=', now())
+            ->where('published', '!=', Offers::CLOSED)
             ->with(['businessMeta', 'Benefits', 'candidates', 'User'])
             ->orderByDesc('created_at')
             ->paginate(25);
@@ -59,7 +60,7 @@ class OfferController extends Controller
         $expired = Offers::where('id_business', $id)
             ->withCount('candidates')
             ->with('candidates')
-            ->whereDate('expirated_at', '<', now())
+            ->where(fn ($query) => $query->whereDate('expirated_at', '<', now())->orWhere('published', Offers::CLOSED))
             ->orderByDesc('created_at')
             ->paginate(25);
 
@@ -142,10 +143,30 @@ class OfferController extends Controller
         return back()->with('message', ['success', 'Datos actualizados']);
     }
 
+    public function updatePublicationStatus(Request $request, Offers $offer): RedirectResponse
+    {
+        $this->authorizeOwner($offer);
+        $data = $request->validate(['publication_status' => ['required', 'in:active,inactive,closed']]);
+        $state = $data['publication_status'];
+
+        if ($state !== 'closed' && ($offer->published == Offers::CLOSED || Carbon::parse($offer->expirated_at)->isBefore(today()))) {
+            return back()->with('message', ['warning', 'Para activar una oferta cerrada o vencida, utiliza Republicar.']);
+        }
+
+        $offer->update(['published' => match ($state) {
+            'active' => Offers::ACTIVE,
+            'inactive' => Offers::INACTIVE,
+            'closed' => Offers::CLOSED,
+        }]);
+
+        return back()->with('message', ['success', 'Estado de la oferta actualizado correctamente.']);
+    }
+
     public function unpublish(Offers $offer): RedirectResponse
     {
         $this->authorizeOwner($offer);
-        $offer->update(['published' => 0]);
+        abort_if($offer->published == Offers::CLOSED, 422);
+        $offer->update(['published' => Offers::INACTIVE]);
 
         return back()->with('message', ['success', 'La oferta se ocultó correctamente']);
     }
@@ -153,7 +174,8 @@ class OfferController extends Controller
     public function republishState(Offers $offer): RedirectResponse
     {
         $this->authorizeOwner($offer);
-        $offer->update(['published' => 1]);
+        abort_if($offer->published == Offers::CLOSED || Carbon::parse($offer->expirated_at)->isBefore(today()), 422);
+        $offer->update(['published' => Offers::ACTIVE]);
 
         return back()->with('message', ['success', 'La oferta se republicó correctamente']);
     }
@@ -170,8 +192,8 @@ class OfferController extends Controller
     {
         $this->authorizeOwner($offer);
 
-        $offer->candidates()->delete();
         $offer->forceFill([
+            'published' => Offers::ACTIVE,
             'expirated_at' => now()->addDays(30),
             'created_at' => now(),
         ])->save();
@@ -460,6 +482,8 @@ class OfferController extends Controller
         $offer = Offers::whereSlug($slug)->with('candidates')->first();
 
         if ($offer) {
+            $canManage = session('role') === 'administrador' || (session('role') === 'business' && $offer->id_business == $userId);
+            abort_if(! $canManage && ($offer->published != Offers::ACTIVE || Carbon::parse($offer->expirated_at)->isBefore(today())), 404);
             if ($offer->id_business != $userId) {
                 $offer->increment('visit');
             }
@@ -497,6 +521,10 @@ class OfferController extends Controller
 
         if (! $userId) {
             return back()->with('message', ['danger', 'Debes iniciar sesión para postular']);
+        }
+
+        if ($offer->published != Offers::ACTIVE || Carbon::parse($offer->expirated_at)->isBefore(today())) {
+            return back()->with('message', ['warning', 'Esta oferta no está disponible para nuevas postulaciones.']);
         }
 
         Candidates::updateOrCreate(
