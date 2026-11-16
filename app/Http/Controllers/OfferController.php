@@ -363,11 +363,11 @@ class OfferController extends Controller
                     return '<p>Sin Meta</p>';
                 }
 
-                if (is_null($user->userMeta->path)) {
+                if (empty($user->userMeta->path)) {
                     return '<p>Sin CV</p>';
                 }
 
-                return '<a target="_blank" href="' . e(asset('storage/resume/' . $user->userMeta->path)) . '"><i style="font-size: 20px;" class="far fa-file-alt"></i></a>';
+                return '<a target="_blank" href="' . e(route('user.resume', $user->id)) . '"><i style="font-size: 20px;" class="far fa-file-alt"></i></a>';
             })
             ->rawColumns(['id', 'name', 'CV', 'education_level'])
             ->make(true);

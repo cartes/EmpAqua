@@ -222,7 +222,7 @@
                             <div class="col-12 mt-2">
                                 <h2 class="h3 mb-3">Funciones del Cargo</h2>
 
-                                <div id="container-offer-description">{!! preg_replace("/[\w-]+@([\w-]+\.)+[\w-]+/", "[Email Bloqueado]", \App\Helpers\Helper::cleanHtml($offer->description)); !!}</div>
+                                <div id="container-offer-description">{!! preg_replace('/[\w-]+@([\w-]+\.)+[\w-]+/', '[Email Bloqueado]', \App\Helpers\Helper::cleanHtml($offer->description)) !!}</div>
                             </div>
                             @endif
                             @if (filled(trim((string) $offer->requirements)))
@@ -239,7 +239,7 @@
 
                                     <div id="container-offer-benefits">
                                         @foreach( $offer->benefits as $benefit )
-                                            <div class='btn-benefit mr-3 mb-2 btn btn-secondary text-uppercase'>{!! preg_replace("/[\w-]+@([\w-]+\.)+[\w-]+/", "[Email Bloqueado]", e($benefit->benefit)); !!}</div>
+                                            <div class="btn-benefit mr-3 mb-2 btn btn-secondary text-uppercase">{{ preg_replace('/[\w-]+@([\w-]+\.)+[\w-]+/', '[Email Bloqueado]', $benefit->benefit) }}</div>
                                         @endforeach
                                     </div>
                                 </div>

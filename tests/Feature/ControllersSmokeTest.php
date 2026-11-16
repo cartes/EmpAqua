@@ -12,6 +12,7 @@ use App\Services\Mailer;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Storage;
 use Tests\TestCase;
 
 class ControllersSmokeTest extends TestCase
@@ -207,6 +208,10 @@ class ControllersSmokeTest extends TestCase
 
     public function test_postulations_are_counted_in_business_admin_panel(): void
     {
+        Storage::fake('public');
+        $pdf = '%PDF-1.4 test CV';
+        Storage::disk('public')->put('resume/cv-luis.pdf', $pdf);
+
         $business = $this->business(Membership::Basic->value);
         $offer = Offers::create([
             'id_business' => $business->id,
@@ -245,20 +250,36 @@ class ControllersSmokeTest extends TestCase
             ->assertOk();
 
         $this->assertCount(2, $candidatesPage->viewData('candidates'));
-        $candidatesPage->assertSee('storage/resume/cv-luis.pdf', false);
+        $candidatesPage->assertSee(route('user.resume', [$user1->id, $offer->id]), false);
+
+        $cvUrl = route('user.resume', [$user1->id, $offer->id]);
+        $cv = $this->get($cvUrl)->assertOk()->assertHeader('content-type', 'application/pdf');
+        $this->assertStringContainsString('inline;', $cv->headers->get('content-disposition'));
+        $this->assertSame($pdf, $cv->streamedContent());
+
+        // También se admiten rutas que ya incluyen el directorio resume.
+        $user1->userMeta->update(['path' => 'resume/cv-luis.pdf']);
+        $this->assertSame($pdf, $this->get($cvUrl)->assertOk()->streamedContent());
+        $user1->userMeta->update(['path' => 'cv-luis.pdf']);
+
+        $this->get(route('user.resume', [$user2->id, $offer->id]))->assertNotFound();
+        $this->withSession(['id' => $business->id + 100, 'role' => 'business'])->get($cvUrl)->assertForbidden();
+        $this->withSession(['id' => $user2->id, 'role' => 'user'])->get($cvUrl)->assertForbidden();
 
         // Ficha curricular del candidato accesible tanto por empresa como por administrador
         $this->withSession(['id' => $business->id, 'role' => 'business', 'role_id' => (string) Membership::Basic->value])
             ->get(route('user.file', [$user1->id, $offer->id]))
             ->assertOk()
             ->assertSee('Perfil de Luis Soto')
-            ->assertSee('storage/resume/cv-luis.pdf', false);
+            ->assertSee(route('user.resume', [$user1->id, $offer->id]), false);
 
         $this->withSession(['id' => $business->id, 'role' => 'administrador', 'role_id' => (string) Membership::Admin->value])
             ->get(route('user.file', [$user1->id, $offer->id]))
             ->assertOk()
             ->assertSee('Perfil de Luis Soto')
-            ->assertSee('storage/resume/cv-luis.pdf', false);
+            ->assertSee(route('user.resume', [$user1->id, $offer->id]), false);
+
+        $this->get($cvUrl)->assertOk();
 
         // Cuando la oferta se cierra/vence, las postulaciones y sus CVs siguen visibles en ofertas cerradas
         $offer->update(['expirated_at' => now()->subDay()]);
@@ -274,8 +295,12 @@ class ControllersSmokeTest extends TestCase
             ->get(route('offer.candidates', $offer->slug))
             ->assertOk();
 
+        $this->get($cvUrl)->assertOk();
+        Storage::disk('public')->delete('resume/cv-luis.pdf');
+        $this->get($cvUrl)->assertNotFound();
+
         $this->assertCount(2, $expiredCandidatesPage->viewData('candidates'));
-        $expiredCandidatesPage->assertSee('storage/resume/cv-luis.pdf', false);
+        $expiredCandidatesPage->assertSee(route('user.resume', [$user1->id, $offer->id]), false);
 
         $profilePage = $this->withSession(['id' => $business->id, 'role' => 'business', 'role_id' => (string) Membership::Basic->value])
             ->get(route('business.profile'))

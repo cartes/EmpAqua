@@ -12,6 +12,8 @@ use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Storage;
+use Symfony\Component\HttpFoundation\StreamedResponse;
 
 class UserController extends Controller
 {
@@ -118,7 +120,33 @@ class UserController extends Controller
 
         $user->load('userMeta', 'userExperience', 'userLanguage', 'userSkills', 'userEducation');
 
-        return view('user.file', compact('user'));
+        return view('user.file', compact('user', 'offer'));
+    }
+
+    public function resume(User $user, ?int $offer = null): StreamedResponse
+    {
+        $isBusiness = in_array(session('role'), ['business', 'administrador'], true);
+        abort_unless($isBusiness || (session('role') === 'user' && session('id') == $user->id), 403);
+
+        if ($offer !== null) {
+            $job = Offers::findOrFail($offer);
+            abort_unless($isBusiness && (session('role') === 'administrador' || $job->id_business == session('id')), 403);
+            abort_unless(Candidates::where('id_offer', $offer)->where('id_user', $user->id)->exists(), 404);
+        }
+
+        $storedPath = trim($user->userMeta?->path ?? '');
+        abort_if($storedPath === '', 404, 'El postulante no tiene un CV adjunto.');
+
+        // Admite tanto nombres de archivo antiguos como rutas relativas del disco.
+        $path = str_starts_with($storedPath, 'resume/') ? $storedPath : 'resume/' . $storedPath;
+        abort_if(str_contains($path, '..') || str_contains($path, '\\'), 404);
+        $disk = Storage::disk('public');
+        abort_unless($disk->exists($path), 404, 'El archivo del CV no está disponible.');
+
+        return $disk->response($path, $user->userMeta->filename ?: basename($path), [
+            'Cache-Control' => 'private, no-store',
+            'X-Content-Type-Options' => 'nosniff',
+        ], 'inline');
     }
 
     private function startSession(User $user): void

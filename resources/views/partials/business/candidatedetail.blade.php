@@ -91,8 +91,8 @@
                                     @if($candidate->user->userMeta)
                                     <td class="text-center">
                                         <p class="m-0">
-                                            @if (!is_null($candidate->user->userMeta->path))
-                                            <a href="{{ asset('storage/resume/' . $candidate->user->userMeta->path) }}" target="_blank" title="Ver CV">
+                                            @if (!empty($candidate->user->userMeta->path))
+                                            <a href="{{ route('user.resume', [$candidate->user->id, $offer->id]) }}" target="_blank" title="Ver CV">
                                                 <i style="font-size: 20px;" class="far fa-file-alt"></i>
                                             </a>
                                             @else

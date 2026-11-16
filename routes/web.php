@@ -127,6 +127,7 @@ Route::prefix('user')->middleware('redhome')->controller(UserController::class)-
 });
 
 Route::get('/userfile/file/{user}/{offer?}', [UserController::class, 'file'])->name('user.file')->middleware('redhome');
+Route::get('/userfile/resume/{user}/{offer?}', [UserController::class, 'resume'])->name('user.resume')->middleware('redhome');
 
 Route::prefix('message')->middleware('redhome')->controller(MessageController::class)->group(function () {
     Route::post('/show', 'show')->name('message.show');

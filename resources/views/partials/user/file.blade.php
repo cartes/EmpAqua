@@ -7,8 +7,8 @@
                         <h3 class="mb-0">Perfil de {{ $user->name }} {{ $user->surname }}</h3>
                     </div>
                     <div class="col-md-4 text-md-right mt-2 mt-md-0">
-                        @if ($user->userMeta && !is_null($user->userMeta->path))
-                            <a href="{{ asset('storage/resume/' . $user->userMeta->path) }}" target="_blank" class="btn btn-primary btn-sm">
+                        @if ($user->userMeta && !empty($user->userMeta->path))
+                            <a href="{{ route('user.resume', [$user->id, $offer ?? null]) }}" target="_blank" class="btn btn-primary btn-sm">
                                 <i class="far fa-file-alt mr-1"></i> Ver / Descargar CV
                             </a>
                         @else
