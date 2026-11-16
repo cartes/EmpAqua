@@ -8,7 +8,7 @@ return [
     |--------------------------------------------------------------------------
     */
 
-    'default' => env('MAIL_MAILER', 'log'),
+    'default' => env('MAIL_MAILER', env('MAIL_DRIVER', 'log')),
 
     /*
     |--------------------------------------------------------------------------
@@ -25,12 +25,13 @@ return [
         'smtp' => [
             'transport' => 'smtp',
             'scheme' => env('MAIL_SCHEME'),
-            'host' => env('MAIL_HOST', '127.0.0.1'),
-            'port' => env('MAIL_PORT', 25),
-            'username' => env('MAIL_USERNAME'),
-            'password' => env('MAIL_PASSWORD'),
+            'host' => env('MAIL_HOST', env('SMTP_HOST', '127.0.0.1')),
+            'port' => env('MAIL_PORT', env('SMTP_PORT', 25)),
+            'username' => env('MAIL_USERNAME', env('SMTP_USERNAME')),
+            'password' => env('MAIL_PASSWORD', env('SMTP_PASSWORD')),
             'timeout' => null,
-            'auto_tls' => env('MAIL_AUTO_TLS', true),
+            'auto_tls' => env('MAIL_AUTO_TLS', false),
+            'verify_peer' => env('MAIL_VERIFY_PEER', false),
             'local_domain' => env('MAIL_EHLO_DOMAIN', parse_url((string) env('APP_URL', 'http://localhost'), PHP_URL_HOST)),
         ],
 
