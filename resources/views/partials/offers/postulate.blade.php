@@ -418,6 +418,10 @@
             var panel = document.getElementById('container-offer-display');
             if (!panel) return;
             var update = function () {
+                if (window.innerWidth < 992) {
+                    panel.style.top = '';
+                    return;
+                }
                 var top = Math.min(130, window.innerHeight - panel.offsetHeight - 16);
                 panel.style.top = top + 'px';
             };
@@ -430,9 +434,15 @@
 @push("styles")
     <style>
         #container-offer-display .container { max-width: 100%; }
-        /* Detalle: scrollea con la página y se fija al llegar a su final (el top se calcula en JS según su alto) */
+        /* Detalle: en desktop scrollea con la página y se fija; en mobile/tablet fluye de forma estática */
         @media (min-width: 992px) {
             #container-offer-display { position: sticky; top: 130px; align-self: flex-start; }
+        }
+        @media (max-width: 991.98px) {
+            #container-offer-display {
+                position: static !important;
+                top: auto !important;
+            }
         }
         .offer-header { position: relative; display: flex; gap: 1.5rem; align-items: flex-start; background: #fff; border-radius: 15px; padding: 1.5rem; box-shadow: 0 2px 8px rgba(0,0,0,.06); }
         .offer-header__fav { position: absolute; top: .9rem; right: 1.1rem; color: #6B6B6B; font-size: 1.5rem; line-height: 1; }

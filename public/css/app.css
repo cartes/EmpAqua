@@ -17267,7 +17267,10 @@ header .menu-icon {
 }
 
 footer {
-  background: #E4E4E4;
+  background: #0D4A96;
+}
+footer > .container-fluid, footer > .container-sm, footer > .container-md, footer > .container-lg, footer > .container-xl {
+  background: #0D4A96;
 }
 @media (min-width: 401px) {
   footer > .container-fluid, footer > .container-sm, footer > .container-md, footer > .container-lg, footer > .container-xl {
@@ -17834,14 +17837,18 @@ footer {
   }
   footer .logos-footer.logo-empleos img {
     max-width: 210px !important;
+    height: auto !important;
     padding-top: 45px;
     padding-bottom: 25px;
+    box-sizing: content-box;
   }
   footer .logos-footer.logo-b2b img {
     max-width: 210px !important;
+    height: auto !important;
     padding-top: 25px;
     padding-bottom: 44px;
     border-top: 1px dashed #fff;
+    box-sizing: content-box;
   }
   footer .info-footer h5:first-child, footer .info-footer .footer-title:first-child {
     padding-top: 22px;

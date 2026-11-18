@@ -1,17 +1,17 @@
-<footer class="footer">
-    <div class="container-fluid">
-        <div class="container py-4">
+<footer class="footer" style="background-color: #0D4A96;">
+    <div class="container-fluid" style="background-color: #0D4A96;">
+        <div class="container py-4" style="background-color: #0D4A96; color: #fff;">
             <div class="row mt-3">
                 <div class="col-12 col-sm-4 text-center">
                     <div class="row">
                         <div class="col-12 logos-footer logo-empleos">
                             <a href="{{route('/')}}">
-                                <img class="w-100" src="/images/empleos-aqua-footer-logo.png" alt="Logo EmplesAqua Footer" width="209" height="47" loading="lazy" decoding="async" />
+                                <img class="img-fluid" src="{{ asset('images/empleos-aqua-footer-logo.png') }}" alt="Logo Empleos Aqua Footer" width="209" height="47" style="max-width: 209px; width: 100%; height: auto !important; box-sizing: content-box; display: inline-block; margin: 0 auto;" loading="lazy" decoding="async" />
                             </a>
                         </div>
                         <div class="col-12 logos-footer logo-b2b">
                             <a href="{{route('/')}}">
-                                <img class="w-100" src="/images/b2b-footer-logo.png" alt="Logo B2B Footer" width="164" height="73" loading="lazy" decoding="async" />
+                                <img class="img-fluid" src="{{ asset('images/b2b-footer-logo.png') }}" alt="Logo B2B Footer" width="164" height="73" style="max-width: 164px; width: 100%; height: auto !important; box-sizing: content-box; display: inline-block; margin: 0 auto;" loading="lazy" decoding="async" />
                             </a>
                         </div>
                     </div>
