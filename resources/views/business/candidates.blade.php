@@ -16,11 +16,19 @@
             background: #fff;
         }
 
-        /* Contenedor responsivo con scroll horizontal suave */
+        #candidate-table_wrapper {
+            width: 100%;
+            max-width: 100%;
+            min-width: 0;
+        }
+
+        /* Solo la tabla se desplaza; los controles quedan fuera. */
         .candidate-table-scroll {
             position: relative;
             overflow-x: auto;
             width: 100%;
+            max-width: 100%;
+            min-width: 0;
             -webkit-overflow-scrolling: touch;
         }
 
@@ -324,8 +332,8 @@
 
     <script>
         jQuery(document).ready(function ($) {
-            // Inicializar DataTables
-            var table = $('#candidate-table').DataTable({
+            // Sustituir el contenedor inicial por el que envuelve solo la tabla en DataTables.
+            var table = $('#candidate-table').unwrap('.candidate-table-scroll').DataTable({
                 language: {
                     paginate: {
                         previous: '<span aria-hidden="true">&larr;</span>',
@@ -343,7 +351,7 @@
                 },
                 pageLength: 25,
                 order: [[1, 'asc']], // Ordenar por nombre por defecto
-                dom: '<"d-flex flex-wrap justify-content-between align-items-center"lf>t<"d-flex flex-wrap justify-content-between align-items-center"ip>'
+                dom: '<"d-flex flex-wrap justify-content-between align-items-center"lf><"candidate-table-scroll"t><"d-flex flex-wrap justify-content-between align-items-center"ip>'
             });
 
             // Filtro personalizado por estado
