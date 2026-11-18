@@ -45,7 +45,7 @@
     <link href="{{ asset('/css/app.css') }}?v={{ @filemtime(public_path('css/app.css')) }}" rel="stylesheet">
 
     <!-- Google tag (gtag.js) -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-S6F0ZG7XWY"></script>
+    <script async src="https://www.googletagmanager.com/gtm.js?id=G-FKF6NQMYNV"></script>
     <script>
         window.dataLayer = window.dataLayer || [];
 
@@ -53,8 +53,6 @@
             dataLayer.push(arguments);
         }
         gtag('js', new Date());
-
-        gtag('config', 'G-S6F0ZG7XWY');
     </script>
     <!-- debug --->
 

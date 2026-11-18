@@ -33,7 +33,7 @@
                 @endif
             </div>
             <div>
-                <h1>Hola {{ $user->name }}, bienvenido a Empleos MCH</h1>
+                <h1>Hola {{ $user->name }}, bienvenido a Empleos Aqua</h1>
                 <div class="meta">Gestiona tu información, accede a las alertas de empleo y revisa tus postulaciones.</div>
                 @unless($user->path)
                     <div class="photo-tip">

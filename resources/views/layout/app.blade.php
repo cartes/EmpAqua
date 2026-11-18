@@ -41,7 +41,7 @@
 
 
     <!-- Google tag (gtag.js) -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-FK34TS8HZR"></script>
+    <script async src="https://www.googletagmanager.com/gtm.js?id=G-FKF6NQMYNV"></script>
     <script>
         window.dataLayer = window.dataLayer || [];
 
@@ -49,7 +49,6 @@
             dataLayer.push(arguments);
         }
         gtag('js', new Date());
-        gtag('config', 'G-FK34TS8HZR');
     </script>
     <style>
         #container-offer-display p {

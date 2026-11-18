@@ -186,6 +186,17 @@ class Schema
                 . '</li></ul>';
         }
 
+        $locality = self::firstNonEmpty([
+            $offer->comune,
+            $offer->city,
+            $meta?->comune,
+            $meta?->city,
+        ]);
+        $region = self::firstNonEmpty([
+            $offer->state,
+            $meta?->state,
+        ]);
+
         $data = [
             '@type' => 'JobPosting',
             'title' => $offer->title,
@@ -203,8 +214,8 @@ class Schema
                 '@type' => 'Place',
                 'address' => array_filter([
                     '@type' => 'PostalAddress',
-                    'addressLocality' => $offer->comune ?: $offer->city,
-                    'addressRegion' => $offer->state,
+                    'addressLocality' => $locality,
+                    'addressRegion' => $region,
                     'addressCountry' => 'CL',
                 ]),
             ],
@@ -256,6 +267,18 @@ class Schema
                 ? ['@type' => 'QuantitativeValue', 'value' => $min, 'unitText' => 'MONTH']
                 : ['@type' => 'QuantitativeValue', 'minValue' => $min, 'maxValue' => $max, 'unitText' => 'MONTH'],
         ];
+    }
+
+    private static function firstNonEmpty(array $values): ?string
+    {
+        foreach ($values as $value) {
+            $trimmed = trim((string) $value);
+            if ($trimmed !== '') {
+                return $trimmed;
+            }
+        }
+
+        return null;
     }
 
     private static function clean(string $text): string
